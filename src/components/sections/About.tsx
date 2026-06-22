@@ -39,83 +39,88 @@ export default function About() {
     <section id="about" ref={ref} style={{ background: "#FFFFFF" }}>
 
       {/* ─── Row 1: Text LEFT + Photo RIGHT ─── */}
-      <div style={{ borderBottom: "1px solid #E5E5E5" }}>
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
-
-          {/* LEFT — heading + text (takes full width on mobile, 50% on desktop) */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7 }}
+      <div
+        style={{
+          borderBottom: "1px solid #E5E5E5",
+          display: "flex",
+          flexWrap: "wrap",
+          minHeight: "clamp(420px, 72vh, 820px)",
+        }}
+      >
+        {/* LEFT — heading + text: full width on mobile, 50% on desktop */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7 }}
+          className="w-full md:w-1/2"
+          style={{
+            padding: "clamp(36px, 5vw, 80px) clamp(20px, 5vw, 96px)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <h2
             style={{
-              width: "100%",
-              padding: "clamp(40px, 5vw, 80px) clamp(20px, 5vw, 96px)",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
+              fontFamily: "var(--font-space-grotesk), sans-serif",
+              fontWeight: 900,
+              fontSize: "clamp(3.5rem, 8vw, 7.5rem)",
+              letterSpacing: "-0.04em",
+              color: "#111111",
+              textTransform: "lowercase",
+              lineHeight: 0.95,
+              marginBottom: "28px",
             }}
-            className="about-text-half"
           >
-            <h2
-              style={{
-                fontFamily: "var(--font-space-grotesk), sans-serif",
-                fontWeight: 900,
-                fontSize: "clamp(3.5rem, 8vw, 7.5rem)",
-                letterSpacing: "-0.04em",
-                color: "#111111",
-                textTransform: "lowercase",
-                lineHeight: 0.95,
-                marginBottom: "28px",
-              }}
-            >
-              about.
-            </h2>
+            about.
+          </h2>
 
-            <p style={{ fontSize: "clamp(16px, 1.8vw, 20px)", color: "#555555", maxWidth: "440px", lineHeight: 1.65, marginBottom: "16px" }}>
-              I&apos;m an AI Consultant and Data Scientist based in Hyderabad, India.
-            </p>
+          <p style={{ fontSize: "clamp(16px, 1.8vw, 20px)", color: "#555555", maxWidth: "440px", lineHeight: 1.65, marginBottom: "16px" }}>
+            I&apos;m an AI Consultant and Data Scientist based in Hyderabad, India.
+          </p>
 
-            <p style={{ fontSize: "clamp(14px, 1.4vw, 16px)", color: "#888888", maxWidth: "440px", lineHeight: 1.7 }}>
-              Since 2012, I&apos;ve enjoyed turning complex enterprise problems into intelligent AI solutions. When I&apos;m not building RAG pipelines or agentic workflows, you&apos;ll find me mentoring teams, exploring research, or reading about the next frontier in AI.
-            </p>
+          <p style={{ fontSize: "clamp(14px, 1.4vw, 16px)", color: "#888888", maxWidth: "440px", lineHeight: 1.7 }}>
+            Since 2012, I&apos;ve enjoyed turning complex enterprise problems into intelligent AI solutions. When I&apos;m not building RAG pipelines or agentic workflows, you&apos;ll find me mentoring teams, exploring research, or reading about the next frontier in AI.
+          </p>
 
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "28px" }}>
-              {["AI Consultant", "Data Scientist", "Data Engineer", "Researcher", "People Leader"].map((r) => (
-                <span
-                  key={r}
-                  style={{
-                    fontFamily: "var(--font-jetbrains-mono), monospace",
-                    fontSize: "11px",
-                    padding: "5px 12px",
-                    border: "1px solid #E5E5E5",
-                    color: "#888888",
-                  }}
-                >
-                  {r}
-                </span>
-              ))}
-            </div>
-          </motion.div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "28px" }}>
+            {["AI Consultant", "Data Scientist", "Data Engineer", "Researcher", "People Leader"].map((r) => (
+              <span
+                key={r}
+                style={{
+                  fontFamily: "var(--font-jetbrains-mono), monospace",
+                  fontSize: "11px",
+                  padding: "5px 12px",
+                  border: "1px solid #E5E5E5",
+                  color: "#888888",
+                }}
+              >
+                {r}
+              </span>
+            ))}
+          </div>
+        </motion.div>
 
-          {/* RIGHT — Photo */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.9, delay: 0.15 }}
-            style={{ position: "relative", width: "100%" }}
-            className="about-photo-half"
-          >
-            <Image
-              src="/images/mirza_about.png"
-              alt="Mirza Minhaz Baig — AI Consultant & Data Scientist"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              style={{ objectFit: "contain", objectPosition: "bottom center" }}
-              priority
-            />
-          </motion.div>
-
-        </div>
+        {/* RIGHT — Photo: full width on mobile, 50% on desktop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.9, delay: 0.15 }}
+          className="w-full md:w-1/2"
+          style={{
+            position: "relative",
+            minHeight: "clamp(280px, 60vw, 500px)",
+          }}
+        >
+          <Image
+            src="/images/mirza_about.png"
+            alt="Mirza Minhaz Baig — AI Consultant & Data Scientist"
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            style={{ objectFit: "contain", objectPosition: "bottom center" }}
+            priority
+          />
+        </motion.div>
       </div>
 
       {/* ─── Row 2: Part AI Consultant + Part Data Scientist ─── */}

@@ -233,26 +233,7 @@ body {
   }
 }
 
-/* About page — two-column layout */
-.about-text-half {
-  width: 50%;
-}
-.about-photo-half {
-  width: 50%;
-  height: clamp(380px, 55vw, 680px);
-}
-
-@media (max-width: 768px) {
-  .about-text-half {
-    width: 100%;
-    order: 1;
-  }
-  .about-photo-half {
-    width: 100%;
-    height: clamp(260px, 80vw, 420px);
-    order: 2;
-  }
-}
+/* About page — responsive handled via Tailwind w-full md:w-1/2 */
 
 /* Hero label text — hide on very small screens */
 @media (max-width: 480px) {
