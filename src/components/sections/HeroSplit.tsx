@@ -13,147 +13,202 @@ export default function HeroSplit() {
       id="hero"
       style={{
         height: "calc(100dvh - 68px)",
-        background: "#FFFFFF",
-        display: "flex",
-        alignItems: "stretch",
         position: "relative",
         overflow: "hidden",
+        background: "#111111",
       }}
     >
-      {/* ── LEFT HALF — AI Consultant ── */}
+      {/* Full-screen background image */}
+      <Image
+        src="/images/mirza_home.png"
+        alt="Mirza Minhaz Baig"
+        fill
+        sizes="100vw"
+        style={{ objectFit: "cover", objectPosition: "center top" }}
+        priority
+      />
+
+      {/* Subtle gradient overlay to make text legible */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        background: "linear-gradient(to right, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.05) 60%, rgba(0,0,0,0.35) 100%)",
+        zIndex: 1,
+      }} />
+
+      {/* Left half — Portfolio */}
       <Link
-        href="/about"
+        href="/portfolio"
         onMouseEnter={() => setHovered("left")}
         onMouseLeave={() => setHovered(null)}
         style={{
-          flex: 1,
-          display: "flex",
-          alignItems: "center",
-          paddingLeft: "clamp(32px, 5vw, 80px)",
-          paddingRight: "32px",
-          textDecoration: "none",
-          transition: "background 0.3s",
-          background: hovered === "left" ? "#F5F5F5" : "#FFFFFF",
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "50%",
+          height: "100%",
           zIndex: 2,
-        }}
-      >
-        <div>
-          <motion.h1
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            style={{
-              fontFamily: "var(--font-space-grotesk), sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(2.8rem, 5.5vw, 6rem)",
-              letterSpacing: "-0.04em",
-              color: "#111111",
-              lineHeight: 1.0,
-              textTransform: "lowercase",
-              marginBottom: "20px",
-            }}
-          >
-            ai<br />consultant.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            style={{
-              fontSize: "16px",
-              color: "#888888",
-              maxWidth: "280px",
-              lineHeight: 1.6,
-            }}
-          >
-            AI strategy, Agentic AI systems, LLM orchestration &amp; enterprise transformation.
-          </motion.p>
-        </div>
-      </Link>
-
-      {/* ── CENTER — Photo ── */}
-      <div
-        style={{
-          position: "relative",
-          width: "clamp(280px, 36vw, 520px)",
-          flexShrink: 0,
-          zIndex: 3,
-        }}
-      >
-        <Image
-          src="/images/profile.png"
-          alt="Mirza Minhaz Baig"
-          fill
-          sizes="36vw"
-          style={{ objectFit: "contain", objectPosition: "bottom center" }}
-          priority
-        />
-      </div>
-
-      {/* ── RIGHT HALF — Data Scientist ── */}
-      <Link
-        href="/portfolio"
-        onMouseEnter={() => setHovered("right")}
-        onMouseLeave={() => setHovered(null)}
-        style={{
-          flex: 1,
           display: "flex",
-          alignItems: "center",
+          flexDirection: "column",
           justifyContent: "flex-end",
-          paddingRight: "clamp(32px, 5vw, 80px)",
-          paddingLeft: "32px",
+          padding: "clamp(28px, 5vw, 72px)",
+          background: hovered === "left" ? "rgba(0,0,0,0.22)" : "transparent",
+          transition: "background 0.35s",
           textDecoration: "none",
-          transition: "background 0.3s",
-          background: hovered === "right" ? "#F5F5F5" : "#FFFFFF",
-          zIndex: 2,
-          textAlign: "right",
         }}
       >
-        <div>
-          <motion.h1
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            style={{
-              fontFamily: "var(--font-space-grotesk), sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(2.8rem, 5.5vw, 6rem)",
-              letterSpacing: "-0.04em",
-              color: "#111111",
-              lineHeight: 1.0,
-              textTransform: "lowercase",
-              marginBottom: "20px",
-            }}
-          >
-            data<br />scientist.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            style={{
-              fontSize: "16px",
-              color: "#888888",
-              maxWidth: "280px",
-              lineHeight: 1.6,
-              marginLeft: "auto",
-            }}
-          >
-            Machine learning, data engineering, CDP platforms &amp; analytics at enterprise scale.
-          </motion.p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.2 }}
+        >
+          <p className="hero-label-text" style={{
+            fontFamily: "var(--font-jetbrains-mono), monospace",
+            fontSize: "clamp(9px, 1.1vw, 12px)",
+            color: "rgba(255,255,255,0.55)",
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            marginBottom: "14px",
+          }}>
+            click to explore
+          </p>
+          <h2 style={{
+            fontFamily: "var(--font-space-grotesk), sans-serif",
+            fontWeight: 900,
+            fontSize: "clamp(2rem, 5vw, 5.5rem)",
+            letterSpacing: "-0.04em",
+            color: "#FFFFFF",
+            textTransform: "lowercase",
+            lineHeight: 0.95,
+            marginBottom: "14px",
+          }}>
+            portfolio.
+          </h2>
+          <p style={{
+            fontSize: "clamp(12px, 1.3vw, 15px)",
+            color: "rgba(255,255,255,0.55)",
+            maxWidth: "260px",
+            lineHeight: 1.6,
+          }}>
+            AI projects, case studies &amp; publications
+          </p>
+        </motion.div>
       </Link>
 
-      {/* Thin vertical center line */}
+      {/* Thin vertical divider */}
       <div style={{
         position: "absolute",
         left: "50%",
-        top: "10%",
-        bottom: "10%",
+        top: "8%",
+        bottom: "8%",
         width: "1px",
-        background: "#E5E5E5",
-        zIndex: 1,
+        background: "rgba(255,255,255,0.18)",
+        zIndex: 3,
       }} />
+
+      {/* Right half — About */}
+      <Link
+        href="/about"
+        onMouseEnter={() => setHovered("right")}
+        onMouseLeave={() => setHovered(null)}
+        style={{
+          position: "absolute",
+          right: 0,
+          top: 0,
+          width: "50%",
+          height: "100%",
+          zIndex: 2,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-end",
+          alignItems: "flex-end",
+          padding: "clamp(28px, 5vw, 72px)",
+          background: hovered === "right" ? "rgba(0,0,0,0.22)" : "transparent",
+          transition: "background 0.35s",
+          textDecoration: "none",
+          textAlign: "right",
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.3 }}
+          style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}
+        >
+          <p className="hero-label-text" style={{
+            fontFamily: "var(--font-jetbrains-mono), monospace",
+            fontSize: "clamp(9px, 1.1vw, 12px)",
+            color: "rgba(255,255,255,0.55)",
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            marginBottom: "14px",
+          }}>
+            click to explore
+          </p>
+          <h2 style={{
+            fontFamily: "var(--font-space-grotesk), sans-serif",
+            fontWeight: 900,
+            fontSize: "clamp(2rem, 5vw, 5.5rem)",
+            letterSpacing: "-0.04em",
+            color: "#FFFFFF",
+            textTransform: "lowercase",
+            lineHeight: 0.95,
+            marginBottom: "14px",
+          }}>
+            about.
+          </h2>
+          <p style={{
+            fontSize: "clamp(12px, 1.3vw, 15px)",
+            color: "rgba(255,255,255,0.55)",
+            maxWidth: "260px",
+            lineHeight: 1.6,
+          }}>
+            AI consultant &amp; data scientist profile
+          </p>
+        </motion.div>
+      </Link>
+
+      {/* Mobile: bottom CTA bar (shown only on small screens) */}
+      <div style={{
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 4,
+        display: "none",
+      }} className="hero-mobile-bar">
+        <Link href="/portfolio" style={{
+          display: "block",
+          width: "50%",
+          float: "left",
+          padding: "18px 16px",
+          background: "rgba(0,0,0,0.75)",
+          color: "#FFFFFF",
+          textAlign: "center",
+          textDecoration: "none",
+          fontFamily: "var(--font-space-grotesk), sans-serif",
+          fontWeight: 700,
+          fontSize: "15px",
+          borderRight: "1px solid rgba(255,255,255,0.15)",
+        }}>
+          portfolio →
+        </Link>
+        <Link href="/about" style={{
+          display: "block",
+          width: "50%",
+          float: "right",
+          padding: "18px 16px",
+          background: "rgba(0,0,0,0.75)",
+          color: "#FFFFFF",
+          textAlign: "center",
+          textDecoration: "none",
+          fontFamily: "var(--font-space-grotesk), sans-serif",
+          fontWeight: 700,
+          fontSize: "15px",
+        }}>
+          about →
+        </Link>
+      </div>
     </section>
   );
 }

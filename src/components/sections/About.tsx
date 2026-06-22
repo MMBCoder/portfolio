@@ -45,7 +45,7 @@ export default function About() {
           initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="flex flex-col justify-center px-10 md:px-16 lg:px-24 py-20"
+          className="about-text-col flex flex-col justify-center px-10 md:px-16 lg:px-24 py-20"
           style={{ flex: "0 0 50%", maxWidth: "50%" }}
         >
           {/* Huge "about." heading */}
@@ -92,11 +92,11 @@ export default function About() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.9, delay: 0.1 }}
-          className="relative"
+          className="about-photo-col relative"
           style={{ flex: "0 0 50%", maxWidth: "50%", minHeight: "480px" }}
         >
           <Image
-            src="/images/profile.png"
+            src="/images/mirza_about.png"
             alt="Mirza Minhaz Baig — AI Consultant & Data Scientist"
             fill
             sizes="50vw"

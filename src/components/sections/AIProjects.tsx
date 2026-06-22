@@ -16,6 +16,7 @@ export default function AIProjects() {
 
       {/* ── Section intro: heading LEFT, tagline RIGHT (Adham portfolio page layout) ── */}
       <div
+        className="projects-intro-grid"
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",

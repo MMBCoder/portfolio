@@ -101,4 +101,5 @@ export interface Testimonial {
   content: string;
   avatar: string;
   rating: number;
+  linkedinUrl?: string;
 }

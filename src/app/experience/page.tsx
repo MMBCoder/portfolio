@@ -329,6 +329,7 @@ export default function ExperiencePage() {
         {/* Header section */}
         <div
           ref={headerRef}
+          className="responsive-2col"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",

@@ -602,45 +602,62 @@ export const technologies: Technology[] = [
   { id: "16", name: "Kubernetes", category: "DevOps", icon: "⚙️", color: "#3B82F6" },
 ];
 
+const LINKEDIN_RECS = "https://www.linkedin.com/in/mirza-minhaz-baig-aiml/details/recommendations/?detailScreenTabIndex=0";
+
 export const testimonials: Testimonial[] = [
   {
     id: "1",
-    name: "Sarah Mitchell",
-    role: "VP of Marketing Technology",
-    company: "Synchrony Financial",
+    name: "Kristopher Fairchild",
+    role: "SVP, Database Marketing",
+    company: "Citi Bank, US",
     content:
-      "Mirza's RAG-based campaign code generation platform transformed how our team works. What used to take days now takes minutes. His ability to translate complex AI concepts into practical business tools is exceptional.",
-    avatar: "SM",
+      "Mirza is a highly-analytical, inquisitive and professional individual, quick to challenge the status quo on existing processes and procedures while constantly optimizing ROI for his marketing partners. A proven leader in the Database Marketing and Campaign Operations space, he is adept at expanding omni-channel marketing reach and supporting high profile clients by developing and delivering high-impact targeting and measurement capabilities. Mirza has my full support and recommendation... and would be a huge asset to any organization.",
+    avatar: "KF",
     rating: 5,
+    linkedinUrl: LINKEDIN_RECS,
   },
   {
     id: "2",
-    name: "David Chen",
-    role: "Chief Data Officer",
-    company: "Enterprise Financial Services",
+    name: "Andrew Crown",
+    role: "Small Business Product Manager",
+    company: "American Express",
     content:
-      "Working with Mirza on our AI transformation was a game-changer. He built human-in-the-loop workflows that gave our compliance team confidence in AI adoption. A rare blend of technical depth and business acumen.",
-    avatar: "DC",
+      "I worked very closely with Mirza on executing dozens of marketing campaigns over the course of my tenure at Synchrony. Mirza stands out for his willingness to think outside the box to deliver results for our clients. On several occasions, he proactively identified ways we could automate marketing campaigns which resulted in faster and more accurate execution. In particular — he saved myself and the larger team from tedious monthly work by automating a monthly data transfer to the client that I had always understood could not be automated. Mirza found a way to free the team to focus on more meaningful deliverables.",
+    avatar: "AC",
     rating: 5,
+    linkedinUrl: LINKEDIN_RECS,
   },
   {
     id: "3",
-    name: "Priya Sharma",
-    role: "Senior Director, Analytics",
+    name: "Rae Liu",
+    role: "VP, Analytics",
     company: "Synchrony Financial",
     content:
-      "The 'Ask Insight' platform Mirza built democratized analytics access across our organization. Our business leaders now get answers in minutes instead of days. It fundamentally changed how we make decisions.",
-    avatar: "PS",
+      "I had the privilege of working with Mirza on campaign analytics at Synchrony for more than 3 years. Mirza is proactive, result oriented, responsible and technically sound and he is always ready to put all his energy and time to not only get the job done, but also go the extra mile to provide additional business insights. He has an exceptional analytical skill and is always responsive to tons of my last minute questions. He works well with multiple functions and is a subject matter expert of all things campaign analytics people turn to for knowledge and advice.",
+    avatar: "RL",
     rating: 5,
+    linkedinUrl: LINKEDIN_RECS,
   },
   {
     id: "4",
-    name: "James Rodriguez",
-    role: "Head of Campaign Operations",
+    name: "Lindsay Siens",
+    role: "Growth Marketing & Operations Leader",
     company: "Synchrony Financial",
     content:
-      "Mirza's AI automation pipeline saved our team hundreds of hours per quarter. More importantly, it freed our engineers to focus on creative problem-solving rather than repetitive scaffolding work.",
-    avatar: "JR",
+      "Mirza is a smart and savvy data manager. I have had the pleasure of working with him on two portfolios, Cathay Pacific and Nissan, for the past several months. He is adept at comprehending complex data questions and providing quick-turn campaign solutions. He is responsive, inquisitive and an exceptional team player.",
+    avatar: "LS",
     rating: 5,
+    linkedinUrl: LINKEDIN_RECS,
+  },
+  {
+    id: "5",
+    name: "Chris Bruggeman",
+    role: "Vice President, Channel Marketing",
+    company: "Synchrony Financial",
+    content:
+      "Mirza is an excellent resource on the data delivery team. His quickness in understanding and dealing with a business situation for campaign deliverables helps ensure timely and correct launches for our clients. Personally, I appreciate his availability for any questions that I may have, which has helped my understanding of the data side.",
+    avatar: "CB",
+    rating: 5,
+    linkedinUrl: LINKEDIN_RECS,
   },
 ];

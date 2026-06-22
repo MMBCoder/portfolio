@@ -197,3 +197,83 @@ body {
   cursor: pointer;
 }
 .project-card:hover { transform: translateY(-4px); }
+
+/* ─── Mobile responsive ─── */
+
+/* Awards header — stack on mobile */
+@media (max-width: 768px) {
+  .awards-header-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .awards-header-grid > *:first-child {
+    border-right: none !important;
+    border-bottom: 1px solid #E8E8E8;
+  }
+}
+
+/* Experience & Portfolio header grids — stack on mobile */
+@media (max-width: 768px) {
+  .responsive-2col {
+    grid-template-columns: 1fr !important;
+  }
+  .responsive-2col > *:first-child {
+    border-right: none !important;
+    border-bottom: 1px solid #E8E8E8;
+  }
+}
+
+/* AI Projects intro grid — stack on mobile */
+@media (max-width: 768px) {
+  .projects-intro-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .projects-intro-grid > *:first-child {
+    border-right: none !important;
+    border-bottom: 1px solid #E8E8E8;
+  }
+}
+
+/* About photo — reduce min-height on mobile */
+@media (max-width: 768px) {
+  .about-photo-col {
+    min-height: 300px !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+  .about-text-col {
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+}
+
+/* Hero label text — hide on very small screens */
+@media (max-width: 480px) {
+  .hero-label-text {
+    display: none;
+  }
+  .hero-mobile-bar {
+    display: block !important;
+  }
+}
+
+/* Timeline card — remove deep padding on mobile */
+@media (max-width: 640px) {
+  .timeline-expanded {
+    padding-left: 16px !important;
+  }
+}
+
+/* Navigation padding on mobile */
+@media (max-width: 640px) {
+  nav {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+/* Section padding mobile */
+@media (max-width: 640px) {
+  .px-10 { padding-left: 16px !important; padding-right: 16px !important; }
+  .md\:px-16 { padding-left: 16px !important; padding-right: 16px !important; }
+  .lg\:px-24 { padding-left: 16px !important; padding-right: 16px !important; }
+}
