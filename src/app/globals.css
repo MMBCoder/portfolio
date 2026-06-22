@@ -233,16 +233,24 @@ body {
   }
 }
 
-/* About photo — reduce min-height on mobile */
+/* About page — two-column layout */
+.about-text-half {
+  width: 50%;
+}
+.about-photo-half {
+  width: 50%;
+  height: clamp(380px, 55vw, 680px);
+}
+
 @media (max-width: 768px) {
-  .about-photo-col {
-    min-height: 300px !important;
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
+  .about-text-half {
+    width: 100%;
+    order: 1;
   }
-  .about-text-col {
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
+  .about-photo-half {
+    width: 100%;
+    height: clamp(260px, 80vw, 420px);
+    order: 2;
   }
 }
 

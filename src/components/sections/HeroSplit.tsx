@@ -28,17 +28,17 @@ export default function HeroSplit() {
         priority
       />
 
-      {/* Subtle gradient overlay to make text legible */}
+      {/* Gradient overlay — darkens edges, keeps center bright */}
       <div style={{
         position: "absolute",
         inset: 0,
-        background: "linear-gradient(to right, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.05) 60%, rgba(0,0,0,0.35) 100%)",
+        background: "linear-gradient(to right, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.04) 38%, rgba(0,0,0,0.04) 62%, rgba(0,0,0,0.42) 100%)",
         zIndex: 1,
       }} />
 
-      {/* Left half — Portfolio */}
+      {/* LEFT — AI Consultant → /about */}
       <Link
-        href="/portfolio"
+        href="/about"
         onMouseEnter={() => setHovered("left")}
         onMouseLeave={() => setHovered(null)}
         style={{
@@ -51,46 +51,46 @@ export default function HeroSplit() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-end",
-          padding: "clamp(28px, 5vw, 72px)",
-          background: hovered === "left" ? "rgba(0,0,0,0.22)" : "transparent",
-          transition: "background 0.35s",
+          padding: "clamp(24px, 4vw, 64px)",
+          background: hovered === "left" ? "rgba(0,0,0,0.18)" : "transparent",
+          transition: "background 0.35s ease",
           textDecoration: "none",
         }}
       >
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.2 }}
         >
           <p className="hero-label-text" style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: "clamp(9px, 1.1vw, 12px)",
-            color: "rgba(255,255,255,0.55)",
-            letterSpacing: "0.22em",
+            fontSize: "clamp(9px, 0.9vw, 11px)",
+            color: "rgba(255,255,255,0.5)",
+            letterSpacing: "0.25em",
             textTransform: "uppercase",
-            marginBottom: "14px",
+            marginBottom: "12px",
           }}>
             click to explore
           </p>
           <h2 style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
             fontWeight: 900,
-            fontSize: "clamp(2rem, 5vw, 5.5rem)",
+            fontSize: "clamp(1.8rem, 4.5vw, 5.5rem)",
             letterSpacing: "-0.04em",
             color: "#FFFFFF",
             textTransform: "lowercase",
             lineHeight: 0.95,
-            marginBottom: "14px",
+            marginBottom: "12px",
           }}>
-            portfolio.
+            ai<br />consultant.
           </h2>
-          <p style={{
-            fontSize: "clamp(12px, 1.3vw, 15px)",
-            color: "rgba(255,255,255,0.55)",
-            maxWidth: "260px",
+          <p className="hero-label-text" style={{
+            fontSize: "clamp(11px, 1.1vw, 14px)",
+            color: "rgba(255,255,255,0.5)",
+            maxWidth: "240px",
             lineHeight: 1.6,
           }}>
-            AI projects, case studies &amp; publications
+            AI strategy, Agentic AI systems &amp; enterprise transformation
           </p>
         </motion.div>
       </Link>
@@ -102,13 +102,13 @@ export default function HeroSplit() {
         top: "8%",
         bottom: "8%",
         width: "1px",
-        background: "rgba(255,255,255,0.18)",
+        background: "rgba(255,255,255,0.15)",
         zIndex: 3,
       }} />
 
-      {/* Right half — About */}
+      {/* RIGHT — Data Scientist → /experience */}
       <Link
-        href="/about"
+        href="/experience"
         onMouseEnter={() => setHovered("right")}
         onMouseLeave={() => setHovered(null)}
         style={{
@@ -122,91 +122,92 @@ export default function HeroSplit() {
           flexDirection: "column",
           justifyContent: "flex-end",
           alignItems: "flex-end",
-          padding: "clamp(28px, 5vw, 72px)",
-          background: hovered === "right" ? "rgba(0,0,0,0.22)" : "transparent",
-          transition: "background 0.35s",
+          padding: "clamp(24px, 4vw, 64px)",
+          background: hovered === "right" ? "rgba(0,0,0,0.18)" : "transparent",
+          transition: "background 0.35s ease",
           textDecoration: "none",
           textAlign: "right",
         }}
       >
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.3 }}
           style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}
         >
           <p className="hero-label-text" style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: "clamp(9px, 1.1vw, 12px)",
-            color: "rgba(255,255,255,0.55)",
-            letterSpacing: "0.22em",
+            fontSize: "clamp(9px, 0.9vw, 11px)",
+            color: "rgba(255,255,255,0.5)",
+            letterSpacing: "0.25em",
             textTransform: "uppercase",
-            marginBottom: "14px",
+            marginBottom: "12px",
           }}>
             click to explore
           </p>
           <h2 style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
             fontWeight: 900,
-            fontSize: "clamp(2rem, 5vw, 5.5rem)",
+            fontSize: "clamp(1.8rem, 4.5vw, 5.5rem)",
             letterSpacing: "-0.04em",
             color: "#FFFFFF",
             textTransform: "lowercase",
             lineHeight: 0.95,
-            marginBottom: "14px",
+            marginBottom: "12px",
           }}>
-            about.
+            data<br />scientist.
           </h2>
-          <p style={{
-            fontSize: "clamp(12px, 1.3vw, 15px)",
-            color: "rgba(255,255,255,0.55)",
-            maxWidth: "260px",
+          <p className="hero-label-text" style={{
+            fontSize: "clamp(11px, 1.1vw, 14px)",
+            color: "rgba(255,255,255,0.5)",
+            maxWidth: "240px",
             lineHeight: 1.6,
           }}>
-            AI consultant &amp; data scientist profile
+            Machine learning, data engineering &amp; CDP platforms at enterprise scale
           </p>
         </motion.div>
       </Link>
 
-      {/* Mobile: bottom CTA bar (shown only on small screens) */}
-      <div style={{
+      {/* Mobile bottom bar — tap targets on small screens */}
+      <div className="hero-mobile-bar" style={{
         position: "absolute",
         bottom: 0,
         left: 0,
         right: 0,
         zIndex: 4,
         display: "none",
-      }} className="hero-mobile-bar">
-        <Link href="/portfolio" style={{
-          display: "block",
-          width: "50%",
-          float: "left",
-          padding: "18px 16px",
-          background: "rgba(0,0,0,0.75)",
-          color: "#FFFFFF",
-          textAlign: "center",
-          textDecoration: "none",
-          fontFamily: "var(--font-space-grotesk), sans-serif",
-          fontWeight: 700,
-          fontSize: "15px",
-          borderRight: "1px solid rgba(255,255,255,0.15)",
-        }}>
-          portfolio →
-        </Link>
+        overflow: "hidden",
+      }}>
         <Link href="/about" style={{
-          display: "block",
+          display: "inline-block",
           width: "50%",
-          float: "right",
-          padding: "18px 16px",
-          background: "rgba(0,0,0,0.75)",
+          padding: "18px 12px",
+          background: "rgba(0,0,0,0.78)",
           color: "#FFFFFF",
           textAlign: "center",
           textDecoration: "none",
           fontFamily: "var(--font-space-grotesk), sans-serif",
           fontWeight: 700,
-          fontSize: "15px",
+          fontSize: "14px",
+          borderRight: "1px solid rgba(255,255,255,0.12)",
+          letterSpacing: "-0.01em",
         }}>
-          about →
+          ai consultant →
+        </Link>
+        <Link href="/experience" style={{
+          display: "inline-block",
+          width: "50%",
+          padding: "18px 12px",
+          background: "rgba(0,0,0,0.78)",
+          color: "#FFFFFF",
+          textAlign: "center",
+          textDecoration: "none",
+          fontFamily: "var(--font-space-grotesk), sans-serif",
+          fontWeight: 700,
+          fontSize: "14px",
+          letterSpacing: "-0.01em",
+        }}>
+          data scientist →
         </Link>
       </div>
     </section>
