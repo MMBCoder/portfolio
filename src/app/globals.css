@@ -200,12 +200,30 @@ body {
 
 /* ─── Print (Resume PDF) ─── */
 @media print {
-  nav { display: none !important; }
-  main { padding-top: 0 !important; }
-  footer { display: none !important; }
-  .no-print { display: none !important; }
+  /* Force white page — prevents dark mode / body background printing */
+  html, body { background: #ffffff !important; color: #111111 !important; }
+
+  /* Hide everything in the root layout except the resume content */
+  nav, header, footer, [data-footer], .no-print { display: none !important; }
+  main { padding-top: 0 !important; margin: 0 !important; }
+
+  /* Ensure colors print exactly as specified */
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  @page { margin: 0; size: A4; }
+
+  /* A4 page with comfortable margins */
+  @page { size: A4 portrait; margin: 12mm 14mm; }
+
+  /* Single page — no orphan content */
+  #resume-sheet {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    max-width: 100% !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+  }
+
+  /* Remove outer gray wrapper background */
+  #resume-wrapper { background: #ffffff !important; padding: 0 !important; }
 }
 
 /* ─── Mobile responsive ─── */

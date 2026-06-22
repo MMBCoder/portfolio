@@ -3,343 +3,238 @@
 import { useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-const ACCENT = "#1a1a1a";
-const SIDEBAR_BG = "#f5f5f5";
-const RULE = "#dddddd";
-
-function ResumeInner() {
+function PrintTrigger() {
   const params = useSearchParams();
   useEffect(() => {
     if (params.get("print") === "1") {
-      const t = setTimeout(() => window.print(), 600);
+      const t = setTimeout(() => window.print(), 500);
       return () => clearTimeout(t);
     }
   }, [params]);
-
   return null;
 }
 
 export default function ResumePage() {
   return (
-    <div style={{ background: "#ffffff", minHeight: "100vh", padding: "clamp(12px, 2vw, 32px) 0" }}>
+    <div id="resume-wrapper" style={{ background: "#ebebeb", padding: "24px 0", minHeight: "100vh" }}>
+      <Suspense><PrintTrigger /></Suspense>
 
-      {/* Print trigger (hidden) */}
-      <Suspense><ResumeInner /></Suspense>
-
-      {/* ── Download / Print bar (hidden when printing) ── */}
+      {/* Control bar — hidden when printing */}
       <div className="no-print" style={{
-        maxWidth: "860px",
-        margin: "0 auto 20px",
-        padding: "0 clamp(16px, 3vw, 32px)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: "12px",
-        flexWrap: "wrap",
+        maxWidth: "760px", margin: "0 auto 18px", padding: "0 20px",
+        display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
-        <span style={{ fontSize: "13px", color: "#888", fontFamily: "var(--font-inter), sans-serif" }}>
-          View your resume below — click <strong>Save as PDF</strong> to download.
+        <span style={{ fontSize: "13px", color: "#666", fontFamily: "Arial, sans-serif" }}>
+          Preview below — click <strong>Save as PDF</strong> to download.
         </span>
         <button
           onClick={() => window.print()}
           style={{
-            background: "#111111",
-            color: "#ffffff",
-            border: "none",
-            padding: "10px 24px",
-            fontSize: "13px",
-            fontWeight: 700,
-            fontFamily: "var(--font-space-grotesk), sans-serif",
-            cursor: "pointer",
-            letterSpacing: "0.02em",
+            background: "#111", color: "#fff", border: "none",
+            padding: "10px 24px", fontSize: "13px", fontWeight: 700,
+            fontFamily: "Arial, sans-serif", cursor: "pointer", letterSpacing: "0.03em",
           }}
         >
           ↓ Save as PDF
         </button>
       </div>
 
-      {/* ── Resume sheet ── */}
-      <div id="resume-sheet" style={{
-        maxWidth: "860px",
-        margin: "0 auto",
-        background: "#ffffff",
-        boxShadow: "0 4px 40px rgba(0,0,0,0.10)",
-        fontFamily: "'Georgia', 'Times New Roman', serif",
-      }}>
+      {/* ── Resume Sheet ── */}
+      <div
+        id="resume-sheet"
+        style={{
+          maxWidth: "760px",
+          margin: "0 auto",
+          background: "#ffffff",
+          boxShadow: "0 2px 20px rgba(0,0,0,0.13)",
+          padding: "0 0 32px",
+          fontFamily: "Arial, Helvetica, sans-serif",
+        }}
+      >
+        {/* Accent bar */}
+        <div style={{ height: "5px", background: "#111111", marginBottom: "28px" }} />
 
-        {/* Header */}
-        <div style={{
-          background: ACCENT,
-          color: "#ffffff",
-          padding: "36px 48px 32px",
-        }}>
+        {/* Inner content with side padding */}
+        <div style={{ padding: "0 40px" }}>
+
+          {/* ── Header ── */}
           <h1 style={{
-            fontSize: "32px",
-            fontWeight: 700,
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            margin: 0,
-            lineHeight: 1,
-            fontFamily: "'Arial', sans-serif",
+            fontSize: "26px", fontWeight: 800, letterSpacing: "0.045em",
+            textTransform: "uppercase", margin: "0 0 5px", color: "#111", lineHeight: 1,
           }}>
             Mirza Minhaz Baig
           </h1>
           <p style={{
-            fontSize: "13px",
-            color: "rgba(255,255,255,0.70)",
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            marginTop: "8px",
-            marginBottom: "20px",
-            fontFamily: "'Arial', sans-serif",
+            fontSize: "10px", color: "#666", letterSpacing: "0.2em",
+            textTransform: "uppercase", margin: "0 0 10px",
           }}>
-            AVP · AI Consultant · Data Scientist
+            AVP &nbsp;·&nbsp; AI Consultant &nbsp;·&nbsp; Data Scientist &nbsp;·&nbsp; 12+ Years Enterprise AI in Financial Services
           </p>
-
-          {/* Contact row */}
           <div style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "6px 20px",
-            fontSize: "12px",
-            color: "rgba(255,255,255,0.82)",
-            fontFamily: "'Arial', sans-serif",
+            display: "flex", flexWrap: "wrap", gap: "4px 0",
+            fontSize: "9.5px", color: "#444",
+            borderTop: "1px solid #ddd", paddingTop: "9px",
           }}>
             {[
-              { icon: "✉", text: "mirza.22sept@gmail.com" },
-              { icon: "✆", text: "+91-9538999277" },
-              { icon: "⊙", text: "Hyderabad, India" },
-              { icon: "⬡", text: "linkedin.com/in/mirza-minhaz-baig-aiml" },
-              { icon: "◈", text: "mirzaminhazbaig.space" },
-              { icon: "◉", text: "github.com/MMBCoder" },
-            ].map(({ icon, text }) => (
-              <span key={text} style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-                <span style={{ opacity: 0.6, fontSize: "11px" }}>{icon}</span>
-                {text}
+              "mirza.22sept@gmail.com",
+              "+91-9538999277",
+              "Hyderabad, India",
+              "linkedin.com/in/mirza-minhaz-baig-aiml",
+              "mirzaminhazbaig.space",
+              "github.com/MMBCoder",
+            ].map((t, i) => (
+              <span key={t}>
+                {i > 0 && <span style={{ color: "#bbb", padding: "0 8px" }}>|</span>}
+                {t}
               </span>
             ))}
           </div>
-        </div>
 
-        {/* Body: two columns */}
-        <div style={{ display: "flex", alignItems: "stretch" }}>
+          {/* ── Summary ── */}
+          <Label>Professional Summary</Label>
+          <p style={body}>
+            AI Consultant and Data Scientist with 12+ years of enterprise experience in financial services.
+            Specialist in Agentic AI (LangChain, LangGraph, RAG), LLM orchestration, and Customer Data Platforms.
+            Proven track record delivering measurable outcomes — reducing 3-day workflows to 20 minutes,
+            enabling 200+ stakeholders with self-service analytics, and leading CDP implementations across
+            10M+ customer profiles. Three-time Synchrony CEO Award winner.
+          </p>
 
-          {/* ── LEFT MAIN (65%) ── */}
-          <div style={{ flex: "0 0 62%", padding: "36px 36px 40px 48px", borderRight: `1px solid ${RULE}` }}>
-
-            {/* Summary */}
-            <Section title="Professional Summary">
-              <p style={bodyText}>
-                AI Consultant and Data Scientist with 12+ years of enterprise experience in financial services.
-                Specialist in Agentic AI systems, LLM orchestration, RAG architectures, and Customer Data Platforms.
-                Proven track record delivering AI solutions that generate measurable business impact —
-                cutting 3-day workflows to 20 minutes, empowering 200+ stakeholders with self-service analytics,
-                and leading enterprise-scale CDP implementations. Three-time Synchrony CEO Award winner.
-              </p>
-            </Section>
-
-            <Divider />
-
-            {/* Experience */}
-            <Section title="Experience">
-
-              <Job
-                role="AVP – Customer Data Platform & AI Transformation"
-                company="Synchrony Financial"
-                period="2019 – Present"
-                location="Hyderabad, India"
-                bullets={[
-                  "Architected Agentic AI systems (LangGraph, LangChain, RAG pipelines) adopted by 200+ business leaders across the enterprise",
-                  "Built enterprise CDP platform integrating 50+ data sources; achieved 96% process automation on key campaign workflows",
-                  "Implemented Bluecore CDP for real-time email marketing, enabling dynamic segmentation across 10M+ customer profiles",
-                  "Launched 'Ask Insight' — NLP conversational analytics layer over Power BI reducing insight turnaround from 72 hrs to 2 min",
-                  "Delivered RAG Campaign Copilot: reduced campaign code generation from 3–5 days to under 20 minutes (96% time saving)",
-                  "Three-time CEO Award winner — Synchrony's highest organisational recognition",
-                  "Led cross-functional team of 20+ engineers, data scientists, and analysts",
-                ]}
-              />
-
-              <Job
-                role="Analytics Manager – Cards & Consumer Banking"
-                company="Citigroup"
-                period="2018 – 2019"
-                location="Hyderabad, India"
-                bullets={[
-                  "Led team of 8 data scientists delivering credit risk and customer acquisition models for APAC markets",
-                  "Improved credit bureau score model AUC by 12% through advanced feature engineering techniques",
-                  "Built automated reporting dashboards reducing manual analyst effort by 60%",
-                ]}
-              />
-
-              <Job
-                role="Assistant Manager – Analytics & Automation"
-                company="Genpact"
-                period="2014 – 2018"
-                location="Hyderabad, India"
-                bullets={[
-                  "Delivered predictive models for US mortgage risk; reduced default rates by 8% for global BFSI clients",
-                  "Automated month-end close reporting workflows saving 2,000+ hours annually",
-                  "Promoted twice in 4 years based on consistent high-impact delivery",
-                ]}
-              />
-            </Section>
-
-            <Divider />
-
-            {/* Publications */}
-            <Section title="Publication">
-              <div style={{ marginBottom: "10px" }}>
-                <p style={{ ...bodyText, fontStyle: "italic", marginBottom: "3px" }}>
-                  &ldquo;AI-Driven Data Analytics for Enterprise Systems&rdquo;
-                </p>
-                <p style={{ fontSize: "11px", color: "#666", fontFamily: "'Arial', sans-serif" }}>
-                  <strong>First Author</strong> · Springer · Peer-Reviewed · 2021
-                </p>
-              </div>
-            </Section>
-
-          </div>
-
-          {/* ── RIGHT SIDEBAR (35%) ── */}
-          <div style={{ flex: 1, background: SIDEBAR_BG, padding: "36px 28px 40px" }}>
-
-            {/* Skills */}
-            <SideSection title="Technical Skills">
-              <SkillGroup label="Agentic AI & LLM" items={["LangChain", "LangGraph", "AutoGen", "CrewAI", "GPT-4", "Claude", "Azure OpenAI"]} />
-              <SkillGroup label="AI / ML" items={["RAG Pipelines", "NLP", "Prompt Engineering", "Scikit-learn", "TensorFlow", "Deep Learning"]} />
-              <SkillGroup label="Data Engineering" items={["Python", "PySpark", "SQL", "Databricks", "Snowflake", "Azure Data Factory", "dbt"]} />
-              <SkillGroup label="CDP & MarTech" items={["Bluecore CDP", "Segment", "Adobe Experience Platform", "Real-Time Segmentation"]} />
-              <SkillGroup label="Analytics & BI" items={["Power BI", "Tableau", "Conversational Analytics", "A/B Testing"]} />
-              <SkillGroup label="Cloud" items={["Microsoft Azure", "Google BigQuery", "AWS"]} />
-            </SideSection>
-
-            <SideDivider />
-
-            {/* Education */}
-            <SideSection title="Education">
-              <EduItem
-                degree="M.S. Machine Learning & Artificial Intelligence"
-                school="Liverpool John Moores University"
-                year="2019 – 2021 (Part-Time)"
-                note="Distinction · Springer Publication"
-              />
-              <EduItem
-                degree="M.Tech – Computer Engineering"
-                school="Indian Institute of Technology Delhi"
-                year="2012 – 2014"
-              />
-              <EduItem
-                degree="B.Tech – Petrochemical Engineering"
-                school="Aligarh Muslim University"
-                year="2008 – 2012"
-              />
-            </SideSection>
-
-            <SideDivider />
-
-            {/* Awards */}
-            <SideSection title="Awards & Recognition">
+          {/* ── Skills ── */}
+          <Label>Core Skills &amp; Technologies</Label>
+          <table style={{ borderCollapse: "collapse", width: "100%", marginBottom: "2px" }}>
+            <tbody>
               {[
-                { year: "2020–22", text: "Three-Time CEO Award — Synchrony Financial" },
-                { year: "2022", text: "LEAP High-Potential Leadership Program" },
-                { year: "2021", text: "Springer First-Author Publication" },
-                { year: "2019", text: "Certificate of Excellence — Genpact" },
-              ].map((a) => (
-                <div key={a.text} style={{ marginBottom: "10px" }}>
-                  <span style={{ fontSize: "10px", color: "#999", fontFamily: "'Arial', sans-serif", letterSpacing: "0.05em" }}>{a.year}</span>
-                  <p style={{ fontSize: "11.5px", color: "#333", fontFamily: "'Arial', sans-serif", margin: "2px 0 0", lineHeight: 1.4 }}>{a.text}</p>
-                </div>
+                ["Agentic AI & LLM", "LangChain · LangGraph · AutoGen · CrewAI · GPT-4o · Claude 3 · Azure OpenAI · Prompt Engineering"],
+                ["ML & Data Eng.", "Python · PySpark · SQL · Scikit-learn · TensorFlow · NLP · RAG Pipelines · Feature Eng. · A/B Testing"],
+                ["CDP & Cloud/BI", "Bluecore · Segment · Adobe AEP · Real-Time Segmentation · Databricks · Snowflake · Azure · BigQuery · Power BI · Tableau"],
+              ].map(([label, skills]) => (
+                <tr key={label}>
+                  <td style={{ fontSize: "9px", fontWeight: 700, color: "#555", textTransform: "uppercase", letterSpacing: "0.04em", paddingRight: "10px", whiteSpace: "nowrap", verticalAlign: "top", paddingBottom: "4px" }}>
+                    {label}
+                  </td>
+                  <td style={{ fontSize: "10px", color: "#333", lineHeight: 1.55, paddingBottom: "4px" }}>
+                    {skills}
+                  </td>
+                </tr>
               ))}
-            </SideSection>
+            </tbody>
+          </table>
 
-            <SideDivider />
+          {/* ── Experience ── */}
+          <Label>Experience</Label>
 
-            {/* Portfolio */}
-            <SideSection title="Portfolio">
-              <p style={{ fontSize: "11.5px", color: "#333", fontFamily: "'Arial', sans-serif", lineHeight: 1.6 }}>
-                View live projects, case studies &amp; publications at:<br />
-                <strong style={{ color: ACCENT }}>mirzaminhazbaig.space</strong>
-              </p>
-            </SideSection>
+          <Job
+            role="AVP – Customer Data Platform & AI Transformation"
+            company="Synchrony Financial"
+            period="2019 – Present"
+            location="Hyderabad, India"
+            bullets={[
+              "Architected Agentic AI systems (LangGraph, LangChain, RAG) adopted by 200+ business leaders enterprise-wide",
+              "Built enterprise CDP integrating 50+ data sources; achieved 96% automation on key campaign workflows",
+              "Implemented Bluecore CDP enabling real-time segmentation and dynamic email marketing across 10M+ customer profiles",
+              "Launched 'Ask Insight' — NLP conversational analytics layer reducing insight turnaround from 72 hours to 2 minutes",
+              "Delivered RAG Campaign Copilot cutting code generation from 3–5 days to under 20 minutes (96% time saving)",
+              "Three-time CEO Award winner (2020–2022); LEAP High-Potential Leadership Program participant",
+              "Led cross-functional teams of 20+ engineers, data scientists, and marketing analysts",
+            ]}
+          />
 
-          </div>
-        </div>
-      </div>
+          <Job
+            role="Analytics Manager – Cards & Consumer Banking"
+            company="Citigroup"
+            period="2018 – 2019"
+            location="Hyderabad, India"
+            bullets={[
+              "Led 8-person data science team delivering credit risk and customer acquisition models for APAC markets",
+              "Improved credit bureau score model AUC by 12%; automated dashboards reducing analyst effort by 60%",
+            ]}
+          />
 
-      {/* Bottom padding (screen only) */}
+          <Job
+            role="Assistant Manager – Analytics & Automation"
+            company="Genpact"
+            period="2014 – 2018"
+            location="Hyderabad, India"
+            bullets={[
+              "Predictive models for US mortgage risk; reduced default rates by 8% for global BFSI clients",
+              "Automated month-end close reporting saving 2,000+ analyst hours annually; promoted twice in 4 years",
+            ]}
+          />
+
+          {/* ── Education ── */}
+          <Label>Education</Label>
+          <EduRow
+            degree="M.S. Machine Learning & Artificial Intelligence"
+            school="Liverpool John Moores University"
+            year="2019 – 2021"
+            note="Distinction · Part-Time · Springer First-Author Publication"
+          />
+          <EduRow
+            degree="M.Tech – Computer Engineering"
+            school="Indian Institute of Technology Delhi"
+            year="2012 – 2014"
+          />
+          <EduRow
+            degree="B.Tech – Petrochemical Engineering"
+            school="Aligarh Muslim University"
+            year="2008 – 2012"
+          />
+
+          {/* ── Awards & Publication ── */}
+          <Label>Awards &amp; Publication</Label>
+          <p style={{ ...body, marginBottom: "4px" }}>
+            <strong>Three-Time CEO Award</strong> (2020–2022) &nbsp;·&nbsp;
+            <strong>LEAP High-Potential Leadership Program</strong> (2022) &nbsp;·&nbsp;
+            <strong>Certificate of Excellence</strong> — Genpact (2019)
+          </p>
+          <p style={body}>
+            <em>&ldquo;AI-Driven Data Analytics for Enterprise Systems&rdquo;</em>
+            &nbsp;— First Author · Springer · Peer-Reviewed · 2021
+          </p>
+
+        </div>{/* /inner */}
+      </div>{/* /resume-sheet */}
+
+      {/* Screen-only bottom spacer */}
       <div className="no-print" style={{ height: "40px" }} />
     </div>
   );
 }
 
-/* ─── Helper components ─── */
+/* ─── Sub-components ─── */
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Label({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ marginBottom: "22px" }}>
-      <h2 style={{
-        fontSize: "10px",
-        fontWeight: 700,
-        letterSpacing: "0.18em",
-        textTransform: "uppercase",
-        color: "#888888",
-        fontFamily: "'Arial', sans-serif",
-        marginBottom: "10px",
-        paddingBottom: "5px",
-        borderBottom: `2px solid ${ACCENT}`,
-        display: "inline-block",
+    <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "16px 0 8px" }}>
+      <span style={{
+        fontSize: "7.5px", fontWeight: 700, letterSpacing: "0.22em",
+        textTransform: "uppercase", color: "#888", whiteSpace: "nowrap",
       }}>
-        {title}
-      </h2>
-      {children}
+        {children}
+      </span>
+      <div style={{ flex: 1, height: "1.5px", background: "#222" }} />
     </div>
   );
 }
 
-function Divider() {
-  return <div style={{ height: "1px", background: RULE, margin: "20px 0" }} />;
-}
-
-function SideSection({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div style={{ marginBottom: "20px" }}>
-      <h2 style={{
-        fontSize: "9px",
-        fontWeight: 700,
-        letterSpacing: "0.18em",
-        textTransform: "uppercase",
-        color: "#888888",
-        fontFamily: "'Arial', sans-serif",
-        marginBottom: "10px",
-        paddingBottom: "4px",
-        borderBottom: `1.5px solid #cccccc`,
-      }}>
-        {title}
-      </h2>
-      {children}
-    </div>
-  );
-}
-
-function SideDivider() {
-  return <div style={{ height: "1px", background: "#e0e0e0", margin: "18px 0" }} />;
-}
-
-function Job({ role, company, period, location, bullets }: {
+function Job({
+  role, company, period, location, bullets,
+}: {
   role: string; company: string; period: string; location: string; bullets: string[];
 }) {
   return (
-    <div style={{ marginBottom: "20px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "2px", marginBottom: "2px" }}>
-        <span style={{ fontSize: "13px", fontWeight: 700, color: "#111", fontFamily: "'Arial', sans-serif" }}>{role}</span>
-        <span style={{ fontSize: "10.5px", color: "#777", fontFamily: "'Arial', sans-serif", flexShrink: 0 }}>{period}</span>
+    <div style={{ marginBottom: "13px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "0 8px" }}>
+        <strong style={{ fontSize: "11.5px", color: "#111", fontWeight: 700 }}>{role}</strong>
+        <span style={{ fontSize: "9.5px", color: "#777", flexShrink: 0 }}>{period}</span>
       </div>
-      <p style={{ fontSize: "11px", color: "#555", fontFamily: "'Arial', sans-serif", marginBottom: "7px", fontStyle: "italic" }}>
+      <p style={{ fontSize: "10px", color: "#666", fontStyle: "italic", margin: "2px 0 5px" }}>
         {company} &nbsp;·&nbsp; {location}
       </p>
-      <ul style={{ paddingLeft: "14px", margin: 0 }}>
+      <ul style={{ margin: 0, paddingLeft: "14px" }}>
         {bullets.map((b) => (
-          <li key={b} style={{ fontSize: "11.5px", color: "#333", lineHeight: 1.55, marginBottom: "4px", fontFamily: "'Arial', sans-serif" }}>
+          <li key={b} style={{ fontSize: "10.5px", color: "#333", lineHeight: 1.5, marginBottom: "3px" }}>
             {b}
           </li>
         ))}
@@ -348,34 +243,26 @@ function Job({ role, company, period, location, bullets }: {
   );
 }
 
-function SkillGroup({ label, items }: { label: string; items: string[] }) {
+function EduRow({
+  degree, school, year, note,
+}: {
+  degree: string; school: string; year: string; note?: string;
+}) {
   return (
-    <div style={{ marginBottom: "9px" }}>
-      <p style={{ fontSize: "10px", fontWeight: 700, color: "#555", fontFamily: "'Arial', sans-serif", marginBottom: "3px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-        {label}
-      </p>
-      <p style={{ fontSize: "11px", color: "#444", fontFamily: "'Arial', sans-serif", lineHeight: 1.5, margin: 0 }}>
-        {items.join(" · ")}
-      </p>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "0 8px", marginBottom: "7px" }}>
+      <div style={{ lineHeight: 1.5 }}>
+        <strong style={{ fontSize: "10.5px", color: "#111" }}>{degree}</strong>
+        <span style={{ fontSize: "10px", color: "#555", fontStyle: "italic" }}> · {school}</span>
+        {note && <span style={{ fontSize: "9.5px", color: "#888" }}> · {note}</span>}
+      </div>
+      <span style={{ fontSize: "9.5px", color: "#888", flexShrink: 0 }}>{year}</span>
     </div>
   );
 }
 
-function EduItem({ degree, school, year, note }: { degree: string; school: string; year: string; note?: string }) {
-  return (
-    <div style={{ marginBottom: "12px" }}>
-      <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#222", fontFamily: "'Arial', sans-serif", margin: "0 0 2px" }}>{degree}</p>
-      <p style={{ fontSize: "11px", color: "#555", fontFamily: "'Arial', sans-serif", margin: "0 0 1px" }}>{school}</p>
-      <p style={{ fontSize: "10px", color: "#999", fontFamily: "'Arial', sans-serif", margin: 0 }}>{year}</p>
-      {note && <p style={{ fontSize: "10px", color: "#777", fontFamily: "'Arial', sans-serif", margin: "2px 0 0", fontStyle: "italic" }}>{note}</p>}
-    </div>
-  );
-}
-
-const bodyText: React.CSSProperties = {
-  fontSize: "12px",
-  color: "#333333",
-  lineHeight: 1.65,
-  fontFamily: "'Arial', sans-serif",
-  margin: "0 0 6px",
+const body: React.CSSProperties = {
+  fontSize: "10.5px",
+  color: "#333",
+  lineHeight: 1.6,
+  margin: "0 0 8px",
 };
