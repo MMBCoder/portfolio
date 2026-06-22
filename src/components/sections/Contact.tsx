@@ -60,7 +60,53 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="mt-12 flex items-center gap-2">
+          {/* Download Resume */}
+          <a
+            href="/resume?print=1"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: "32px",
+              padding: "18px 0",
+              borderTop: "1px solid #E5E5E5",
+              borderBottom: "1px solid #E5E5E5",
+              textDecoration: "none",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.paddingLeft = "8px"; (e.currentTarget as HTMLElement).style.transition = "padding 0.2s"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.paddingLeft = "0"; }}
+          >
+            <div>
+              <span
+                className="font-heading font-black text-3xl lowercase"
+                style={{ letterSpacing: "-0.03em", color: "#111111" }}
+              >
+                Resume
+              </span>
+              <p style={{ fontSize: "12px", color: "#AAAAAA", marginTop: "4px", fontFamily: "var(--font-jetbrains-mono), sans-serif" }}>
+                Opens resume → click &ldquo;Save as PDF&rdquo; to download
+              </p>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <span style={{
+                fontFamily: "var(--font-jetbrains-mono), monospace",
+                fontSize: "10px",
+                padding: "4px 10px",
+                border: "1px solid #111111",
+                color: "#111111",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}>
+                PDF
+              </span>
+              <span style={{ color: "#CCCCCC", fontSize: "1.2rem" }}>→</span>
+            </div>
+          </a>
+
+          <div className="mt-6 flex items-center gap-2">
             <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#22C55E" }} />
             <span className="text-sm" style={{ color: "#888888" }}>
               Available for engagements · {personalInfo.location}
