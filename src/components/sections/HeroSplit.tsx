@@ -11,8 +11,8 @@ export default function HeroSplit() {
   return (
     <section
       id="hero"
+      className="hero-section"
       style={{
-        height: "calc(100dvh - 68px)",
         position: "relative",
         overflow: "hidden",
         background: "#111111",

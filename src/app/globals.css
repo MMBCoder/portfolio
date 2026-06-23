@@ -263,8 +263,18 @@ body {
 
 /* About page — responsive handled via Tailwind w-full md:w-1/2 */
 
-/* Hero label text — hide on very small screens */
-@media (max-width: 480px) {
+/* Hero section — full height on desktop, reduced on mobile */
+.hero-section {
+  height: calc(100dvh - 68px);
+}
+@media (max-width: 768px) {
+  .hero-section {
+    height: calc(78dvh - 68px);
+  }
+}
+
+/* Hero label text — hide on mobile; show bottom bar instead */
+@media (max-width: 768px) {
   .hero-label-text {
     display: none;
   }

@@ -58,12 +58,11 @@ export default function Navigation() {
           </div>
         </Link>
 
-        {/* Center nav — desktop */}
+        {/* Center nav — desktop only (hidden on mobile via Tailwind; no inline display: override) */}
         <div style={{
           position: "absolute",
           left: "50%",
           transform: "translateX(-50%)",
-          display: "flex",
           alignItems: "center",
           gap: "4px",
         }}
