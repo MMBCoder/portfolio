@@ -13,6 +13,7 @@ export default function Contact() {
     { label: "LinkedIn", href: personalInfo.linkedin },
     { label: "GitHub", href: personalInfo.github },
     { label: "Email", href: `mailto:${personalInfo.email}` },
+    { label: `${personalInfo.phone}`, href: `tel:${personalInfo.phone}` },
   ];
 
   return (

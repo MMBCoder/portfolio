@@ -65,7 +65,7 @@ const timeline: TimelineEntry[] = [
     type: "work",
     logo: "/images/icons/Citi Bank.png",
     color: "#003B6F",
-    location: "Hyderabad, India",
+    location: "Bengaluru, India",
     description: "Managed analytics strategy and data science delivery for Citi's cards and consumer banking products across APAC markets.",
     highlights: [
       "Led a team of 8 data scientists and analysts delivering credit risk and acquisition models",
@@ -82,7 +82,7 @@ const timeline: TimelineEntry[] = [
     type: "work",
     logo: "/images/icons/Genpact.png",
     color: "#E31837",
-    location: "Hyderabad, India",
+    location: "Bengaluru, India",
     description: "Built analytics and automation solutions for global BFSI clients, specializing in risk modelling, process intelligence, and predictive analytics.",
     highlights: [
       "Delivered predictive models for US mortgage risk that reduced default rates by 8%",
@@ -94,7 +94,7 @@ const timeline: TimelineEntry[] = [
   {
     id: "iitd",
     period: "2012 – 2014",
-    role: "M.Tech – Computer Engineering",
+    role: "M.Tech – Engineering and Technology",
     org: "Indian Institute of Technology Delhi",
     type: "education",
     logo: "/images/icons/IIT Delhi.png",
@@ -109,7 +109,7 @@ const timeline: TimelineEntry[] = [
   {
     id: "amu",
     period: "2008 – 2012",
-    role: "B.Tech – Petrochemical Engineering",
+    role: "B.Tech – Engineering and Technology",
     org: "Aligarh Muslim University",
     type: "education",
     logo: "/images/icons/AMU.png",

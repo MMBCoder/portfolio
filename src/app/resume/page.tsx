@@ -144,7 +144,7 @@ export default function ResumePage() {
             role="Analytics Manager – Cards & Consumer Banking"
             company="Citigroup"
             period="2018 – 2019"
-            location="Hyderabad, India"
+            location="Bengaluru, India"
             bullets={[
               "Led 8-person data science team delivering credit risk and customer acquisition models for APAC markets",
               "Improved credit bureau score model AUC by 12%; automated dashboards reducing analyst effort by 60%",
@@ -155,7 +155,7 @@ export default function ResumePage() {
             role="Assistant Manager – Analytics & Automation"
             company="Genpact"
             period="2014 – 2018"
-            location="Hyderabad, India"
+            location="Bengaluru, India"
             bullets={[
               "Predictive models for US mortgage risk; reduced default rates by 8% for global BFSI clients",
               "Automated month-end close reporting saving 2,000+ analyst hours annually; promoted twice in 4 years",
@@ -171,12 +171,12 @@ export default function ResumePage() {
             note="Distinction · Part-Time · Springer First-Author Publication"
           />
           <EduRow
-            degree="M.Tech – Computer Engineering"
+            degree="M.Tech – Engineering and Technology"
             school="Indian Institute of Technology Delhi"
             year="2012 – 2014"
           />
           <EduRow
-            degree="B.Tech – Petrochemical Engineering"
+            degree="B.Tech – Engineering and Technology"
             school="Aligarh Muslim University"
             year="2008 – 2012"
           />
