@@ -93,11 +93,10 @@ export default function ResumePage() {
           {/* ── Summary ── */}
           <Label>Professional Summary</Label>
           <p style={body}>
-            AI Consultant and Data Scientist with 12+ years of enterprise experience in financial services.
-            Specialist in Agentic AI (LangChain, LangGraph, RAG), LLM orchestration, and Customer Data Platforms.
-            Proven track record delivering measurable outcomes — reducing 3-day workflows to 20 minutes,
-            enabling 200+ stakeholders with self-service analytics, and leading CDP implementations across
-            10M+ customer profiles. Three-time Synchrony CEO Award winner.
+            Data Scientist and Data Engineer with 12+ years of enterprise experience in financial services.
+            Specialist in Customer Data Platforms (BlueConic), data integration architecture, customer identity
+            resolution, and real-time marketing activation. Proven track record delivering unified customer
+            profiles and personalised engagement at scale across 70M+ customers. Three-time Synchrony CEO Award winner.
           </p>
 
           {/* ── Skills ── */}
@@ -105,9 +104,9 @@ export default function ResumePage() {
           <table style={{ borderCollapse: "collapse", width: "100%", marginBottom: "2px" }}>
             <tbody>
               {[
-                ["Agentic AI & LLM", "LangChain · LangGraph · AutoGen · CrewAI · GPT-4o · Claude 3 · Azure OpenAI · Prompt Engineering"],
-                ["ML & Data Eng.", "Python · PySpark · SQL · Scikit-learn · TensorFlow · NLP · RAG Pipelines · Feature Eng. · A/B Testing"],
-                ["CDP & Cloud/BI", "Bluecore · Segment · Adobe AEP · Real-Time Segmentation · Databricks · Snowflake · Azure · BigQuery · Power BI · Tableau"],
+                ["CDP & Data Eng.", "BlueConic CDP · Python · PySpark · SQL · SFTP Pipelines · Data Integration · Customer Identity Resolution"],
+                ["Marketing Tech.", "Real-Time Segmentation · Audience Building · Trigger Campaigns · Marketing Automation · Personalisation · A/B Testing"],
+                ["Cloud & Analytics", "Azure · Databricks · Snowflake · BigQuery · Power BI · Tableau · LangChain · LangGraph · GPT-4"],
               ].map(([label, skills]) => (
                 <tr key={label}>
                   <td style={{ fontSize: "9px", fontWeight: 700, color: "#555", textTransform: "uppercase", letterSpacing: "0.04em", paddingRight: "10px", whiteSpace: "nowrap", verticalAlign: "top", paddingBottom: "4px" }}>
@@ -125,18 +124,17 @@ export default function ResumePage() {
           <Label>Experience</Label>
 
           <Job
-            role="AVP – Customer Data Platform & AI Transformation"
+            role="AVP – Data Scientist & Data Engineer, Customer Data Platform"
             company="Synchrony Financial"
             period="2019 – Present"
             location="Hyderabad, India"
             bullets={[
-              "Architected Agentic AI systems (LangGraph, LangChain, RAG) adopted by 200+ business leaders enterprise-wide",
-              "Built enterprise CDP integrating 50+ data sources; achieved 96% automation on key campaign workflows",
-              "Implemented Bluecore CDP enabling real-time segmentation and dynamic email marketing across 10M+ customer profiles",
-              "Launched 'Ask Insight' — NLP conversational analytics layer reducing insight turnaround from 72 hours to 2 minutes",
-              "Delivered RAG Campaign Copilot cutting code generation from 3–5 days to under 20 minutes (96% time saving)",
+              "Lead data integration architecture between BlueConic CDP and Synchrony's digital platforms (Marketplace, Vista, DApply, Amplero) — delivering a unified 360° customer view across all touchpoints",
+              "Design and implement online and offline data ingestion pipelines, including SFTP-based feeds for profile enrichment, unifying behavioral, transactional, demographic, and engagement signals at enterprise scale",
+              "Own customer identity resolution processes providing a single authoritative customer view for 70M+ account holders across Synchrony's multi-product ecosystem",
+              "Enable real-time marketing activation through AI Workbench (AIWB) and Connections integrations — powering trigger campaigns for abandoned applications, product browsing, category search, and retention",
+              "Drive audience segmentation and personalised marketing strategies via CDP capabilities, improving targeting precision and campaign effectiveness across Synchrony's MarTech stack",
               "Three-time CEO Award winner (2020–2022); LEAP High-Potential Leadership Program participant",
-              "Led cross-functional teams of 20+ engineers, data scientists, and marketing analysts",
             ]}
           />
 
