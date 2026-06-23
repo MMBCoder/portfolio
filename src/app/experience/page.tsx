@@ -49,7 +49,7 @@ const timeline: TimelineEntry[] = [
     type: "education",
     logo: "/images/icons/LJMU.jpg",
     color: "#C41230",
-    location: "Liverpool, UK (Part-Time)",
+    location: "Liverpool, UK",
     description: "Postgraduate degree specialising in machine learning, deep learning, NLP, and data science research.",
     highlights: [
       "Published first-author research in Springer on AI-driven data analytics",
