@@ -12,13 +12,12 @@ export default function Awards() {
     <section id="awards" ref={ref} style={{ background: "#FFFFFF" }}>
 
       {/* Header */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        borderBottom: "1px solid #E8E8E8",
-        minHeight: "240px",
-      }}
-        className="awards-header-grid"
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 awards-header-grid"
+        style={{
+          borderBottom: "1px solid #E8E8E8",
+          minHeight: "240px",
+        }}
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -32,7 +31,7 @@ export default function Awards() {
             borderRight: "1px solid #E8E8E8",
           }}
         >
-          <h1 style={{
+          <h1 className="heading-xl" style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
             fontWeight: 900,
             fontSize: "clamp(3.5rem, 7vw, 7rem)",

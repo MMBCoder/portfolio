@@ -18,7 +18,7 @@ export default function Footer() {
           </span>
         </div>
 
-        <nav className="flex items-center gap-6">
+        <nav className="footer-nav flex items-center gap-6">
           {["#about", "#projects", "#experience", "#awards", "#publications", "#contact"].map((href) => (
             <a
               key={href}

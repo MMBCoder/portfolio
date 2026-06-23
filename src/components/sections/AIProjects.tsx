@@ -14,12 +14,10 @@ export default function AIProjects() {
   return (
     <section id="projects" ref={ref} style={{ background: "#FFFFFF", borderTop: "1px solid #E8E8E8" }}>
 
-      {/* ── Section intro: heading LEFT, tagline RIGHT (Adham portfolio page layout) ── */}
+      {/* ── Section intro: heading LEFT, tagline RIGHT ── */}
       <div
-        className="projects-intro-grid"
+        className="grid grid-cols-1 md:grid-cols-2 projects-intro-grid"
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
           borderBottom: "1px solid #E8E8E8",
           minHeight: "340px",
         }}
@@ -37,6 +35,7 @@ export default function AIProjects() {
           }}
         >
           <h2
+            className="heading-xl"
             style={{
               fontFamily: "var(--font-space-grotesk), sans-serif",
               fontWeight: 900,
@@ -127,7 +126,7 @@ export default function AIProjects() {
             <div style={{ width: "4px", height: "100%", background: project.color, alignSelf: "stretch" }} />
 
             {/* Content */}
-            <div style={{ padding: "28px 32px" }}>
+            <div className="project-card-content" style={{ padding: "28px 32px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" }}>
                 <span style={{
                   fontFamily: "var(--font-jetbrains-mono), monospace",
@@ -143,7 +142,7 @@ export default function AIProjects() {
               <h3 style={{
                 fontFamily: "var(--font-space-grotesk), sans-serif",
                 fontWeight: 700,
-                fontSize: "22px",
+                fontSize: "clamp(16px, 4vw, 22px)",
                 color: "#111111",
                 letterSpacing: "-0.02em",
                 marginBottom: "10px",
@@ -154,7 +153,7 @@ export default function AIProjects() {
                 {project.problem.slice(0, 120)}…
               </p>
               {/* Metrics */}
-              <div style={{ display: "flex", gap: "28px", marginTop: "16px" }}>
+              <div className="project-metrics-row" style={{ display: "flex", gap: "28px", marginTop: "16px" }}>
                 {project.metrics.map((m) => (
                   <div key={m.label}>
                     <span style={{

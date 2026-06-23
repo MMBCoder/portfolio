@@ -274,6 +274,7 @@ function TimelineCard({ entry, i }: { entry: TimelineEntry; i: number }) {
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.3 }}
+          className="timeline-expanded"
           style={{
             padding: "28px 0 28px 76px",
             borderBottom: "1px solid #E8E8E8",
@@ -329,10 +330,8 @@ export default function ExperiencePage() {
         {/* Header section */}
         <div
           ref={headerRef}
-          className="responsive-2col"
+          className="grid grid-cols-1 md:grid-cols-2 responsive-2col"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
             borderBottom: "1px solid #E8E8E8",
             minHeight: "280px",
           }}
@@ -350,6 +349,7 @@ export default function ExperiencePage() {
             }}
           >
             <h1
+              className="heading-xl"
               style={{
                 fontFamily: "var(--font-space-grotesk), sans-serif",
                 fontWeight: 900,

@@ -34,7 +34,7 @@ export default function Testimonials() {
             style={{
               fontFamily: "var(--font-space-grotesk), sans-serif",
               fontWeight: 900,
-              fontSize: "clamp(2.2rem, 5vw, 5rem)",
+              fontSize: "clamp(1.8rem, 5vw, 5rem)",
               letterSpacing: "-0.04em",
               color: "#111111",
               textTransform: "lowercase",

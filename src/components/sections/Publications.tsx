@@ -21,7 +21,7 @@ export default function Publications() {
           className="mb-14"
         >
           <h2
-            className="font-heading font-black lowercase leading-none mb-4"
+            className="heading-xl font-heading font-black lowercase leading-none mb-4"
             style={{ fontSize: "clamp(3.5rem, 7vw, 7rem)", letterSpacing: "-0.04em", color: "#111111" }}
           >
             publications.

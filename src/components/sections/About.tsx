@@ -61,6 +61,7 @@ export default function About() {
           }}
         >
           <h2
+            className="heading-xl"
             style={{
               fontFamily: "var(--font-space-grotesk), sans-serif",
               fontWeight: 900,

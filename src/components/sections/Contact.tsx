@@ -28,7 +28,7 @@ export default function Contact() {
         >
           <div>
             <h2
-              className="font-heading font-black lowercase leading-none mb-6"
+              className="heading-xl font-heading font-black lowercase leading-none mb-6"
               style={{ fontSize: "clamp(3.5rem, 7vw, 7rem)", letterSpacing: "-0.04em", color: "#111111" }}
             >
               contact.
