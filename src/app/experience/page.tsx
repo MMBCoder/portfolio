@@ -444,7 +444,7 @@ export default function ExperiencePage() {
                 </div>
                 <div>
                   <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 13, color: "#555555", fontWeight: 700, marginBottom: 3 }}>Liverpool John Moores University, UK</p>
-                  <p style={{ fontSize: 13, color: "#888888", fontFamily: "var(--font-jetbrains-mono),monospace" }}>MSc ML &amp; AI · 2019–2021</p>
+                  <p style={{ fontSize: 13, color: "#888888", fontFamily: "var(--font-jetbrains-mono),monospace" }}>MS in AI &amp; ML · 2019–2021</p>
                 </div>
               </div>
               <h3 style={{ fontFamily: "var(--font-space-grotesk),sans-serif", fontWeight: 800, fontSize: "clamp(16px,2vw,22px)", color: "#111111", letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: 14, position: "relative", zIndex: 1 }}>Bridging Academia and Industry</h3>
