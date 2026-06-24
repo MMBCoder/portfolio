@@ -265,7 +265,7 @@ export default function ExperiencePage() {
                   {[
                     { display: <><Counter to={70} />M+</>, label: "Customer Profiles" },
                     { display: <>3×</>,                    label: "CEO Awards"         },
-                    { display: <><Counter to={12} />+</>,  label: "Years Experience"   },
+                    { display: <><Counter to={6} />+</>,   label: "Years Experience"   },
                   ].map((h, i) => (
                     <div key={i} style={{ textAlign: "center", padding: "16px 20px", background: "#F9F9F9", border: "1px solid #E5E5E5", borderRadius: 10, minWidth: 80 }}>
                       <div style={{ fontFamily: "var(--font-space-grotesk),sans-serif", fontWeight: 900, fontSize: "clamp(1.5rem,3vw,2.4rem)", color: "#111111", letterSpacing: "-0.03em", lineHeight: 1 }}>{h.display}</div>
