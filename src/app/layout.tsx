@@ -36,14 +36,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
+    url: "https://mirzaminhazbaig.space",
     title: "Mirza Minhaz Baig – AI Transformation Leader & Data Scientist",
     description: "AI Transformation Leader and Data Scientist with 12+ years transforming enterprise analytics with AI.",
     siteName: "Mirza Minhaz Baig",
+    images: [
+      {
+        url: "https://mirzaminhazbaig.space/images/profile.jpg",
+        width: 1600,
+        height: 900,
+        alt: "Mirza Minhaz Baig – AI Transformation Leader & Data Scientist",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Mirza Minhaz Baig – AI Transformation Leader & Data Scientist",
     description: "AI Transformation Leader and Data Scientist with 12+ years transforming enterprise analytics with AI.",
+    images: ["https://mirzaminhazbaig.space/images/profile.jpg"],
   },
   robots: { index: true, follow: true },
   verification: { google: "1defa1fe11866bca" },
