@@ -134,7 +134,7 @@ export default function ResumePage() {
               "Own customer identity resolution processes providing a single authoritative customer view for 70M+ account holders across Synchrony's multi-product ecosystem",
               "Enable real-time marketing activation through AI Workbench (AIWB) and Connections integrations — powering trigger campaigns for abandoned applications, product browsing, category search, and retention",
               "Drive audience segmentation and personalised marketing strategies via CDP capabilities, improving targeting precision and campaign effectiveness across Synchrony's MarTech stack",
-              "Three-time CEO Award winner (2020–2022); LEAP High-Potential Leadership Program participant",
+              "Three-time CEO Award winner (2021, 2023, 2025); LEAP High-Potential Leadership Program participant (2026)",
             ]}
           />
 
@@ -181,8 +181,8 @@ export default function ResumePage() {
           {/* ── Awards & Publication ── */}
           <Label>Awards &amp; Publication</Label>
           <p style={{ ...body, marginBottom: "4px" }}>
-            <strong>Three-Time CEO Award</strong> (2020–2022) &nbsp;·&nbsp;
-            <strong>LEAP High-Potential Leadership Program</strong> (2022) &nbsp;·&nbsp;
+            <strong>Three-Time CEO Award</strong> (2021, 2023, 2025) &nbsp;·&nbsp;
+            <strong>LEAP High-Potential Leadership Program</strong> (2026) &nbsp;·&nbsp;
             <strong>Certificate of Excellence</strong> — Genpact (2019)
           </p>
           <p style={{ ...body, marginBottom: "4px" }}>

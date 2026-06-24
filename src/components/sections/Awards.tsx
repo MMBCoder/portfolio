@@ -75,7 +75,7 @@ export default function Awards() {
               Three-Time CEO Award Winner
             </p>
             <p style={{ fontSize: "14px", color: "#888888", lineHeight: 1.6 }}>
-              Synchrony Financial&apos;s highest honour — awarded consecutively for enterprise AI transformation leadership.
+              Synchrony Financial&apos;s highest honour — awarded three times (2021, 2023, 2025) for enterprise AI transformation leadership.
             </p>
           </div>
         </motion.div>

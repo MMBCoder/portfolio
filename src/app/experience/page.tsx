@@ -37,7 +37,7 @@ const timeline: TimelineEntry[] = [
       "Own customer identity resolution processes that link interactions across Synchrony's multi-product ecosystem, providing a single authoritative customer view for 70M+ account holders",
       "Enable real-time marketing activation through integrations with AI Workbench (AIWB) and Connections platforms — powering trigger-based campaigns for abandoned applications, product browsing, category search, and customer retention",
       "Drive audience segmentation and personalised marketing strategies via CDP capabilities, elevating targeting precision and campaign effectiveness across Synchrony's marketing technology stack",
-      "Three-time CEO Award winner (2020–2022) and LEAP High-Potential Leadership Program participant — recognised for sustained enterprise impact",
+      "Three-time CEO Award winner (2021, 2023, 2025) and LEAP High-Potential Leadership Program participant (2026) — recognised for sustained enterprise impact",
     ],
     technologies: ["BlueConic CDP", "Python", "PySpark", "SQL", "SFTP Pipelines", "Customer Identity Resolution", "AWS", "Databricks", "Real-Time Segmentation", "Marketing Automation", "Power BI"],
   },

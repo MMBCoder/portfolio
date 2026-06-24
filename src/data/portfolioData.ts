@@ -289,9 +289,9 @@ export const achievements: Achievement[] = [
     id: "1",
     title: "CEO Award – Triple Winner",
     organization: "Synchrony Financial",
-    year: "2021, 2022, 2023",
+    year: "2021, 2023, 2025",
     description:
-      "Recognized three consecutive times with Synchrony's highest employee honor for pioneering AI transformation initiatives and delivering measurable enterprise impact.",
+      "Recognized three times with Synchrony's highest employee honor for pioneering AI transformation initiatives and delivering measurable enterprise impact.",
     icon: "🏆",
     color: "#F59E0B",
   },
@@ -299,7 +299,7 @@ export const achievements: Achievement[] = [
     id: "2",
     title: "LEAP Leadership Program",
     organization: "Synchrony Financial",
-    year: "2024",
+    year: "2026",
     description:
       "Selected as a participant in Synchrony's LEAP leadership development program – reserved for high-potential leaders identified for executive advancement.",
     icon: "🚀",
