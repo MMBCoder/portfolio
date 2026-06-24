@@ -43,7 +43,9 @@ export const metadata: Metadata = {
     siteName: "Mirza Minhaz Baig",
     images: [
       {
-        url: "https://mirzaminhazbaig.space/og-image.jpg",
+        url: "https://mirzaminhazbaig.space/mirza-preview.jpg",
+        secureUrl: "https://mirzaminhazbaig.space/mirza-preview.jpg",
+        type: "image/jpeg",
         width: 1200,
         height: 630,
         alt: "Mirza Minhaz Baig – AI Transformation Leader & Data Scientist",
@@ -54,7 +56,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Mirza Minhaz Baig – AI Transformation Leader & Data Scientist",
     description: "AI Transformation Leader and Data Scientist with 12+ years transforming enterprise analytics with AI.",
-    images: ["https://mirzaminhazbaig.space/og-image.jpg"],
+    images: ["https://mirzaminhazbaig.space/mirza-preview.jpg"],
   },
   icons: {
     icon: [
