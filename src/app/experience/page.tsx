@@ -25,13 +25,6 @@ const SYNC_OUTER = [
 
 const SYNC_TECHS = ["BlueConic","Python","PySpark","AWS","Databricks","Snowflake","LangGraph","GenAI","Agentic AI"];
 
-const AWARDS = [
-  { emoji: "🏆", year: "2021", title: "CEO Award",          org: "Synchrony Financial",    desc: "Highest executive recognition for enterprise data platform impact",    color: "#D97706" },
-  { emoji: "🏆", year: "2023", title: "CEO Award",          org: "Synchrony Financial",    desc: "AI transformation leadership and CDP excellence recognised",           color: "#D97706" },
-  { emoji: "🏆", year: "2025", title: "CEO Award",          org: "Synchrony Financial",    desc: "Third recognition for sustained enterprise AI innovation",             color: "#D97706" },
-  { emoji: "🚀", year: "2026", title: "LEAP Leadership",    org: "High-Potential Program", desc: "Selected for Synchrony's elite leadership acceleration programme",     color: "#2563EB" },
-  { emoji: "📖", year: "2016 & 2021", title: "Springer",    org: "First Author",           desc: "Peer-reviewed research across engineering and AI domains",             color: "#7C3AED" },
-];
 
 /* ─── Helpers ─────────────────────────────────────────────────────────────── */
 
@@ -180,13 +173,11 @@ export default function ExperiencePage() {
   const citiRef    = useRef(null);
   const genpactRef = useRef(null);
   const foundRef   = useRef(null);
-  const awardsRef  = useRef(null);
 
   const syncInView    = useInView(syncRef,    { once: true, margin: "-60px" });
   const citiInView    = useInView(citiRef,    { once: true, margin: "-60px" });
   const genpactInView = useInView(genpactRef, { once: true, margin: "-60px" });
   const foundInView   = useInView(foundRef,   { once: true, margin: "-40px" });
-  const awardsInView  = useInView(awardsRef,  { once: true, margin: "-40px" });
 
   return (
     <>
@@ -531,51 +522,6 @@ export default function ExperiencePage() {
             <div style={{ flex: 1, height: 1, background: "#E5E5E5", minWidth: 24 }} />
             <p style={{ fontSize: 13, color: "#888888", maxWidth: 420, lineHeight: 1.6 }}>
               Engineering foundation in process systems, thermodynamics, and chemical engineering. Capstone project on industrial polyethylene plant design.
-            </p>
-          </motion.div>
-        </section>
-
-        {/* ── AWARDS SHOWCASE ──────────────────────────────────────────────── */}
-        <section ref={awardsRef} style={{ background: "#FFFFFF", borderBottom: "1px solid #E5E5E5" }}>
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={awardsInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-            style={{ padding: "clamp(40px,6vw,72px) clamp(24px,6vw,96px) clamp(32px,4vw,48px)" }}
-          >
-            <span style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#888888" }}>Executive Recognition</span>
-            <h2 className="heading-xl" style={{ fontFamily: "var(--font-space-grotesk),sans-serif", fontWeight: 900, fontSize: "clamp(2.2rem,5vw,4.5rem)", letterSpacing: "-0.04em", color: "#111111", textTransform: "lowercase", lineHeight: 0.95, marginTop: 12, marginBottom: 40 }}>
-              trophy cabinet.
-            </h2>
-
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,200px),1fr))", gap: 0, borderTop: "1px solid #E5E5E5", borderLeft: "1px solid #E5E5E5" }}>
-              {AWARDS.map((a, i) => (
-                <motion.div key={a.title + a.year}
-                  initial={{ opacity: 0, y: 16 }} animate={awardsInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.08, duration: 0.5 }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#F9F9F9"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#FFFFFF"; }}
-                  style={{ padding: "clamp(20px,3vw,36px) clamp(14px,2vw,24px)", background: "#FFFFFF", borderRight: "1px solid #E5E5E5", borderBottom: "1px solid #E5E5E5", transition: "background 0.2s", position: "relative", overflow: "hidden" }}
-                >
-                  {/* Left accent stripe */}
-                  <div style={{ position: "absolute", left: 0, top: 20, bottom: 20, width: 3, background: a.color, borderRadius: "0 2px 2px 0" }} />
-                  <div style={{ paddingLeft: 12 }}>
-                    <div style={{ fontSize: "clamp(22px,3.5vw,32px)", marginBottom: 10 }}>{a.emoji}</div>
-                    <div style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 10, color: a.color, fontWeight: 700, letterSpacing: "0.1em", marginBottom: 6 }}>{a.year}</div>
-                    <div style={{ fontFamily: "var(--font-space-grotesk),sans-serif", fontWeight: 800, fontSize: "clamp(14px,1.5vw,17px)", color: "#111111", letterSpacing: "-0.01em", marginBottom: 4 }}>{a.title}</div>
-                    <div style={{ fontSize: 11, color: "#888888", marginBottom: 10, fontWeight: 600 }}>{a.org}</div>
-                    <div style={{ fontSize: "clamp(11px,1vw,12px)", color: "#888888", lineHeight: 1.6 }}>{a.desc}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </section>
-
-        {/* ── Closing Statement ────────────────────────────────────────────── */}
-        <section style={{ background: "#111111", padding: "clamp(48px,7vw,80px) clamp(24px,6vw,96px)", textAlign: "center" }}>
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            <h2 style={{ fontFamily: "var(--font-space-grotesk),sans-serif", fontWeight: 900, fontSize: "clamp(1.6rem,4vw,3.5rem)", color: "#FFFFFF", letterSpacing: "-0.04em", lineHeight: 1.1, marginBottom: 18, textTransform: "lowercase" }}>
-              not just another data scientist.
-            </h2>
-            <p style={{ fontSize: "clamp(13px,1.3vw,16px)", color: "#888888", maxWidth: 600, margin: "0 auto", lineHeight: 1.75 }}>
-              IIT-level engineering foundations. Published Springer research. Enterprise-scale customer data platforms. AI transformation across 70M+ customers. Three-time CEO Award winner. This is the full picture.
             </p>
           </motion.div>
         </section>
