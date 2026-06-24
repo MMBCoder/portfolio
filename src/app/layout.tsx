@@ -56,6 +56,15 @@ export const metadata: Metadata = {
     description: "AI Transformation Leader and Data Scientist with 12+ years transforming enterprise analytics with AI.",
     images: ["https://mirzaminhazbaig.space/og-image.jpg"],
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico",        sizes: "any" },
+      { url: "/favicon-16x16.png",  sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png",  sizes: "32x32", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   robots: { index: true, follow: true },
   verification: { google: "1defa1fe11866bca" },
 };
