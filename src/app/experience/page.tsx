@@ -115,10 +115,10 @@ const timeline: TimelineEntry[] = [
     logo: "/images/icons/AMU.png",
     color: "#006400",
     location: "Aligarh, India",
-    description: "Bachelor's degree in Electronics Engineering laying the quantitative foundation for a career in data science and AI.",
+    description: "Bachelor's degree in Process Engineering laying the quantitative foundation for a career in Mathematics and Computing.",
     highlights: [
-      "Strong foundation in mathematics, signal processing, and programming",
-      "Final year project on embedded systems and automation",
+      "Strong foundation in mathematics, statistics, process designing, and programming",
+      "Final year project on building a techno-economical process plant design for polyethylene production",
     ],
   },
 ];
