@@ -106,7 +106,7 @@ export default function ResumePage() {
               {[
                 ["CDP & Data Eng.", "BlueConic CDP · Python · PySpark · SQL · SFTP Pipelines · Data Integration · Customer Identity Resolution"],
                 ["Marketing Tech.", "Real-Time Segmentation · Audience Building · Trigger Campaigns · Marketing Automation · Personalisation · A/B Testing"],
-                ["Cloud & Analytics", "Azure · Databricks · Snowflake · BigQuery · Power BI · Tableau · LangChain · LangGraph · GPT-4"],
+                ["Cloud & Analytics", "AWS · Databricks · Snowflake · BigQuery · Power BI · Tableau · LangChain · LangGraph · Agentic AI · RAG · GenAI"],
               ].map(([label, skills]) => (
                 <tr key={label}>
                   <td style={{ fontSize: "9px", fontWeight: 700, color: "#555", textTransform: "uppercase", letterSpacing: "0.04em", paddingRight: "10px", whiteSpace: "nowrap", verticalAlign: "top", paddingBottom: "4px" }}>
@@ -186,9 +186,13 @@ export default function ResumePage() {
             <strong>LEAP High-Potential Leadership Program</strong> (2022) &nbsp;·&nbsp;
             <strong>Certificate of Excellence</strong> — Genpact (2019)
           </p>
-          <p style={body}>
+          <p style={{ ...body, marginBottom: "4px" }}>
             <em>&ldquo;AI-Driven Data Analytics for Enterprise Systems&rdquo;</em>
             &nbsp;— First Author · Springer · Peer-Reviewed · 2021
+          </p>
+          <p style={body}>
+            <em>&ldquo;Engineering droplet navigation through tertiary-junction microchannels&rdquo;</em>
+            &nbsp;— Author · Springer · IIT Delhi · 2014
           </p>
 
         </div>{/* /inner */}

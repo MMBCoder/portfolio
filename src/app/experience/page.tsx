@@ -39,7 +39,7 @@ const timeline: TimelineEntry[] = [
       "Drive audience segmentation and personalised marketing strategies via CDP capabilities, elevating targeting precision and campaign effectiveness across Synchrony's marketing technology stack",
       "Three-time CEO Award winner (2020–2022) and LEAP High-Potential Leadership Program participant — recognised for sustained enterprise impact",
     ],
-    technologies: ["BlueConic CDP", "Python", "PySpark", "SQL", "SFTP Pipelines", "Customer Identity Resolution", "Azure", "Databricks", "Real-Time Segmentation", "Marketing Automation", "Power BI"],
+    technologies: ["BlueConic CDP", "Python", "PySpark", "SQL", "SFTP Pipelines", "Customer Identity Resolution", "AWS", "Databricks", "Real-Time Segmentation", "Marketing Automation", "Power BI"],
   },
   {
     id: "ljmu",
@@ -103,6 +103,7 @@ const timeline: TimelineEntry[] = [
     description: "Postgraduate engineering program at India's premier technology institute, focusing on technology management and analytics.",
     highlights: [
       "Research focus on data-driven decision systems and operations research",
+      "Published 'Engineering droplet navigation through tertiary-junction microchannels' in Springer journal",
       "Graduated from one of India's top-ranked engineering institutions",
     ],
   },
