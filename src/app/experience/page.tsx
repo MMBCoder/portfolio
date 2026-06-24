@@ -431,9 +431,31 @@ export default function ExperiencePage() {
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,280px),1fr))", gap: 0, padding: "0", borderTop: "1px solid #E5E5E5" }}>
 
-            {/* ─ IIT Delhi ─ */}
+            {/* ─ LJMU (first) ─ */}
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={foundInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1, duration: 0.6 }}
+              whileHover={{ background: "#FFFFFF" }}
+              style={{ padding: "clamp(28px,4vw,48px) clamp(20px,3vw,40px)", background: "#F9F9F9", position: "relative", overflow: "hidden", borderRight: "1px solid #E5E5E5", transition: "background 0.2s" }}
+            >
+              <NeuralNet />
+              <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20, position: "relative", zIndex: 1 }}>
+                <div style={{ width: 48, height: 48, borderRadius: 10, background: "#FFFFFF", border: "1px solid #E5E5E5", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden", padding: 4 }}>
+                  <Image src="/images/icons/LJMU.jpg" alt="Liverpool John Moores University" width={36} height={36} style={{ objectFit: "contain", width: "100%", height: "100%" }} />
+                </div>
+                <div>
+                  <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 13, color: "#555555", fontWeight: 700, marginBottom: 3 }}>Liverpool John Moores University, UK</p>
+                  <p style={{ fontSize: 13, color: "#888888", fontFamily: "var(--font-jetbrains-mono),monospace" }}>MSc ML &amp; AI · 2019–2021</p>
+                </div>
+              </div>
+              <h3 style={{ fontFamily: "var(--font-space-grotesk),sans-serif", fontWeight: 800, fontSize: "clamp(16px,2vw,22px)", color: "#111111", letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: 14, position: "relative", zIndex: 1 }}>Bridging Academia and Industry</h3>
+              <p style={{ fontSize: "clamp(13px,1.2vw,14px)", color: "#666666", lineHeight: 1.75, position: "relative", zIndex: 1 }}>
+                Completed advanced studies in Machine Learning and Artificial Intelligence while building enterprise-scale solutions in financial services. Combined academic AI knowledge with real-world implementation across customer data platforms, marketing technology, and AI transformation initiatives.
+              </p>
+            </motion.div>
+
+            {/* ─ IIT Delhi (second) ─ */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }} animate={foundInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.18, duration: 0.6 }}
               whileHover={{ background: "#FFFFFF" }}
               style={{ padding: "clamp(28px,4vw,48px) clamp(20px,3vw,40px)", background: "#F9F9F9", borderRight: "1px solid #E5E5E5", transition: "background 0.2s" }}
             >
@@ -452,16 +474,16 @@ export default function ExperiencePage() {
               </p>
             </motion.div>
 
-            {/* ─ Springer Research ─ */}
+            {/* ─ Springer Research (third) ─ */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }} animate={foundInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.18, duration: 0.6 }}
+              initial={{ opacity: 0, y: 20 }} animate={foundInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.28, duration: 0.6 }}
               whileHover={{ background: "#FFFFFF" }}
-              style={{ padding: "clamp(28px,4vw,48px) clamp(20px,3vw,40px)", background: "#F9F9F9", position: "relative", overflow: "hidden", borderRight: "1px solid #E5E5E5", transition: "background 0.2s" }}
+              style={{ padding: "clamp(28px,4vw,48px) clamp(20px,3vw,40px)", background: "#F9F9F9", position: "relative", overflow: "hidden", transition: "background 0.2s" }}
             >
               {/* Floating paper decoration */}
               {[0,1,2].map(i => (
                 <motion.div key={i}
-                  animate={{ y: [0,-5-i*3,0], rotate: [-1+i*2,2+i,  -1+i*2] }}
+                  animate={{ y: [0,-5-i*3,0], rotate: [-1+i*2,2+i,-1+i*2] }}
                   transition={{ duration: 4+i*1.2, repeat: Infinity, delay: i*0.8 }}
                   style={{ position: "absolute", right: `${10+i*10}%`, top: `${6+i*7}%`, width: 28, height: 36, background: "#EEEEEE", border: "1px solid #DDDDDD", borderRadius: 3, opacity: 0.7-i*0.2 }}
                 />
@@ -481,28 +503,6 @@ export default function ExperiencePage() {
                 <p style={{ fontSize: 11, color: "#888888", lineHeight: 1.7 }}>Engineering droplet navigation through tertiary-junction microchannels</p>
                 <p style={{ fontSize: 11, color: "#888888", lineHeight: 1.7 }}>AI-Driven Data Analytics for Enterprise Systems</p>
               </div>
-            </motion.div>
-
-            {/* ─ ML & AI ─ */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }} animate={foundInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.28, duration: 0.6 }}
-              whileHover={{ background: "#FFFFFF" }}
-              style={{ padding: "clamp(28px,4vw,48px) clamp(20px,3vw,40px)", background: "#F9F9F9", position: "relative", overflow: "hidden", transition: "background 0.2s" }}
-            >
-              <NeuralNet />
-              <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20, position: "relative", zIndex: 1 }}>
-                <div style={{ width: 48, height: 48, borderRadius: 10, background: "#FFFFFF", border: "1px solid #E5E5E5", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden", padding: 4 }}>
-                  <Image src="/images/icons/LJMU.jpg" alt="LJMU" width={36} height={36} style={{ objectFit: "contain", width: "100%", height: "100%" }} />
-                </div>
-                <div>
-                  <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 13, color: "#555555", fontWeight: 700, marginBottom: 3 }}>LJMU</p>
-                  <p style={{ fontSize: 13, color: "#888888", fontFamily: "var(--font-jetbrains-mono),monospace" }}>MSc ML &amp; AI · 2019–2021</p>
-                </div>
-              </div>
-              <h3 style={{ fontFamily: "var(--font-space-grotesk),sans-serif", fontWeight: 800, fontSize: "clamp(16px,2vw,22px)", color: "#111111", letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: 14, position: "relative", zIndex: 1 }}>Bridging Academia and Industry</h3>
-              <p style={{ fontSize: "clamp(13px,1.2vw,14px)", color: "#666666", lineHeight: 1.75, position: "relative", zIndex: 1 }}>
-                Completed advanced studies in Machine Learning and Artificial Intelligence while building enterprise-scale solutions in financial services. Combined academic AI knowledge with real-world implementation across customer data platforms, marketing technology, and AI transformation initiatives.
-              </p>
             </motion.div>
           </div>
 
