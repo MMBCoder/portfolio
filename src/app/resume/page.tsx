@@ -166,7 +166,6 @@ export default function ResumePage() {
             degree="M.S. Machine Learning & Artificial Intelligence"
             school="Liverpool John Moores University"
             year="2019 – 2021"
-            note="Distinction · Part-Time · Springer First-Author Publication"
           />
           <EduRow
             degree="M.Tech – Engineering and Technology"

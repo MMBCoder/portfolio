@@ -53,8 +53,6 @@ const timeline: TimelineEntry[] = [
     description: "Developed expertise in Machine Learning, Artificial Intelligence, Predictive Analytics, Statistical Modeling, and Data-Driven Decision Making. Applied advanced analytical techniques to solve real-world business problems and build intelligent predictive solutions.",
     highlights: [
       "Capstone project: designed and developed an ML model to predict customer response and application propensity for credit card offers across telemarketing and email campaigns — enabling more effective customer targeting and marketing optimisation",
-      "Published first-author research in Springer on AI-driven data analytics for enterprise systems",
-      "Graduated with Distinction",
     ],
   },
   {
