@@ -46,6 +46,7 @@ export const metadata: Metadata = {
     description: "AI Consultant and Data Scientist with 12+ years transforming enterprise analytics with AI.",
   },
   robots: { index: true, follow: true },
+  verification: { google: "1defa1fe11866bca" },
 };
 
 export const viewport: Viewport = {
