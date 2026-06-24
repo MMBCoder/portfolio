@@ -144,8 +144,8 @@ export default function ResumePage() {
             period="2018 – 2019"
             location="Bengaluru, India"
             bullets={[
-              "Led 8-person data science team delivering credit risk and customer acquisition models for APAC markets",
-              "Improved credit bureau score model AUC by 12%; automated dashboards reducing analyst effort by 60%",
+              "Led data science and analytics for Citi Singapore's Retail Banking portfolio (Credit Cards, CASA, Consumer Lending) — delivering predictive models and executive dashboards for strategic decision-making and revenue growth",
+              "Saved 1,000+ annual hours through process automation of reporting workflows; transformed complex portfolio data into actionable insights using Python, SQL, SAS, Tableau, Power BI, and AWS",
             ]}
           />
 
@@ -155,8 +155,8 @@ export default function ResumePage() {
             period="2014 – 2018"
             location="Bengaluru, India"
             bullets={[
-              "Predictive models for US mortgage risk; reduced default rates by 8% for global BFSI clients",
-              "Automated month-end close reporting saving 2,000+ analyst hours annually; promoted twice in 4 years",
+              "Delivered performance marketing analytics and customer intelligence for US Retail Banking and PLCC portfolios — built attribution models, campaign measurement frameworks, and customer journey analytics",
+              "Generated multi-million-dollar business value through data-driven optimisation of customer acquisition and marketing effectiveness; promoted twice in 4 years",
             ]}
           />
 
