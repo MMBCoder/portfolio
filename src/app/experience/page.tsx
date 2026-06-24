@@ -198,9 +198,6 @@ export default function ExperiencePage() {
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
             style={{ padding: "clamp(48px,8vw,100px) clamp(24px,6vw,96px) clamp(40px,6vw,72px)" }}
           >
-            <span style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#888888" }}>
-              Career Evolution
-            </span>
             <h1
               className="heading-xl"
               style={{
@@ -208,7 +205,7 @@ export default function ExperiencePage() {
                 fontWeight: 900, fontSize: "clamp(3.5rem,8vw,7.5rem)",
                 letterSpacing: "-0.04em", lineHeight: 0.95,
                 color: "#111111", textTransform: "lowercase",
-                marginTop: 16, marginBottom: 24,
+                marginBottom: 24,
               }}
             >
               career<br />evolution.
