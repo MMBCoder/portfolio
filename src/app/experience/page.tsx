@@ -248,7 +248,7 @@ export default function ExperiencePage() {
                   </div>
                   <div>
                     <h2 style={{ fontFamily: "var(--font-space-grotesk),sans-serif", fontWeight: 900, fontSize: "clamp(1.6rem,3.5vw,2.8rem)", letterSpacing: "-0.03em", color: "#111111", lineHeight: 1, textTransform: "lowercase" }}>Synchrony Financial</h2>
-                    <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 10, color: "#888888", letterSpacing: "0.12em", textTransform: "uppercase", marginTop: 4 }}>2019 – Present · Hyderabad, India</p>
+                    <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 13, color: "#888888", letterSpacing: "0.06em", marginTop: 6 }}>2019 – Present · Hyderabad, India</p>
                   </div>
                 </div>
 
@@ -318,7 +318,7 @@ export default function ExperiencePage() {
                   </div>
                   <div>
                     <h2 style={{ fontFamily: "var(--font-space-grotesk),sans-serif", fontWeight: 900, fontSize: "clamp(1.6rem,3.5vw,2.8rem)", letterSpacing: "-0.03em", color: "#111111", lineHeight: 1, textTransform: "lowercase" }}>Citibank</h2>
-                    <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 10, color: "#888888", letterSpacing: "0.12em", textTransform: "uppercase", marginTop: 4 }}>2018 – 2019 · Bengaluru, India</p>
+                    <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 13, color: "#888888", letterSpacing: "0.06em", marginTop: 6 }}>2018 – 2019 · Bengaluru, India</p>
                   </div>
                 </div>
                 <div style={{ display: "inline-block", padding: "6px 14px", background: "#FFFFFF", border: "1px solid #E5E5E5", borderRadius: 6, marginBottom: 20 }}>
@@ -378,7 +378,7 @@ export default function ExperiencePage() {
                   </div>
                   <div>
                     <h2 style={{ fontFamily: "var(--font-space-grotesk),sans-serif", fontWeight: 900, fontSize: "clamp(1.6rem,3.5vw,2.8rem)", letterSpacing: "-0.03em", color: "#111111", lineHeight: 1, textTransform: "lowercase" }}>Genpact</h2>
-                    <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 10, color: "#888888", letterSpacing: "0.12em", textTransform: "uppercase", marginTop: 4 }}>2014 – 2018 · Bengaluru, India</p>
+                    <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 13, color: "#888888", letterSpacing: "0.06em", marginTop: 6 }}>2014 – 2018 · Bengaluru, India</p>
                   </div>
                 </div>
                 <div style={{ display: "inline-block", padding: "6px 14px", background: "#F3F3F3", border: "1px solid #E5E5E5", borderRadius: 6, marginBottom: 20 }}>
@@ -442,8 +442,8 @@ export default function ExperiencePage() {
                   <Image src="/images/icons/IIT Delhi.png" alt="IIT Delhi" width={36} height={36} style={{ objectFit: "contain", width: "100%", height: "100%" }} />
                 </div>
                 <div>
-                  <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 9, color: "#888888", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 2 }}>01 · IIT Delhi</p>
-                  <p style={{ fontSize: 10, color: "#AAAAAA", fontFamily: "var(--font-jetbrains-mono),monospace" }}>M.Tech · 2012–2014</p>
+                  <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 13, color: "#555555", fontWeight: 700, marginBottom: 3 }}>IIT Delhi</p>
+                  <p style={{ fontSize: 13, color: "#888888", fontFamily: "var(--font-jetbrains-mono),monospace" }}>M.Tech · 2012–2014</p>
                 </div>
               </div>
               <h3 style={{ fontFamily: "var(--font-space-grotesk),sans-serif", fontWeight: 800, fontSize: "clamp(16px,2vw,22px)", color: "#111111", letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: 14 }}>Built the Engineering Mindset</h3>
@@ -469,8 +469,8 @@ export default function ExperiencePage() {
               <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20, position: "relative", zIndex: 1 }}>
                 <div style={{ width: 48, height: 48, borderRadius: 10, background: "#FFFFFF", border: "1px solid #E5E5E5", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 22 }}>📖</div>
                 <div>
-                  <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 9, color: "#888888", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 2 }}>02 · Springer</p>
-                  <p style={{ fontSize: 10, color: "#AAAAAA", fontFamily: "var(--font-jetbrains-mono),monospace" }}>First Author · 2016 &amp; 2021</p>
+                  <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 13, color: "#555555", fontWeight: 700, marginBottom: 3 }}>Springer Publications</p>
+                  <p style={{ fontSize: 13, color: "#888888", fontFamily: "var(--font-jetbrains-mono),monospace" }}>First Author · 2016 &amp; 2021</p>
                 </div>
               </div>
               <h3 style={{ fontFamily: "var(--font-space-grotesk),sans-serif", fontWeight: 800, fontSize: "clamp(16px,2vw,22px)", color: "#111111", letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: 14, position: "relative", zIndex: 1 }}>Published Researcher</h3>
@@ -495,8 +495,8 @@ export default function ExperiencePage() {
                   <Image src="/images/icons/LJMU.jpg" alt="LJMU" width={36} height={36} style={{ objectFit: "contain", width: "100%", height: "100%" }} />
                 </div>
                 <div>
-                  <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 9, color: "#888888", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 2 }}>03 · LJMU</p>
-                  <p style={{ fontSize: 10, color: "#AAAAAA", fontFamily: "var(--font-jetbrains-mono),monospace" }}>MSc ML &amp; AI · 2019–2021</p>
+                  <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 13, color: "#555555", fontWeight: 700, marginBottom: 3 }}>LJMU</p>
+                  <p style={{ fontSize: 13, color: "#888888", fontFamily: "var(--font-jetbrains-mono),monospace" }}>MSc ML &amp; AI · 2019–2021</p>
                 </div>
               </div>
               <h3 style={{ fontFamily: "var(--font-space-grotesk),sans-serif", fontWeight: 800, fontSize: "clamp(16px,2vw,22px)", color: "#111111", letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: 14, position: "relative", zIndex: 1 }}>Bridging Academia and Industry</h3>
@@ -515,8 +515,8 @@ export default function ExperiencePage() {
                 <Image src="/images/icons/AMU.png" alt="AMU" width={32} height={32} style={{ objectFit: "contain", width: "100%", height: "100%" }} />
               </div>
               <div>
-                <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 9, color: "#888888", letterSpacing: "0.18em", textTransform: "uppercase" }}>Aligarh Muslim University</p>
-                <p style={{ fontSize: 12, color: "#555555", fontWeight: 600 }}>B.Tech – Engineering &amp; Technology · 2008–2012</p>
+                <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 13, color: "#555555", fontWeight: 700 }}>Aligarh Muslim University</p>
+                <p style={{ fontSize: 13, color: "#888888" }}>B.Tech – Engineering &amp; Technology · 2008–2012</p>
               </div>
             </div>
             <div style={{ flex: 1, height: 1, background: "#E5E5E5", minWidth: 24 }} />
