@@ -153,17 +153,27 @@ export default function HeroSplit() {
             color: "#FFFFFF",
             textTransform: "lowercase",
             lineHeight: 0.95,
-            marginBottom: "12px",
+            marginBottom: "8px",
           }}>
-            data<br />scientist.
+            customer<br />data platform.
           </h2>
+          <p className="hero-label-text" style={{
+            fontFamily: "var(--font-jetbrains-mono), monospace",
+            fontSize: "clamp(9px, 0.85vw, 11px)",
+            color: "rgba(255,255,255,0.65)",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            marginBottom: "10px",
+          }}>
+            Data Scientist &amp; Data Engineer
+          </p>
           <p className="hero-label-text" style={{
             fontSize: "clamp(11px, 1.1vw, 14px)",
             color: "rgba(255,255,255,0.5)",
             maxWidth: "240px",
             lineHeight: 1.6,
           }}>
-            Machine learning, data engineering &amp; CDP platforms at enterprise scale
+            BlueConic CDP · customer identity · real-time marketing activation
           </p>
         </motion.div>
       </Link>
@@ -207,7 +217,7 @@ export default function HeroSplit() {
           fontSize: "14px",
           letterSpacing: "-0.01em",
         }}>
-          data scientist →
+          customer data platform →
         </Link>
       </div>
     </section>
