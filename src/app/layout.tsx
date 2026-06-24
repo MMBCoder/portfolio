@@ -23,12 +23,12 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mirza Minhaz Baig – AI Consultant | Data Scientist | AI Transformation Leader",
+  title: "Mirza Minhaz Baig – AI Transformation Leader | Data Scientist | Enterprise AI",
   description:
-    "AI Consultant and Data Scientist with 12+ years of enterprise experience. Building Agentic AI, RAG architectures, and data platforms that transform financial services.",
+    "AI Transformation Leader and Data Scientist with 12+ years of enterprise experience. Building Agentic AI, RAG architectures, and data platforms that transform financial services.",
   keywords: [
-    "AI Consultant", "Data Scientist", "Agentic AI", "LangChain", "RAG",
-    "Enterprise AI", "Analytics Leader", "Mirza Minhaz Baig", "AI Transformation",
+    "AI Transformation Leader", "AI Transformation", "Data Scientist", "Agentic AI", "LangChain", "RAG",
+    "Enterprise AI", "Analytics Leader", "Mirza Minhaz Baig",
     "Data Engineering", "Machine Learning", "LLM Orchestration"
   ],
   authors: [{ name: "Mirza Minhaz Baig" }],
@@ -36,14 +36,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Mirza Minhaz Baig – AI Consultant & Data Scientist",
-    description: "AI Consultant and Data Scientist with 12+ years transforming enterprise analytics with AI.",
+    title: "Mirza Minhaz Baig – AI Transformation Leader & Data Scientist",
+    description: "AI Transformation Leader and Data Scientist with 12+ years transforming enterprise analytics with AI.",
     siteName: "Mirza Minhaz Baig",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mirza Minhaz Baig – AI Consultant & Data Scientist",
-    description: "AI Consultant and Data Scientist with 12+ years transforming enterprise analytics with AI.",
+    title: "Mirza Minhaz Baig – AI Transformation Leader & Data Scientist",
+    description: "AI Transformation Leader and Data Scientist with 12+ years transforming enterprise analytics with AI.",
   },
   robots: { index: true, follow: true },
   verification: { google: "1defa1fe11866bca" },

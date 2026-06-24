@@ -83,7 +83,7 @@ export default function HeroSplit() {
             lineHeight: 0.95,
             marginBottom: "12px",
           }}>
-            ai<br />consultant.
+            ai<br />transformation.
           </h2>
           <p className="hero-label-text" style={{
             fontSize: "clamp(11px, 1.1vw, 14px)",
@@ -91,7 +91,7 @@ export default function HeroSplit() {
             maxWidth: "240px",
             lineHeight: 1.6,
           }}>
-            AI strategy, Agentic AI systems &amp; enterprise transformation
+            AI transformation leadership, Agentic AI systems &amp; enterprise strategy
           </p>
         </motion.div>
       </Link>
@@ -214,7 +214,7 @@ export default function HeroSplit() {
               textTransform: "lowercase",
               lineHeight: 1.2,
             }}>
-              ai consultant.
+              ai transformation.
             </span>
           </Link>
           <Link href="/experience" style={{

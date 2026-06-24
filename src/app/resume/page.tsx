@@ -68,7 +68,7 @@ export default function ResumePage() {
             fontSize: "10px", color: "#666", letterSpacing: "0.2em",
             textTransform: "uppercase", margin: "0 0 10px",
           }}>
-            AVP &nbsp;·&nbsp; AI Consultant &nbsp;·&nbsp; Data Scientist &nbsp;·&nbsp; 12+ Years Enterprise AI in Financial Services
+            AVP &nbsp;·&nbsp; AI Transformation Leader &nbsp;·&nbsp; Data Scientist &nbsp;·&nbsp; 12+ Years Enterprise AI in Financial Services
           </p>
           <div style={{
             display: "flex", flexWrap: "wrap", gap: "4px 0",

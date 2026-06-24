@@ -77,7 +77,7 @@ export default function About() {
           </h2>
 
           <p style={{ fontSize: "clamp(16px, 1.8vw, 20px)", color: "#555555", maxWidth: "440px", lineHeight: 1.65, marginBottom: "16px" }}>
-            I&apos;m an AI Consultant and Data Scientist based in Hyderabad, India.
+            I&apos;m an AI Transformation Leader and Data Scientist based in Hyderabad, India.
           </p>
 
           <p style={{ fontSize: "clamp(14px, 1.4vw, 16px)", color: "#888888", maxWidth: "440px", lineHeight: 1.7 }}>
@@ -85,7 +85,7 @@ export default function About() {
           </p>
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "28px" }}>
-            {["AI Consultant", "Data Scientist", "Data Engineer", "Researcher", "People Leader"].map((r) => (
+            {["AI Transformation Leader", "Data Scientist", "Data Engineer", "Researcher", "People Leader"].map((r) => (
               <span
                 key={r}
                 style={{
@@ -115,7 +115,7 @@ export default function About() {
         >
           <Image
             src="/images/mirza_about.png"
-            alt="Mirza Minhaz Baig — AI Consultant & Data Scientist"
+            alt="Mirza Minhaz Baig — AI Transformation Leader & Data Scientist"
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
             style={{ objectFit: "contain", objectPosition: "bottom center" }}
@@ -137,7 +137,7 @@ export default function About() {
             className="font-heading font-black lowercase mb-8 leading-tight"
             style={{ fontSize: "clamp(1.4rem, 2.8vw, 2.2rem)", letterSpacing: "-0.03em", color: "#111111" }}
           >
-            part ai consultant.
+            part ai transformation leader.
           </h3>
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             {consultantList.map((s) => (
