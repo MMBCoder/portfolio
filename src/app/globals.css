@@ -270,10 +270,16 @@ body {
   height: calc(100dvh - 68px);
 }
 
-/* Hero label text — hide on mobile; show bottom bar instead */
+/* Hero — mobile: hide overlay text/divider, show bottom cards */
 @media (max-width: 768px) {
   .hero-label-text {
     display: none;
+  }
+  .hero-overlay-content {
+    display: none !important;
+  }
+  .hero-divider {
+    display: none !important;
   }
   .hero-mobile-bar {
     display: block !important;

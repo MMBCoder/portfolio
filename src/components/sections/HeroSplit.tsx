@@ -58,6 +58,7 @@ export default function HeroSplit() {
         }}
       >
         <motion.div
+          className="hero-overlay-content"
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.2 }}
@@ -96,17 +97,20 @@ export default function HeroSplit() {
       </Link>
 
       {/* Thin vertical divider */}
-      <div style={{
-        position: "absolute",
-        left: "50%",
-        top: "8%",
-        bottom: "8%",
-        width: "1px",
-        background: "rgba(255,255,255,0.15)",
-        zIndex: 3,
-      }} />
+      <div
+        className="hero-divider"
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "8%",
+          bottom: "8%",
+          width: "1px",
+          background: "rgba(255,255,255,0.15)",
+          zIndex: 3,
+        }}
+      />
 
-      {/* RIGHT — Data Scientist → /experience */}
+      {/* RIGHT — Customer Data Platform → /experience */}
       <Link
         href="/experience"
         onMouseEnter={() => setHovered("right")}
@@ -130,6 +134,7 @@ export default function HeroSplit() {
         }}
       >
         <motion.div
+          className="hero-overlay-content"
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.3 }}
@@ -178,7 +183,7 @@ export default function HeroSplit() {
         </motion.div>
       </Link>
 
-      {/* Mobile bottom bar — tap targets on small screens */}
+      {/* Mobile cards — shown only at ≤768px via CSS, hidden on desktop */}
       <div className="hero-mobile-bar" style={{
         position: "absolute",
         bottom: 0,
@@ -186,39 +191,65 @@ export default function HeroSplit() {
         right: 0,
         zIndex: 4,
         display: "none",
-        overflow: "hidden",
+        background: "rgba(0,0,0,0.82)",
       }}>
-        <Link href="/about" style={{
-          display: "inline-block",
-          width: "50%",
-          padding: "18px 12px",
-          background: "rgba(0,0,0,0.78)",
-          color: "#FFFFFF",
-          textAlign: "center",
-          textDecoration: "none",
-          fontFamily: "var(--font-space-grotesk), sans-serif",
-          fontWeight: 700,
-          fontSize: "14px",
-          borderRight: "1px solid rgba(255,255,255,0.12)",
-          letterSpacing: "-0.01em",
-        }}>
-          ai consultant →
-        </Link>
-        <Link href="/experience" style={{
-          display: "inline-block",
-          width: "50%",
-          padding: "18px 12px",
-          background: "rgba(0,0,0,0.78)",
-          color: "#FFFFFF",
-          textAlign: "center",
-          textDecoration: "none",
-          fontFamily: "var(--font-space-grotesk), sans-serif",
-          fontWeight: 700,
-          fontSize: "14px",
-          letterSpacing: "-0.01em",
-        }}>
-          customer data platform →
-        </Link>
+        <div style={{ display: "flex", alignItems: "stretch" }}>
+          <Link href="/about" style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "22px 14px",
+            color: "#FFFFFF",
+            textDecoration: "none",
+            textAlign: "center",
+            borderRight: "1px solid rgba(255,255,255,0.12)",
+          }}>
+            <span style={{
+              fontFamily: "var(--font-space-grotesk), sans-serif",
+              fontWeight: 900,
+              fontSize: "clamp(13px, 3.5vw, 16px)",
+              letterSpacing: "-0.02em",
+              textTransform: "lowercase",
+              lineHeight: 1.2,
+            }}>
+              ai consultant.
+            </span>
+          </Link>
+          <Link href="/experience" style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "22px 14px",
+            color: "#FFFFFF",
+            textDecoration: "none",
+            textAlign: "center",
+          }}>
+            <span style={{
+              fontFamily: "var(--font-space-grotesk), sans-serif",
+              fontWeight: 900,
+              fontSize: "clamp(13px, 3.5vw, 16px)",
+              letterSpacing: "-0.02em",
+              textTransform: "lowercase",
+              lineHeight: 1.2,
+            }}>
+              customer<br />data platform.
+            </span>
+            <span style={{
+              fontFamily: "var(--font-jetbrains-mono), monospace",
+              fontSize: "clamp(8px, 2vw, 10px)",
+              color: "rgba(255,255,255,0.5)",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              marginTop: "5px",
+            }}>
+              data scientist &amp; data engineer
+            </span>
+          </Link>
+        </div>
       </div>
     </section>
   );
