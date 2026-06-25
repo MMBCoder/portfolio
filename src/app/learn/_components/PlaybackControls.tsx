@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { TOTAL_SCENES, COLORS } from "./constants";
+import { useIsMobile } from "./shared/useIsMobile";
 
 interface PlaybackControlsProps {
   scene: number;
@@ -69,6 +70,7 @@ export default function PlaybackControls({
 }: PlaybackControlsProps) {
   const isFirst = scene === 0;
   const isLast = scene === TOTAL_SCENES - 1;
+  const isMobile = useIsMobile();
 
   return (
     <motion.div
@@ -77,7 +79,7 @@ export default function PlaybackControls({
       transition={{ delay: 0.8, duration: 0.5 }}
       style={{
         position: "fixed",
-        bottom: 28,
+        bottom: isMobile ? 16 : 28,
         left: "50%",
         transform: "translateX(-50%)",
         zIndex: 50,

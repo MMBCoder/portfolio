@@ -75,8 +75,8 @@ export default function Scene08Activation(_props: Props) {
 
           {/* Channel grid */}
           <div style={{
-            display: "grid", gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 12, width: "100%",
+            display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(155px, 1fr))",
+            gap: 10, width: "100%",
           }}>
             {CHANNELS.map((ch) => (
               <motion.div

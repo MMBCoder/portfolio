@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import SceneWrapper from "../shared/SceneWrapper";
 import { COLORS, EASE_OUT, STAGGER_FAST } from "../constants";
+import { useIsMobile } from "../shared/useIsMobile";
 
 interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
@@ -18,6 +19,8 @@ const LAYERS = [
 ];
 
 export default function Scene11Architecture(_props: Props) {
+  const isMobile = useIsMobile();
+
   return (
     <SceneWrapper sceneIndex={10} title="Enterprise Architecture">
       <div style={{ width: "100%", maxWidth: 860 }}>
@@ -28,7 +31,7 @@ export default function Scene11Architecture(_props: Props) {
           style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
             fontSize: 13, letterSpacing: "0.2em", textTransform: "uppercase",
-            color: COLORS.fgMuted, marginBottom: 12, textAlign: "center",
+            color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
           Scene 11 · Architecture
@@ -40,92 +43,92 @@ export default function Scene11Architecture(_props: Props) {
           transition={{ delay: 0.1, ease: EASE_OUT }}
           style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
-            fontWeight: 900, fontSize: "clamp(1.4rem, 3vw, 2.2rem)",
+            fontWeight: 900, fontSize: isMobile ? "1.4rem" : "clamp(1.4rem, 3vw, 2.2rem)",
             letterSpacing: "-0.04em", color: COLORS.fg,
-            textTransform: "lowercase", textAlign: "center", marginBottom: 28,
+            textTransform: "lowercase", textAlign: "center", marginBottom: isMobile ? 16 : 24,
           }}
         >
           the complete picture.
         </motion.h2>
 
         {/* Architecture stack */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? 5 : 7 }}>
           {LAYERS.map((layer, i) => (
             <motion.div
               key={layer.label}
               initial={{ opacity: 0, x: -24 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: layer.delay, duration: 0.5, ease: EASE_OUT }}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "180px 1fr",
-                alignItems: "center",
-                gap: 12,
-              }}
             >
-              {/* Layer label */}
-              <div style={{
-                display: "flex", alignItems: "center", gap: 8,
-                padding: "8px 12px",
-                background: `${layer.color}10`,
-                border: `1px solid ${layer.color}25`,
-                borderRadius: 8,
-                flexShrink: 0,
-              }}>
-                <span style={{ fontSize: 14 }}>{layer.icon}</span>
-                <span style={{
-                  fontSize: 12, fontWeight: 600, color: layer.color,
-                  lineHeight: 1.3,
+              {isMobile ? (
+                /* Mobile: compact single row with label + chips inline */
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "7px 10px",
+                  background: `${layer.color}08`,
+                  border: `1px solid ${layer.color}20`,
+                  borderRadius: 8,
                 }}>
-                  {layer.label}
-                </span>
-              </div>
-
-              {/* Items */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 5, alignItems: "center" }}>
-                {/* Arrow */}
-                {i < LAYERS.length - 1 && (
-                  <motion.div
-                    animate={{ opacity: [0.3, 0.7, 0.3] }}
-                    transition={{ repeat: Infinity, duration: 2, delay: layer.delay }}
-                    style={{
-                      width: 16, height: 1,
-                      background: `linear-gradient(90deg, ${layer.color}, transparent)`,
-                      flexShrink: 0,
-                    }}
-                  />
-                )}
-                {layer.items.map((item, j) => (
-                  <motion.span
-                    key={item}
-                    initial={{ opacity: 0, scale: 0.85 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: layer.delay + 0.1 + j * STAGGER_FAST, duration: 0.3 }}
-                    style={{
-                      padding: "3px 10px",
-                      background: COLORS.muted,
-                      border: `1px solid ${COLORS.border}`,
-                      borderRadius: 20,
-                      fontSize: 12,
-                      color: COLORS.fgSecondary,
-                      fontWeight: 500,
-                    }}
-                  >
-                    {item}
-                  </motion.span>
-                ))}
-              </div>
+                  <span style={{ fontSize: 14, flexShrink: 0 }}>{layer.icon}</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: layer.color, flexShrink: 0, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 120 }}>
+                    {layer.label}
+                  </span>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 4, flex: 1 }}>
+                    {layer.items.map((item, j) => (
+                      <motion.span
+                        key={item}
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: layer.delay + 0.1 + j * STAGGER_FAST, duration: 0.25 }}
+                        style={{ padding: "2px 7px", background: COLORS.muted, border: `1px solid ${COLORS.border}`, borderRadius: 20, fontSize: 10, color: COLORS.fgSecondary, fontWeight: 500, whiteSpace: "nowrap" }}
+                      >
+                        {item}
+                      </motion.span>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                /* Desktop: 180px label + 1fr items */
+                <div style={{ display: "grid", gridTemplateColumns: "180px 1fr", alignItems: "center", gap: 12 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", background: `${layer.color}10`, border: `1px solid ${layer.color}25`, borderRadius: 8, flexShrink: 0 }}>
+                    <span style={{ fontSize: 14 }}>{layer.icon}</span>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: layer.color, lineHeight: 1.3 }}>{layer.label}</span>
+                  </div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 5, alignItems: "center" }}>
+                    {i < LAYERS.length - 1 && (
+                      <motion.div
+                        animate={{ opacity: [0.3, 0.7, 0.3] }}
+                        transition={{ repeat: Infinity, duration: 2, delay: layer.delay }}
+                        style={{ width: 16, height: 1, background: `linear-gradient(90deg, ${layer.color}, transparent)`, flexShrink: 0 }}
+                      />
+                    )}
+                    {layer.items.map((item, j) => (
+                      <motion.span
+                        key={item}
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: layer.delay + 0.1 + j * STAGGER_FAST, duration: 0.3 }}
+                        style={{ padding: "3px 10px", background: COLORS.muted, border: `1px solid ${COLORS.border}`, borderRadius: 20, fontSize: 12, color: COLORS.fgSecondary, fontWeight: 500 }}
+                      >
+                        {item}
+                      </motion.span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </motion.div>
           ))}
         </div>
 
-        {/* Flow arrow at bottom */}
+        {/* Flow summary */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.4 }}
           style={{
-            marginTop: 20, textAlign: "center",
+            marginTop: isMobile ? 14 : 20, textAlign: "center",
             fontFamily: "var(--font-jetbrains-mono), monospace",
             fontSize: 12, color: COLORS.fgMuted, letterSpacing: "0.1em",
           }}

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import SceneWrapper from "../shared/SceneWrapper";
 import { COLORS, EASE_OUT } from "../constants";
+import { useIsMobile } from "../shared/useIsMobile";
 
 interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
@@ -16,6 +17,7 @@ const STEPS = [
 ];
 
 export default function Scene09Response(_props: Props) {
+  const isMobile = useIsMobile();
   return (
     <SceneWrapper sceneIndex={8} title="Customer Response">
       <div style={{ width: "100%", maxWidth: 600 }}>
@@ -47,7 +49,7 @@ export default function Scene09Response(_props: Props) {
         </motion.h2>
 
         {/* Timeline */}
-        <div style={{ position: "relative", paddingLeft: 40 }}>
+        <div style={{ position: "relative", paddingLeft: isMobile ? 32 : 40 }}>
           {/* Vertical line */}
           <motion.div
             initial={{ scaleY: 0 }}

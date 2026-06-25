@@ -71,8 +71,8 @@ export default function Scene02Channels(_props: Props) {
           animate="show"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 14,
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+            gap: 12,
           }}
         >
           {CHANNELS.map((ch) => (

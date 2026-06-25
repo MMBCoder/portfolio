@@ -66,8 +66,8 @@ export default function Scene10Outcomes(_props: Props) {
           animate="show"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 14,
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+            gap: 12,
           }}
         >
           {KPIS.slice(0, 3).map((kpi) => (
@@ -81,11 +81,11 @@ export default function Scene10Outcomes(_props: Props) {
           animate="show"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gap: 14,
-            marginTop: 14,
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+            gap: 12,
+            marginTop: 12,
             maxWidth: 560,
-            margin: "14px auto 0",
+            margin: "12px auto 0",
           }}
         >
           {KPIS.slice(3).map((kpi) => (

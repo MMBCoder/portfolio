@@ -111,7 +111,7 @@ export default function Scene05Profile(_props: Props) {
           variants={container}
           initial="hidden"
           animate="show"
-          style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14 }}
+          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}
         >
           {PROFILE_SECTIONS.map((section) => (
             <GlassCard

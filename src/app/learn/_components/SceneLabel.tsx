@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { TOTAL_SCENES, SCENE_META } from "./constants";
+import { useIsMobile } from "./shared/useIsMobile";
 
 interface SceneLabelProps {
   scene: number;
@@ -10,6 +11,8 @@ interface SceneLabelProps {
 export default function SceneLabel({ scene }: SceneLabelProps) {
   const meta = SCENE_META[scene];
   const number = String(scene + 1).padStart(2, "0");
+  const isMobile = useIsMobile();
+  if (isMobile) return null;
 
   return (
     <div

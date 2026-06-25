@@ -100,7 +100,7 @@ export default function Scene06AIAgents(_props: Props) {
           variants={container}
           initial="hidden"
           animate="show"
-          style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14 }}
+          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}
         >
           {AGENTS.map((agent) => (
             <GlassCard

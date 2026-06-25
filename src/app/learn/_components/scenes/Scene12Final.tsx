@@ -80,7 +80,7 @@ export default function Scene12Final(_props: Props) {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1, duration: 0.6, ease: EASE_OUT }}
-          style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}
+          style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap", width: "100%" }}
         >
           {/* Reload to replay */}
           <motion.button
