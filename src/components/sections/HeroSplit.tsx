@@ -110,9 +110,9 @@ export default function HeroSplit() {
         }}
       />
 
-      {/* RIGHT — Customer Data Platform → /experience */}
+      {/* RIGHT — Customer Data Platform → /learn */}
       <Link
-        href="/experience"
+        href="/learn"
         onMouseEnter={() => setHovered("right")}
         onMouseLeave={() => setHovered(null)}
         style={{
