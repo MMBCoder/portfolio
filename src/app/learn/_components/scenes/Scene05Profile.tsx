@@ -2,161 +2,209 @@
 
 import { motion } from "framer-motion";
 import SceneWrapper from "../shared/SceneWrapper";
-import GlassCard from "../shared/GlassCard";
-import { COLORS, STAGGER_CHILDREN, EASE_OUT } from "../constants";
+import { COLORS, EASE_OUT, STAGGER_CHILDREN } from "../constants";
+import { useIsMobile } from "../shared/useIsMobile";
 
 interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
 const PROFILE_SECTIONS = [
   {
-    label: "Demographics",
+    category: "Demographics",
     color: COLORS.blue,
-    fields: [
-      { k: "Age", v: "34" },
-      { k: "Location", v: "San Francisco, CA" },
-      { k: "Preferred Channel", v: "Email · Mobile" },
-    ],
+    items: ["Sarah M. · Age 34", "Chicago, IL", "Senior Marketing Manager"],
   },
   {
-    label: "Financial",
+    category: "Products Owned",
     color: COLORS.purple,
-    fields: [
-      { k: "CLV", v: "$18,400" },
-      { k: "Credit Score Band", v: "A+" },
-      { k: "Products Held", v: "2 Cards · 1 Loan" },
-    ],
+    items: ["Premium Rewards Card", "Savings Account", "Home Equity Loan"],
   },
   {
-    label: "Behaviour",
-    color: COLORS.cyan,
-    fields: [
-      { k: "Last Active", v: "2 hours ago" },
-      { k: "Avg. Session", v: "7m 42s" },
-      { k: "Open Rate", v: "68%" },
-    ],
+    category: "Browsing Behaviour",
+    color: "#0891B2",
+    items: ["Credit card comparison: 4×", "Travel rewards pages: 7×", "Balance transfer info: 2×"],
   },
   {
-    label: "AI Segments",
+    category: "Transaction History",
     color: COLORS.green,
-    fields: [
-      { k: "Propensity", v: "High — Travel Card" },
-      { k: "Churn Risk", v: "Low (4%)" },
-      { k: "Loyalty Tier", v: "Gold" },
-    ],
+    items: ["Avg. monthly spend: $3,200", "On-time payments: 100%", "7-year relationship"],
+  },
+  {
+    category: "Email Engagement",
+    color: "#D97706",
+    items: ["Open rate: 68%", "Click-through: 24%", "Last opened: 2 days ago"],
+  },
+  {
+    category: "App Activity",
+    color: "#7C3AED",
+    items: ["Sessions this month: 14", "Avg. session: 4.2 min", "Feature: Balance check, transfers"],
+  },
+  {
+    category: "Support History",
+    color: "#DC2626",
+    items: ["Last contact: 6 months ago", "CSAT score: 4.8/5", "Channel: Mobile chat"],
+  },
+  {
+    category: "Consent Status",
+    color: COLORS.green,
+    items: ["Marketing: ✓ Permitted", "Analytics: ✓ Permitted", "Third-party: ✗ Declined"],
+  },
+  {
+    category: "AI Propensity Scores",
+    color: "#1D4ED8",
+    items: ["Premium upgrade: 84%", "Churn risk: Low (8%)", "Next best offer: Travel Card"],
   },
 ];
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: STAGGER_CHILDREN, delayChildren: 0.5 } },
+  show: { transition: { staggerChildren: STAGGER_CHILDREN, delayChildren: 0.4 } },
 };
+
 const card = {
-  hidden: { opacity: 0, y: 24, scale: 0.95 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: EASE_OUT } },
+  hidden: { opacity: 0, y: 14, scale: 0.95 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: EASE_OUT } },
 };
 
 export default function Scene05Profile(_props: Props) {
+  const isMobile = useIsMobile();
+
   return (
-    <SceneWrapper sceneIndex={5} title="Unified Customer Profile">
-      <div style={{ width: "100%", maxWidth: 800 }}>
+    <SceneWrapper sceneIndex={5} title="Customer 360">
+      <div style={{ width: "100%", maxWidth: 900 }}>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: 13, letterSpacing: "0.2em", textTransform: "uppercase",
-            color: COLORS.fgMuted, marginBottom: 12, textAlign: "center",
+            fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase",
+            color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 05 · Unified Profile
+          Scene 06 · Customer 360
         </motion.p>
 
-        {/* Header with avatar */}
+        <motion.h2
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, ease: EASE_OUT }}
+          style={{
+            fontFamily: "var(--font-space-grotesk), sans-serif",
+            fontWeight: 900, fontSize: "clamp(1.6rem, 3.5vw, 2.8rem)",
+            letterSpacing: "-0.04em", color: COLORS.fg,
+            textTransform: "lowercase", textAlign: "center", marginBottom: 6,
+          }}
+        >
+          customer 360.
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          style={{ fontSize: 15, color: COLORS.fgSecondary, textAlign: "center", marginBottom: 24 }}
+        >
+          A single, comprehensive view that no individual system could ever provide alone.
+        </motion.p>
+
+        {/* Sarah header */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.55, ease: EASE_OUT }}
-          style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32, justifyContent: "center" }}
+          transition={{ delay: 0.3, ease: EASE_OUT }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 16,
+            padding: "16px 22px",
+            background: "linear-gradient(135deg, #EFF6FF, #DBEAFE)",
+            border: `1.5px solid ${COLORS.blue}`,
+            borderRadius: 16,
+            marginBottom: 20,
+          }}
         >
           <div style={{
-            width: 56, height: 56, borderRadius: "50%",
-            background: `linear-gradient(135deg, ${COLORS.blue}, ${COLORS.purple})`,
+            width: 44, height: 44, borderRadius: "50%",
+            background: `linear-gradient(135deg, ${COLORS.blue} 0%, #1D4ED8 100%)`,
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 24, flexShrink: 0,
+            flexShrink: 0, boxShadow: "0 4px 12px rgba(37,99,235,0.28)",
           }}>
-            👤
+            <span style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 20, color: "#fff" }}>S</span>
           </div>
-          <div>
-            <h2 style={{
-              fontFamily: "var(--font-space-grotesk), sans-serif",
-              fontWeight: 900, fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)",
-              letterSpacing: "-0.04em", color: COLORS.fg,
-              textTransform: "lowercase", margin: 0,
-            }}>
-              alex chen.
-            </h2>
-            <div style={{
-              fontFamily: "var(--font-jetbrains-mono), monospace",
-              fontSize: 12, color: COLORS.blue, letterSpacing: "0.15em",
-              textTransform: "uppercase", marginTop: 2,
-            }}>
-              ucid_ax92mk · 360° Profile Active
-            </div>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 17, color: COLORS.fg }}>
+              Sarah — Unified Customer Profile
+            </p>
+            <p style={{ fontSize: 12, color: COLORS.blue }}>
+              ACC-00291847 · 9 data dimensions · Updated in real time
+            </p>
+          </div>
+          <div style={{
+            padding: "5px 12px", background: "#DEF7EC",
+            border: "1px solid #6EE7B7", borderRadius: 20,
+            fontSize: 11, color: "#065F46",
+            fontFamily: "var(--font-jetbrains-mono)", flexShrink: 0,
+          }}>
+            LIVE PROFILE
           </div>
         </motion.div>
 
-        {/* Profile grid */}
+        {/* Profile section cards */}
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3, 1fr)",
+            gap: 10,
+          }}
         >
-          {PROFILE_SECTIONS.map((section) => (
-            <GlassCard
-              key={section.label}
+          {PROFILE_SECTIONS.map(({ category, color, items }) => (
+            <motion.div
+              key={category}
               variants={card}
-              glow="none"
-              style={{ padding: "20px", overflow: "hidden", position: "relative" }}
+              style={{
+                background: "#FFFFFF",
+                border: `1px solid ${color}1e`,
+                borderRadius: 12,
+                padding: "14px",
+                position: "relative",
+                overflow: "hidden",
+              }}
             >
               <div style={{
                 position: "absolute", top: 0, left: 0, right: 0, height: 3,
-                background: section.color, borderRadius: "16px 16px 0 0",
+                background: color,
               }} />
-              <div style={{
-                fontFamily: "var(--font-jetbrains-mono), monospace",
-                fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase",
-                color: section.color, marginBottom: 14,
-              }}>
-                {section.label}
+              <p style={{
+                fontFamily: "var(--font-jetbrains-mono)", fontSize: 9,
+                letterSpacing: "0.16em", textTransform: "uppercase",
+                color, marginBottom: 8,
+              }}>{category}</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                {items.map(item => (
+                  <p key={item} style={{ fontSize: 11, color: COLORS.fg, lineHeight: 1.4 }}>
+                    {item}
+                  </p>
+                ))}
               </div>
-              {section.fields.map((f) => (
-                <div key={f.k} style={{
-                  display: "flex", justifyContent: "space-between",
-                  padding: "7px 0", borderBottom: `1px solid ${COLORS.border}`,
-                  fontSize: 13,
-                }}>
-                  <span style={{ color: COLORS.fgMuted }}>{f.k}</span>
-                  <span style={{ color: COLORS.fg, fontWeight: 600 }}>{f.v}</span>
-                </div>
-              ))}
-            </GlassCard>
+            </motion.div>
           ))}
         </motion.div>
 
-        <motion.div
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.8, duration: 0.6 }}
+          transition={{ delay: 2.8 }}
           style={{
-            marginTop: 24, textAlign: "center",
+            marginTop: 20,
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: 12, color: COLORS.fgMuted, letterSpacing: "0.1em",
+            fontSize: 11, color: COLORS.fgMuted, textAlign: "center", letterSpacing: "0.08em",
           }}
         >
-          Real-time · Consent-aware · 70M+ profiles at scale
-        </motion.div>
+          Every team · Marketing, Service, Risk, Sales · now sees the same Sarah
+        </motion.p>
       </div>
     </SceneWrapper>
   );

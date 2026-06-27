@@ -2,130 +2,302 @@
 
 import { motion } from "framer-motion";
 import SceneWrapper from "../shared/SceneWrapper";
-import PulsingDot from "../shared/PulsingDot";
-import { COLORS, STAGGER_CHILDREN, EASE_OUT } from "../constants";
+import { COLORS, EASE_OUT, STAGGER_FAST } from "../constants";
+import { useIsMobile } from "../shared/useIsMobile";
 
 interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
-const CHANNELS = [
-  { icon: "🌐", label: "Website", event: "page_view · product_browse", color: COLORS.blue },
-  { icon: "📱", label: "Mobile App", event: "app_open · add_to_cart", color: COLORS.purple },
-  { icon: "🛒", label: "Marketplace", event: "search · wishlist_add", color: COLORS.cyan },
-  { icon: "📧", label: "Email", event: "open · click · unsubscribe", color: COLORS.green },
-  { icon: "🏪", label: "Offline Store", event: "pos_transaction · visit", color: COLORS.amber },
-  { icon: "🎧", label: "Support Center", event: "call · chat · ticket", color: "#EF4444" },
+const SOURCES = [
+  { label: "Mobile App", icon: "📱", color: "#2563EB" },
+  { label: "Banking Website", icon: "🖥️", color: "#7C3AED" },
+  { label: "Credit Card Portal", icon: "💳", color: "#0891B2" },
+  { label: "Email", icon: "✉️", color: "#059669" },
+  { label: "Partner Marketplace", icon: "🤝", color: "#D97706" },
+  { label: "Customer Support", icon: "🎧", color: "#DC2626" },
 ];
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: STAGGER_CHILDREN, delayChildren: 0.4 } },
-};
-const card = {
-  hidden: { opacity: 0, scale: 0.88, y: 20 },
-  show: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.55, ease: EASE_OUT } },
-};
+const LISTENERS = [
+  { label: "JavaScript SDK", tech: "Web events" },
+  { label: "Mobile SDK", tech: "iOS · Android" },
+  { label: "Event Collector", tech: "Server-side" },
+  { label: "REST API", tech: "Real-time push" },
+  { label: "Batch Upload", tech: "CRM · data warehouse" },
+  { label: "Webhook", tech: "Partner systems" },
+];
+
+const EVENTS = [
+  { label: "Login", type: "AUTH", color: COLORS.blue },
+  { label: "Product View", type: "BROWSE", color: COLORS.purple },
+  { label: "Credit Card Search", type: "BROWSE", color: COLORS.purple },
+  { label: "Application Started", type: "CONVERSION", color: COLORS.green },
+  { label: "Application Abandoned", type: "SIGNAL", color: "#D97706" },
+  { label: "Transaction", type: "FINANCIAL", color: COLORS.cyan },
+  { label: "Email Open", type: "ENGAGE", color: COLORS.blue },
+  { label: "Support Interaction", type: "SERVICE", color: "#DC2626" },
+];
 
 export default function Scene02Channels(_props: Props) {
+  const isMobile = useIsMobile();
+
   return (
-    <SceneWrapper sceneIndex={2} title="Digital Touchpoints">
-      <div style={{ width: "100%", maxWidth: 760, textAlign: "center" }}>
+    <SceneWrapper sceneIndex={2} title="Every Event Matters">
+      <div style={{ width: "100%", maxWidth: 900 }}>
 
         <motion.p
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: 13, letterSpacing: "0.2em",
-            textTransform: "uppercase", color: COLORS.fgMuted, marginBottom: 16,
+            fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase",
+            color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 02 · Touchpoints
+          Scene 03 · Event Capture
         </motion.p>
 
         <motion.h2
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.6, ease: EASE_OUT }}
+          transition={{ delay: 0.1, ease: EASE_OUT }}
           style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
-            fontWeight: 900, fontSize: "clamp(1.8rem, 4vw, 3rem)",
+            fontWeight: 900, fontSize: "clamp(1.6rem, 3.5vw, 2.8rem)",
             letterSpacing: "-0.04em", color: COLORS.fg,
-            textTransform: "lowercase", marginBottom: 8,
+            textTransform: "lowercase", textAlign: "center", marginBottom: 6,
           }}
         >
-          every interaction is an event.
+          every event matters.
         </motion.h2>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          style={{ fontSize: 15, color: COLORS.fgSecondary, marginBottom: 40 }}
+          transition={{ delay: 0.2 }}
+          style={{ fontSize: 15, color: COLORS.fgSecondary, textAlign: "center", marginBottom: 32 }}
         >
-          Alex moves across six touchpoints. Each generates a real-time data event.
+          As Sarah moves through your ecosystem, listeners capture every signal in real time.
         </motion.p>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate="show"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-            gap: 12,
-          }}
-        >
-          {CHANNELS.map((ch) => (
+        {isMobile ? (
+          /* ── Mobile: stacked view ── */
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <SectionCard title="Event Listeners" delay={0.3}>
+              {LISTENERS.map((l, i) => (
+                <motion.div
+                  key={l.label}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + i * 0.08, ease: EASE_OUT }}
+                  style={{
+                    display: "flex", alignItems: "center", gap: 10,
+                    padding: "8px 0", borderBottom: i < LISTENERS.length - 1 ? `1px solid ${COLORS.border}` : "none",
+                  }}
+                >
+                  <div style={{
+                    width: 7, height: 7, borderRadius: "50%",
+                    background: COLORS.blue, flexShrink: 0,
+                  }} />
+                  <div>
+                    <p style={{ fontSize: 12, fontWeight: 600, color: COLORS.fg }}>{l.label}</p>
+                    <p style={{ fontSize: 11, color: COLORS.fgMuted, fontFamily: "var(--font-jetbrains-mono)" }}>{l.tech}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </SectionCard>
+
+            <SectionCard title="Events Captured" delay={0.8}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                {EVENTS.map(({ label, type, color }, i) => (
+                  <motion.div
+                    key={label}
+                    initial={{ opacity: 0, scale: 0.85 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.9 + i * 0.07 }}
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: 6,
+                      padding: "5px 10px",
+                      background: `${color}0f`,
+                      border: `1px solid ${color}28`,
+                      borderRadius: 20, fontSize: 11,
+                    }}
+                  >
+                    <span style={{ fontWeight: 600, color }}>{type}</span>
+                    <span style={{ color: COLORS.fg }}>{label}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </SectionCard>
+          </div>
+        ) : (
+          /* ── Desktop: 3-column layout ── */
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 120px 1fr", gap: 0, alignItems: "start" }}>
+
+            {/* Left: Sources */}
             <motion.div
-              key={ch.label}
-              variants={card}
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, ease: EASE_OUT }}
               style={{
-                background: "#FFFFFF",
+                background: COLORS.muted,
                 border: `1px solid ${COLORS.border}`,
-                borderRadius: 14,
-                padding: "20px 16px",
-                textAlign: "left",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+                borderRadius: "16px 0 0 16px",
+                padding: "20px 18px",
               }}
             >
-              <div style={{ fontSize: 28, marginBottom: 10 }}>{ch.icon}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                <PulsingDot color={ch.color} size={7} />
-                <span style={{
-                  fontWeight: 600, fontSize: 14, color: COLORS.fg,
-                }}>
-                  {ch.label}
-                </span>
-              </div>
-              <div style={{
-                fontFamily: "var(--font-jetbrains-mono), monospace",
-                fontSize: 11, color: COLORS.fgMuted,
-                letterSpacing: "0.1em", lineHeight: 1.6,
-              }}>
-                {ch.event}
+              <p style={{
+                fontFamily: "var(--font-jetbrains-mono)", fontSize: 10,
+                letterSpacing: "0.18em", textTransform: "uppercase",
+                color: COLORS.fgMuted, marginBottom: 14,
+              }}>Signal Sources</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {SOURCES.map(({ label, icon, color }, i) => (
+                  <motion.div
+                    key={label}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 + i * 0.1, ease: EASE_OUT }}
+                    style={{
+                      display: "flex", alignItems: "center", gap: 10,
+                      padding: "10px 12px",
+                      background: "#FFFFFF",
+                      border: `1px solid ${color}1a`,
+                      borderRadius: 10,
+                      borderLeft: `3px solid ${color}`,
+                    }}
+                  >
+                    <span style={{ fontSize: 16 }}>{icon}</span>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: COLORS.fg }}>{label}</span>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
-          ))}
-        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.6, duration: 0.8 }}
-          style={{
-            marginTop: 32,
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-          }}
-        >
-          <PulsingDot color={COLORS.blue} size={7} />
-          <span style={{
-            fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: 12, color: COLORS.fgMuted, letterSpacing: "0.12em",
-          }}>
-            Events streaming in real time
-          </span>
-        </motion.div>
+            {/* Center: Flow arrows + label */}
+            <div style={{
+              display: "flex", flexDirection: "column",
+              alignItems: "center", justifyContent: "center",
+              paddingTop: 80, gap: 6,
+            }}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 0 }}>
+                <motion.div
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  style={{
+                    width: 80, height: 1,
+                    background: `linear-gradient(90deg, transparent 0%, ${COLORS.blue} 50%, transparent 100%)`,
+                  }}
+                />
+                <svg width="10" height="10" viewBox="0 0 10 10" style={{ marginTop: -1 }}>
+                  <polygon points="5,0 10,10 0,10" fill={COLORS.blue} />
+                </svg>
+              </div>
+              <p style={{
+                fontFamily: "var(--font-jetbrains-mono)", fontSize: 9,
+                letterSpacing: "0.14em", textTransform: "uppercase",
+                color: COLORS.blue, textAlign: "center",
+              }}>real-time</p>
+            </div>
+
+            {/* Right: Listener types + events */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <motion.div
+                initial={{ opacity: 0, x: 16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5, ease: EASE_OUT }}
+                style={{
+                  background: "#EFF6FF",
+                  border: `1px solid ${COLORS.blueMid}`,
+                  borderRadius: "0 16px 0 0",
+                  padding: "16px 18px",
+                }}
+              >
+                <p style={{
+                  fontFamily: "var(--font-jetbrains-mono)", fontSize: 10,
+                  letterSpacing: "0.18em", textTransform: "uppercase",
+                  color: COLORS.blue, marginBottom: 12,
+                }}>Listeners</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {LISTENERS.map(({ label, tech }, i) => (
+                    <motion.div
+                      key={label}
+                      initial={{ opacity: 0, scale: 0.85 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.6 + i * 0.08 }}
+                      style={{
+                        padding: "5px 10px",
+                        background: "#DBEAFE",
+                        borderRadius: 6,
+                        fontSize: 11,
+                      }}
+                    >
+                      <span style={{ fontWeight: 600, color: "#1E40AF" }}>{label}</span>
+                      <span style={{ color: "#3B82F6", marginLeft: 4 }}>· {tech}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7, ease: EASE_OUT }}
+                style={{
+                  background: COLORS.muted,
+                  border: `1px solid ${COLORS.border}`,
+                  borderRadius: "0 0 16px 0",
+                  padding: "16px 18px",
+                }}
+              >
+                <p style={{
+                  fontFamily: "var(--font-jetbrains-mono)", fontSize: 10,
+                  letterSpacing: "0.18em", textTransform: "uppercase",
+                  color: COLORS.fgMuted, marginBottom: 12,
+                }}>Events Captured</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                  {EVENTS.map(({ label, type, color }, i) => (
+                    <motion.div
+                      key={label}
+                      initial={{ opacity: 0, x: 8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.8 + i * STAGGER_FAST, ease: EASE_OUT }}
+                      style={{ display: "flex", alignItems: "center", gap: 8 }}
+                    >
+                      <span style={{
+                        fontFamily: "var(--font-jetbrains-mono)", fontSize: 9,
+                        letterSpacing: "0.12em", color, fontWeight: 700,
+                        width: 78, flexShrink: 0,
+                      }}>{type}</span>
+                      <span style={{ fontSize: 12, color: COLORS.fg }}>{label}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        )}
       </div>
     </SceneWrapper>
+  );
+}
+
+function SectionCard({ title, children, delay }: { title: string; children: React.ReactNode; delay: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, ease: EASE_OUT }}
+      style={{
+        background: COLORS.muted,
+        border: `1px solid ${COLORS.border}`,
+        borderRadius: 14, padding: "16px 14px",
+      }}
+    >
+      <p style={{
+        fontFamily: "var(--font-jetbrains-mono)", fontSize: 10,
+        letterSpacing: "0.18em", textTransform: "uppercase",
+        color: COLORS.fgMuted, marginBottom: 12,
+      }}>{title}</p>
+      {children}
+    </motion.div>
   );
 }

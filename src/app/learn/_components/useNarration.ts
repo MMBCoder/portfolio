@@ -2,36 +2,32 @@
 
 import { useEffect, useRef, useCallback } from "react";
 
-// ── Narration scripts — one continuous storytelling arc ───────────────────────
-// Each scene's voice-over picks up from the last, like chapters of a documentary.
-// Word counts are calibrated to finish ~2-3s before each scene's auto-advance timer.
+// ── Narration scripts — one continuous executive storytelling arc ─────────────
+// Written in the voice of a Senior VP of Digital Transformation explaining to
+// leadership. Calm. Confident. Thoughtful. Each scene picks up from the last.
 
 export const NARRATIONS: Record<number, string> = {
-  0: "Enterprise data is siloed — and no single team has the complete picture. A Customer Data Platform is built to connect all of it.",
+  0: "Every login. Every payment. Every abandoned application. Each one tells a story your organisation has never fully heard. Inside most financial institutions, these signals remain scattered, disconnected, unread. A Customer Data Platform is what finally connects them.",
 
-  1: "Meet Alex — a real customer browsing your website right now, looking for the right offer.",
+  1: "Meet Sarah — an existing credit card customer. She engages across your mobile app, banking website, credit card portal, email, partner marketplace, and customer support. Six channels. Not a single connected view of who she actually is.",
 
-  2: "In minutes, Alex leaves footprints across five channels — website, email, store, mobile, and support. Every system records her. Not one of them shares it.",
+  2: "As Sarah moves through your ecosystem, she generates a continuous stream of events. A login. A product search. A credit card application started — and then abandoned. An email opened six hours later. Event listeners, embedded across every touchpoint, capture each of these moments in real time.",
 
-  3: "Behind the scenes, seven enterprise systems stream live events — CRM, email, mobile, website, in-store — all generating data, all in complete isolation.",
+  3: "Before a single event reaches the CDP, Sarah must give her consent. A Consent Management Platform presents her privacy choices clearly. She decides what she is willing to share. Only the data she has explicitly approved enters the platform. In regulated industries like financial services, consent is not optional. It is foundational.",
 
-  4: "The CDP steps in. It ingests every event and resolves Alex's fragmented signals — cookie, email, CRM, device — into one unified profile. In real time.",
+  4: "Sarah appears differently in every system. A cookie in your analytics platform. An email address in your marketing stack. A CRM identifier. A mobile device fingerprint. Identity resolution stitches every fragment together — resolving four separate records into one trusted, unified customer identity.",
 
-  5: "Five scattered identifiers become one trusted golden record — Alex's complete history, available to every team across the enterprise, instantly.",
+  5: "The result is a Customer 360 profile — a single, comprehensive view that no individual system could ever provide alone. Demographics. Products she owns. Browsing behaviour. Transaction history. Email engagement. App activity. Support interactions. Her consent status. And AI-generated propensity scores. Every team, from marketing to service, now sees the same Sarah.",
 
-  6: "AI agents now activate on the unified profile — scoring Alex's segment, predicting her next intent, and preparing the optimal personalised recommendation.",
+  6: "With a complete profile, AI models begin their analysis. Purchase propensity. Churn risk. Credit eligibility. Next best offer. Product affinity. Risk signals. Each model generates a recommendation for Sarah based on her actual behaviour and demonstrated intent. These are recommendations — not decisions. That distinction is important.",
 
-  7: "The decision engine receives six signals simultaneously — browsing, email engagement, purchase history, credit band. It processes everything and surfaces one recommendation. Ninety-one percent confidence.",
+  7: "This is where responsible AI separates genuinely mature organisations from the rest. Artificial intelligence accelerates analysis and surfaces the next best recommendation — but a marketing analyst reviews the campaign logic, a compliance officer confirms regulatory alignment, and a business leader approves activation. Every campaign is reviewed and approved by a human before it reaches a customer. Accountability stays with your team.",
 
-  8: "The recommendation activates across every channel — personalised email, mobile push, dynamically updated homepage. One decision, delivered everywhere Alex is, at the same moment.",
+  8: "Approval granted. The CDP now activates Sarah's experience in real time. She abandoned a credit card application this morning. Within seconds of returning to the website, a personalised banner appears. A reminder email is triggered. Her mobile app surfaces a contextual prompt. The call centre receives her profile. Every channel — simultaneously, seamlessly — in real time.",
 
-  9: "Alex opens the email during her morning commute. The offer feels genuinely relevant — because it is. She applies in under two minutes.",
+  9: "Sarah opens the email. She returns to the website. She completes the application. The moment she does, the CDP captures the event, updates her profile, and the AI models recalculate. Every future interaction with Sarah is now informed by what just happened. This is how the system continuously learns — and continuously improves.",
 
-  10: "One connected journey, real business outcomes — higher conversion, stronger lifetime value, and decisions that scale across seventy million customer profiles simultaneously.",
-
-  11: "This is the full architecture behind Alex's journey — eight layers, from customer touchpoints through identity resolution and AI agents, all the way to omnichannel delivery.",
-
-  12: "This is what a modern Customer Data Platform makes possible — not just better data management, but genuinely intelligent, personalised experiences delivered in real time, across every channel your business owns. Alex's journey took under two hundred milliseconds. Multiply that across seventy million customers, simultaneously. This is enterprise AI at scale.",
+  10: "This is the complete picture. A financial institution that listens to every signal, respects every preference, unifies every identity, and acts intelligently — with AI acceleration and human accountability at every step. Not a technology demonstration. A genuine enterprise capability, ready to serve millions of customers the way they deserve to be served.",
 };
 
 // ── Voice preference order ────────────────────────────────────────────────────

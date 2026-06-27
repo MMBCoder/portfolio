@@ -7,31 +7,66 @@ import { useIsMobile } from "../shared/useIsMobile";
 
 interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
-const STEPS = [
-  { icon: "📧", label: "Email received", detail: "Tuesday 9:02 AM", color: COLORS.blue, delay: 0.3 },
-  { icon: "👆", label: "Email opened", detail: "Open rate recorded · CDP event fired", color: COLORS.blue, delay: 0.9 },
-  { icon: "🔗", label: "Link clicked", detail: "CTA: 'Apply Now' · deep-link to app", color: COLORS.purple, delay: 1.5 },
-  { icon: "📝", label: "Application started", detail: "Pre-filled form · 2 min completion", color: COLORS.purple, delay: 2.1 },
-  { icon: "✅", label: "Approved instantly", detail: "ML credit decision · &lt;3 seconds", color: COLORS.green, delay: 2.7 },
-  { icon: "🎉", label: "Customer activated", detail: "Card issued · Profile updated · Journey closed", color: COLORS.green, delay: 3.3 },
+const LOOP_STEPS = [
+  {
+    id: 1, label: "Sarah Opens Email", icon: "✉️",
+    detail: "10:14 AM · Travel Rewards Card offer",
+    color: COLORS.blue, delay: 0.3,
+  },
+  {
+    id: 2, label: "Returns to Website", icon: "🖥️",
+    detail: "Clicks personalised banner · Resumes application",
+    color: COLORS.purple, delay: 0.6,
+  },
+  {
+    id: 3, label: "Completes Application", icon: "✅",
+    detail: "10:19 AM · Application submitted successfully",
+    color: COLORS.green, delay: 0.9,
+  },
+  {
+    id: 4, label: "CDP Captures Event", icon: "⚡",
+    detail: "Conversion event ingested · Real-time processing",
+    color: "#0891B2", delay: 1.2,
+  },
+  {
+    id: 5, label: "Profile Updated", icon: "🔄",
+    detail: "Status: Applicant · New segment: New Card Holder",
+    color: "#D97706", delay: 1.5,
+  },
+  {
+    id: 6, label: "AI Recalculates", icon: "🤖",
+    detail: "Churn risk drops · Upsell models refresh · Suppression applied",
+    color: COLORS.purple, delay: 1.8,
+  },
+  {
+    id: 7, label: "Segments Refresh", icon: "📊",
+    detail: "Moved to onboarding journey · Welcome campaign triggered",
+    color: "#7C3AED", delay: 2.1,
+  },
+  {
+    id: 8, label: "Better Future Campaigns", icon: "🎯",
+    detail: "Every future Sarah interaction informed by this conversion",
+    color: COLORS.green, delay: 2.4,
+  },
 ];
 
 export default function Scene09Response(_props: Props) {
   const isMobile = useIsMobile();
+
   return (
-    <SceneWrapper sceneIndex={9} title="Customer Response">
-      <div style={{ width: "100%", maxWidth: 600 }}>
+    <SceneWrapper sceneIndex={9} title="Continuous Learning">
+      <div style={{ width: "100%", maxWidth: 860 }}>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: 13, letterSpacing: "0.2em", textTransform: "uppercase",
-            color: COLORS.fgMuted, marginBottom: 12, textAlign: "center",
+            fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase",
+            color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 09 · Response
+          Scene 10 · Feedback Loop
         </motion.p>
 
         <motion.h2
@@ -40,71 +75,122 @@ export default function Scene09Response(_props: Props) {
           transition={{ delay: 0.1, ease: EASE_OUT }}
           style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
-            fontWeight: 900, fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)",
+            fontWeight: 900, fontSize: "clamp(1.6rem, 3.5vw, 2.8rem)",
             letterSpacing: "-0.04em", color: COLORS.fg,
-            textTransform: "lowercase", textAlign: "center", marginBottom: 36,
+            textTransform: "lowercase", textAlign: "center", marginBottom: 6,
           }}
         >
-          alex acts.
+          continuous learning.
         </motion.h2>
 
-        {/* Timeline */}
-        <div style={{ position: "relative", paddingLeft: isMobile ? 32 : 40 }}>
-          {/* Vertical line */}
-          <motion.div
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            transition={{ delay: 0.4, duration: 3.0, ease: "easeInOut" }}
-            style={{
-              position: "absolute",
-              left: 15, top: 8, bottom: 8, width: 2,
-              background: `linear-gradient(to bottom, ${COLORS.blue}, ${COLORS.green})`,
-              borderRadius: 2,
-              originY: 0,
-            }}
-          />
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          style={{ fontSize: 15, color: COLORS.fgSecondary, textAlign: "center", marginBottom: 32 }}
+        >
+          Every interaction Sarah has makes the next one smarter.
+        </motion.p>
 
-          {STEPS.map((step) => (
+        {/* Feedback loop steps */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+          gap: 8,
+          marginBottom: 28,
+        }}>
+          {LOOP_STEPS.map(({ id, label, icon, detail, color, delay }) => (
             <motion.div
-              key={step.label}
-              initial={{ opacity: 0, x: -12 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: step.delay, duration: 0.45, ease: EASE_OUT }}
-              style={{ display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 18, position: "relative" }}
-            >
-              {/* Node */}
-              <div style={{
-                position: "absolute", left: -33, top: 6,
-                width: 14, height: 14, borderRadius: "50%",
-                background: step.color,
-                border: "2px solid #FFFFFF",
-                boxShadow: `0 0 0 3px ${step.color}25`,
-                flexShrink: 0,
-              }} />
-
-              {/* Content */}
-              <div style={{
+              key={id}
+              initial={{ opacity: 0, x: id % 2 === 0 ? 12 : -12, scale: 0.95 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ delay, duration: 0.5, ease: EASE_OUT }}
+              style={{
                 background: "#FFFFFF",
-                border: `1px solid ${step.color}20`,
+                border: `1px solid ${color}20`,
                 borderRadius: 12,
-                padding: "12px 16px",
-                flex: 1,
-                boxShadow: `0 2px 8px ${step.color}0A`,
+                padding: "14px 16px",
+                display: "flex",
+                gap: 12,
+                alignItems: "flex-start",
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
+              <div style={{
+                position: "absolute", top: 0, left: 0, bottom: 0, width: 3,
+                background: color,
+              }} />
+              <div style={{
+                width: 36, height: 36, borderRadius: "50%",
+                background: `${color}15`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 18, flexShrink: 0,
               }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                  <span style={{ fontSize: 18 }}>{step.icon}</span>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: COLORS.fg }}>{step.label}</span>
+                {icon}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
+                  <span style={{
+                    fontFamily: "var(--font-jetbrains-mono)", fontSize: 9,
+                    color, letterSpacing: "0.12em",
+                  }}>{String(id).padStart(2, "0")}</span>
+                  <p style={{
+                    fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
+                    fontSize: 13, color: COLORS.fg,
+                  }}>{label}</p>
                 </div>
-                <div style={{
-                  fontFamily: "var(--font-jetbrains-mono), monospace",
-                  fontSize: 12, color: COLORS.fgMuted,
-                }}
-                  dangerouslySetInnerHTML={{ __html: step.detail }}
-                />
+                <p style={{ fontSize: 11, color: COLORS.fgMuted, lineHeight: 1.45 }}>{detail}</p>
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* Loop completion badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 3.0 }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 12,
+            padding: "20px",
+            background: "linear-gradient(135deg, #ECFDF5, #D1FAE5)",
+            border: `1.5px solid ${COLORS.green}`,
+            borderRadius: 16,
+          }}
+        >
+          <div style={{
+            display: "flex", alignItems: "center", gap: 10,
+          }}>
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              style={{
+                width: 28, height: 28, borderRadius: "50%",
+                border: `2px solid ${COLORS.green}`,
+                borderTopColor: "transparent",
+                borderRightColor: "transparent",
+              }}
+            />
+            <p style={{
+              fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
+              fontSize: 16, color: "#065F46",
+            }}>
+              The loop never stops
+            </p>
+          </div>
+          <p style={{
+            fontSize: 13, color: "#047857", textAlign: "center", lineHeight: 1.55,
+            maxWidth: 540,
+          }}>
+            Every future interaction with Sarah — every browse, every transaction, every support call —
+            is now informed by what happened today. The CDP continuously refines her profile,
+            her segments, and the AI models that serve her. Each cycle makes the next one more accurate.
+          </p>
+        </motion.div>
       </div>
     </SceneWrapper>
   );

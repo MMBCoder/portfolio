@@ -2,38 +2,93 @@
 
 import { motion } from "framer-motion";
 import SceneWrapper from "../shared/SceneWrapper";
-import GlassCard from "../shared/GlassCard";
-import { COLORS, STAGGER_FAST, EASE_OUT } from "../constants";
-import { useIsMobile } from "../shared/useIsMobile";
+import { COLORS, EASE_OUT } from "../constants";
 
 interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
-const INPUTS = [
-  { label: "Browsing History", value: "Travel cards · Rewards", icon: "🔍", score: 92 },
-  { label: "Email Engagement", value: "Open rate 68% · 12 clicks", icon: "📧", score: 85 },
-  { label: "Purchase History", value: "$18,400 CLV · 3yr tenure", icon: "🛒", score: 90 },
-  { label: "Credit Score", value: "Band A+ · Low risk", icon: "📊", score: 95 },
-  { label: "Customer Segment", value: "High-Value · Travel Affinity", icon: "🎯", score: 88 },
-  { label: "Model Confidence", value: "91.3% propensity score", icon: "🤖", score: 91 },
+const STEPS = [
+  {
+    id: 1,
+    role: "AI Engine",
+    action: "Recommendation Generated",
+    detail: "Travel Rewards Card · 84% purchase propensity · Low risk signal",
+    icon: "🤖",
+    color: COLORS.blue,
+    bg: "#EFF6FF",
+    border: COLORS.blueMid,
+    tag: "AUTOMATED",
+    tagBg: "#DBEAFE",
+    tagColor: "#1E40AF",
+  },
+  {
+    id: 2,
+    role: "Marketing Analyst",
+    action: "Campaign Logic Reviewed",
+    detail: "Validates offer eligibility, audience segment, and messaging strategy against brand guidelines.",
+    icon: "👩‍💼",
+    color: COLORS.purple,
+    bg: "#F5F3FF",
+    border: "#DDD6FE",
+    tag: "HUMAN REVIEW",
+    tagBg: "#EDE9FE",
+    tagColor: "#5B21B6",
+  },
+  {
+    id: 3,
+    role: "Compliance Officer",
+    action: "Regulatory Check Passed",
+    detail: "Confirms compliance with FCRA, ECOA, and applicable financial marketing regulations.",
+    icon: "⚖️",
+    color: "#0891B2",
+    bg: "#ECFEFF",
+    border: "#A5F3FC",
+    tag: "COMPLIANCE",
+    tagBg: "#CFFAFE",
+    tagColor: "#0E7490",
+  },
+  {
+    id: 4,
+    role: "Business Leader",
+    action: "Activation Approved",
+    detail: "Senior business stakeholder grants final approval. Budget, reach, and timing confirmed.",
+    icon: "👔",
+    color: "#D97706",
+    bg: "#FFFBEB",
+    border: "#FDE68A",
+    tag: "BUSINESS APPROVAL",
+    tagBg: "#FEF3C7",
+    tagColor: "#92400E",
+  },
+  {
+    id: 5,
+    role: "Campaign Published",
+    action: "CDP Activates in Real Time",
+    detail: "Sarah's personalised experience is now live across email, web, and mobile.",
+    icon: "✅",
+    color: COLORS.green,
+    bg: "#ECFDF5",
+    border: "#6EE7B7",
+    tag: "LIVE",
+    tagBg: "#D1FAE5",
+    tagColor: "#065F46",
+  },
 ];
 
 export default function Scene07Decision(_props: Props) {
-  const isMobile = useIsMobile();
-
   return (
-    <SceneWrapper sceneIndex={7} title="Decision Engine">
-      <div style={{ width: "100%", maxWidth: isMobile ? "100%" : 840 }}>
+    <SceneWrapper sceneIndex={7} title="Human Accountability">
+      <div style={{ width: "100%", maxWidth: 680 }}>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: 13, letterSpacing: "0.2em", textTransform: "uppercase",
+            fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase",
             color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 07 · Decision
+          Scene 08 · Human-in-the-Loop Governance
         </motion.p>
 
         <motion.h2
@@ -42,176 +97,127 @@ export default function Scene07Decision(_props: Props) {
           transition={{ delay: 0.1, ease: EASE_OUT }}
           style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
-            fontWeight: 900, fontSize: isMobile ? "1.5rem" : "clamp(1.6rem, 3.5vw, 2.6rem)",
+            fontWeight: 900, fontSize: "clamp(1.6rem, 3.5vw, 2.8rem)",
             letterSpacing: "-0.04em", color: COLORS.fg,
-            textTransform: "lowercase", textAlign: "center", marginBottom: isMobile ? 16 : 28,
+            textTransform: "lowercase", textAlign: "center", marginBottom: 6,
           }}
         >
-          ai evaluates. ai decides.
+          human accountability.
         </motion.h2>
 
-        {isMobile ? (
-          /* ── MOBILE: stacked layout ── */
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          style={{ fontSize: 15, color: COLORS.fgSecondary, textAlign: "center", marginBottom: 32 }}
+        >
+          AI accelerates analysis. Humans remain accountable for every decision.
+        </motion.p>
 
-            {/* Model inputs — compact 2-column grid */}
-            <div>
-              <div style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: COLORS.fgMuted, marginBottom: 8 }}>
-                Model Inputs
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
-                {INPUTS.map((inp, i) => (
-                  <motion.div
-                    key={inp.label}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + i * STAGGER_FAST, duration: 0.35, ease: EASE_OUT }}
-                    style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 10px", background: COLORS.muted, border: `1px solid ${COLORS.border}`, borderRadius: 9 }}
-                  >
-                    <span style={{ fontSize: 14, flexShrink: 0 }}>{inp.icon}</span>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 11, color: COLORS.fg, fontWeight: 600 }}>{inp.label}</div>
-                      <div style={{ fontSize: 10, color: COLORS.fgMuted, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{inp.value}</div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* AI decision indicator */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.0 }}
-              style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}
-            >
+        {/* Governance flow */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+          {STEPS.map((step, i) => (
+            <div key={step.id}>
               <motion.div
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ repeat: Infinity, duration: 1.8 }}
-                style={{ width: 44, height: 44, borderRadius: "50%", background: `linear-gradient(135deg, ${COLORS.blue}, ${COLORS.purple})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, color: "#FFF", boxShadow: `0 0 0 6px rgba(37,99,235,0.1)` }}
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 + i * 0.4, duration: 0.6, ease: EASE_OUT }}
+                style={{
+                  background: step.bg,
+                  border: `1px solid ${step.border}`,
+                  borderRadius: 16,
+                  padding: "18px 20px",
+                  display: "flex",
+                  gap: 16,
+                  alignItems: "flex-start",
+                }}
               >
-                ⚡
-              </motion.div>
-              <motion.div
-                animate={{ y: [0, 4, 0] }}
-                transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
-                style={{ fontSize: 18, color: COLORS.purple }}
-              >
-                ↓
-              </motion.div>
-            </motion.div>
+                {/* Icon + step number */}
+                <div style={{
+                  display: "flex", flexDirection: "column",
+                  alignItems: "center", gap: 4, flexShrink: 0,
+                }}>
+                  <div style={{
+                    width: 44, height: 44, borderRadius: "50%",
+                    background: step.color,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 22,
+                    boxShadow: `0 4px 12px ${step.color}30`,
+                  }}>
+                    {step.icon}
+                  </div>
+                  <span style={{
+                    fontFamily: "var(--font-jetbrains-mono)", fontSize: 9,
+                    letterSpacing: "0.12em", color: step.color, fontWeight: 700,
+                  }}>STEP 0{step.id}</span>
+                </div>
 
-            {/* Recommendation */}
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.92 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: 1.4, duration: 0.6, ease: EASE_OUT }}
-            >
-              <GlassCard glow="purple" style={{ padding: "20px", overflow: "hidden", position: "relative" }}>
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${COLORS.purple}, ${COLORS.blue})`, borderRadius: "16px 16px 0 0" }} />
-                <div style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 11, color: COLORS.purple, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 10 }}>
-                  ✓ Recommendation
+                {/* Content */}
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap" }}>
+                    <p style={{
+                      fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
+                      fontSize: 14, color: step.color,
+                    }}>{step.role}</p>
+                    <span style={{
+                      padding: "2px 8px",
+                      background: step.tagBg, color: step.tagColor,
+                      borderRadius: 20, fontSize: 10,
+                      fontFamily: "var(--font-jetbrains-mono)",
+                      letterSpacing: "0.1em",
+                    }}>{step.tag}</span>
+                  </div>
+                  <p style={{
+                    fontFamily: "var(--font-space-grotesk)", fontWeight: 600,
+                    fontSize: 15, color: COLORS.fg, marginBottom: 4,
+                  }}>{step.action}</p>
+                  <p style={{ fontSize: 12, color: COLORS.fgSecondary, lineHeight: 1.5 }}>
+                    {step.detail}
+                  </p>
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-                  <div style={{ fontSize: 28 }}>💳</div>
-                  <div style={{ fontWeight: 800, fontSize: 16, color: COLORS.fg }}>Premium Travel Card</div>
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 16px" }}>
-                  {[
-                    { k: "Offer", v: "0% APR · 12m" },
-                    { k: "Bonus", v: "60K points" },
-                    { k: "Channel", v: "Email→Mobile" },
-                    { k: "Send time", v: "Tue 9:02 AM" },
-                    { k: "Confidence", v: "91.3%" },
-                  ].map((kv) => (
-                    <div key={kv.k} style={{ padding: "5px 0", borderBottom: `1px solid ${COLORS.border}`, fontSize: 12 }}>
-                      <div style={{ color: COLORS.fgMuted, fontSize: 10 }}>{kv.k}</div>
-                      <div style={{ color: COLORS.fg, fontWeight: 600 }}>{kv.v}</div>
-                    </div>
-                  ))}
-                </div>
-              </GlassCard>
-            </motion.div>
-          </div>
-        ) : (
-          /* ── DESKTOP: 3-column layout ── */
-          <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: 20, alignItems: "center" }}>
+              </motion.div>
 
-            {/* Left: inputs */}
-            <div>
-              <div style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: COLORS.fgMuted, marginBottom: 10 }}>
-                Model Inputs
-              </div>
-              {INPUTS.map((inp, i) => (
+              {/* Connector */}
+              {i < STEPS.length - 1 && (
                 <motion.div
-                  key={inp.label}
-                  initial={{ opacity: 0, x: -16 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + i * STAGGER_FAST, duration: 0.4, ease: EASE_OUT }}
-                  style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 12px", marginBottom: 7, background: COLORS.muted, border: `1px solid ${COLORS.border}`, borderRadius: 10 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 + i * 0.4 + 0.3 }}
+                  style={{
+                    display: "flex", flexDirection: "column",
+                    alignItems: "center", margin: "4px 0",
+                  }}
                 >
-                  <span style={{ fontSize: 15, flexShrink: 0 }}>{inp.icon}</span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 12, color: COLORS.fg, fontWeight: 600, marginBottom: 1 }}>{inp.label}</div>
-                    <div style={{ fontSize: 11, color: COLORS.fgMuted, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{inp.value}</div>
-                  </div>
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${inp.score * 0.36}px` }}
-                    transition={{ delay: 0.5 + i * STAGGER_FAST, duration: 0.6 }}
-                    style={{ height: 3, background: COLORS.blue, borderRadius: 2, flexShrink: 0 }}
-                  />
+                  <div style={{ width: 1, height: 14, background: COLORS.border }} />
+                  <svg width="10" height="6" viewBox="0 0 10 6">
+                    <polygon points="5,6 0,0 10,0" fill={COLORS.border} />
+                  </svg>
                 </motion.div>
-              ))}
+              )}
             </div>
+          ))}
+        </div>
 
-            {/* Center: funnel arrow */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.2 }}
-              style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}
-            >
-              <div style={{ width: 1, height: 40, background: `linear-gradient(to bottom, transparent, ${COLORS.blue})` }} />
-              <motion.div
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ repeat: Infinity, duration: 1.8 }}
-                style={{ width: 44, height: 44, borderRadius: "50%", background: `linear-gradient(135deg, ${COLORS.blue}, ${COLORS.purple})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, color: "#FFF", boxShadow: `0 0 0 6px rgba(37,99,235,0.1)` }}
-              >
-                ⚡
-              </motion.div>
-              <div style={{ width: 1, height: 40, background: `linear-gradient(to bottom, ${COLORS.purple}, transparent)` }} />
-            </motion.div>
-
-            {/* Right: recommendation output */}
-            <motion.div
-              initial={{ opacity: 0, x: 30, scale: 0.92 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              transition={{ delay: 1.6, duration: 0.7, ease: EASE_OUT }}
-            >
-              <GlassCard glow="purple" style={{ padding: "24px", overflow: "hidden", position: "relative" }}>
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${COLORS.purple}, ${COLORS.blue})`, borderRadius: "16px 16px 0 0" }} />
-                <div style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 11, color: COLORS.purple, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 14 }}>
-                  ✓ Recommendation
-                </div>
-                <div style={{ fontSize: 36, marginBottom: 8 }}>💳</div>
-                <div style={{ fontWeight: 800, fontSize: 18, color: COLORS.fg, marginBottom: 6 }}>Premium Travel Card</div>
-                {[
-                  { k: "Offer", v: "0% APR · 12 months" },
-                  { k: "Bonus", v: "60,000 reward points" },
-                  { k: "Channel", v: "Email → Mobile" },
-                  { k: "Send time", v: "Tuesday 9:02 AM" },
-                  { k: "Confidence", v: "91.3%" },
-                ].map((kv) => (
-                  <div key={kv.k} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: `1px solid ${COLORS.border}`, fontSize: 13 }}>
-                    <span style={{ color: COLORS.fgMuted }}>{kv.k}</span>
-                    <span style={{ color: COLORS.fg, fontWeight: 600 }}>{kv.v}</span>
-                  </div>
-                ))}
-              </GlassCard>
-            </motion.div>
-          </div>
-        )}
+        {/* Principle statement */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.8 }}
+          style={{
+            marginTop: 24,
+            padding: "14px 20px",
+            background: "linear-gradient(135deg, #EFF6FF, #F5F3FF)",
+            border: `1px solid ${COLORS.blueMid}`,
+            borderRadius: 12,
+            textAlign: "center",
+          }}
+        >
+          <p style={{ fontSize: 13, color: "#1E40AF", lineHeight: 1.6 }}>
+            <strong>Responsible AI in financial services:</strong> Artificial intelligence accelerates
+            analysis and recommends the next best action — but business teams remain accountable
+            for campaign strategy, customer fairness, compliance, and regulatory approval.
+          </p>
+        </motion.div>
       </div>
     </SceneWrapper>
   );

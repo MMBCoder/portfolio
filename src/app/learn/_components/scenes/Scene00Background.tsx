@@ -1,152 +1,160 @@
 "use client";
 
 import { motion } from "framer-motion";
-import SceneWrapper from "../shared/SceneWrapper";
-import { COLORS, EASE_OUT } from "../constants";
-import { useIsMobile } from "../shared/useIsMobile";
+import { EASE_OUT } from "../constants";
 
 interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
-const PILLARS = [
-  {
-    icon: "🧩",
-    title: "The Problem",
-    body: "Customer data is scattered across dozens of systems. A single customer leaves 50+ digital footprints daily — website, email, mobile, POS, support — none connected.",
-    color: COLORS.purple,
-  },
-  {
-    icon: "⚡",
-    title: "The Solution",
-    body: "A Customer Data Platform (CDP) unifies fragmented data into a real-time unified profile — enabling AI-powered personalisation at enterprise scale.",
-    color: COLORS.blue,
-  },
-  {
-    icon: "🗺️",
-    title: "This Story",
-    body: "Follow Alex Chen through a complete CDP journey — from first touchpoint to personalised offer, powered by BlueConic CDP + AI, in under 200ms.",
-    color: COLORS.green,
-  },
+const PHRASES = [
+  { text: "Every login.", weight: 700, delay: 0.3 },
+  { text: "Every payment.", weight: 700, delay: 0.85 },
+  { text: "Every abandoned application.", weight: 700, delay: 1.4 },
+  { text: "Each one tells a story.", weight: 400, delay: 2.1 },
 ];
 
 export default function Scene00Background(_props: Props) {
-  const isMobile = useIsMobile();
-
   return (
-    <SceneWrapper sceneIndex={0} title="Background">
-      <div style={{ width: "100%", maxWidth: 800 }}>
+    <motion.section
+      key={0}
+      role="region"
+      aria-label="Scene 01: The Opportunity"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.55, ease: EASE_OUT }}
+      style={{
+        position: "absolute",
+        inset: 0,
+        background: "linear-gradient(150deg, #070c1d 0%, #0b1640 40%, #112467 75%, #1a3a8f 100%)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "80px 28px",
+      }}
+    >
+      {/* Ambient glow orb */}
+      <div style={{
+        position: "absolute",
+        top: "30%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 700,
+        height: 500,
+        background: "radial-gradient(ellipse, rgba(37,99,235,0.12) 0%, transparent 68%)",
+        pointerEvents: "none",
+      }} />
 
+      <div style={{ maxWidth: 760, width: "100%", position: "relative", zIndex: 1 }}>
+        {/* Eyebrow */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.7 }}
           style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: 13, letterSpacing: "0.2em", textTransform: "uppercase",
-            color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
+            fontSize: 11,
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            color: "rgba(147,197,253,0.55)",
+            marginBottom: 32,
           }}
         >
-          Scene 00 · Background
+          Customer Data Platform · Financial Services
         </motion.p>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, ease: EASE_OUT }}
-          style={{
-            fontFamily: "var(--font-space-grotesk), sans-serif",
-            fontWeight: 900, fontSize: isMobile ? "1.6rem" : "clamp(1.8rem, 4vw, 3rem)",
-            letterSpacing: "-0.04em", color: COLORS.fg,
-            textTransform: "lowercase", textAlign: "center", marginBottom: 8,
-          }}
-        >
-          why this story matters.
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.25 }}
-          style={{
-            fontSize: isMobile ? 13 : 15,
-            color: COLORS.fgSecondary,
-            textAlign: "center",
-            marginBottom: isMobile ? 24 : 36,
-            lineHeight: 1.65,
-            maxWidth: 560,
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
-          A 12-scene journey through a real Customer Data Platform — how fragmented signals become personalised experiences.
-        </motion.p>
-
-        {/* 3 pillars */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
-          gap: isMobile ? 10 : 16,
-          marginBottom: isMobile ? 18 : 24,
-        }}>
-          {PILLARS.map((p, i) => (
-            <motion.div
-              key={p.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 + i * 0.15, duration: 0.5, ease: EASE_OUT }}
+        {/* Dramatic phrases */}
+        <div style={{ marginBottom: 52 }}>
+          {PHRASES.map(({ text, weight, delay }) => (
+            <motion.p
+              key={text}
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay, duration: 0.65, ease: EASE_OUT }}
               style={{
-                padding: isMobile ? "14px 14px" : "20px 18px",
-                background: `${p.color}08`,
-                border: `1px solid ${p.color}25`,
-                borderRadius: 12,
+                fontFamily: "var(--font-space-grotesk), sans-serif",
+                fontWeight: weight,
+                fontSize: "clamp(1.8rem, 4.5vw, 3.4rem)",
+                color: weight === 700 ? "#FFFFFF" : "rgba(255,255,255,0.58)",
+                letterSpacing: "-0.03em",
+                lineHeight: 1.2,
+                marginBottom: text === "Each one tells a story." ? 0 : 4,
               }}
             >
-              <div style={{ fontSize: isMobile ? 20 : 24, marginBottom: 8 }}>{p.icon}</div>
-              <div style={{ fontSize: isMobile ? 13 : 14, fontWeight: 700, color: p.color, marginBottom: 6 }}>{p.title}</div>
-              <p style={{ fontSize: isMobile ? 12 : 13, color: COLORS.fgSecondary, lineHeight: 1.65, margin: 0 }}>{p.body}</p>
-            </motion.div>
+              {text}
+            </motion.p>
           ))}
         </div>
 
-        {/* Stat row */}
+        {/* Divider */}
         <motion.div
+          initial={{ scaleX: 0, originX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 3.0, duration: 0.9 }}
+          style={{
+            height: 1,
+            background: "linear-gradient(90deg, rgba(255,255,255,0.15) 0%, transparent 100%)",
+            marginBottom: 40,
+          }}
+        />
+
+        {/* Supporting statement */}
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.0 }}
+          transition={{ delay: 3.7, duration: 1.0 }}
           style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: isMobile ? 14 : 28,
-            flexWrap: "wrap",
-            padding: isMobile ? "12px 14px" : "14px 20px",
-            background: COLORS.muted,
-            border: `1px solid ${COLORS.border}`,
-            borderRadius: 10,
+            fontFamily: "var(--font-space-grotesk), sans-serif",
+            fontWeight: 400,
+            fontSize: "clamp(0.95rem, 2vw, 1.3rem)",
+            color: "rgba(191,219,254,0.75)",
+            lineHeight: 1.7,
+            maxWidth: 640,
+            marginBottom: 52,
           }}
         >
-          {[
-            { value: "12", label: "Scenes" },
-            { value: "70M+", label: "Profiles" },
-            { value: "< 200ms", label: "Activation" },
-            { value: "BlueConic", label: "Platform" },
-          ].map((stat) => (
-            <div key={stat.label} style={{ textAlign: "center" }}>
-              <div style={{
-                fontFamily: "var(--font-space-grotesk), sans-serif",
-                fontWeight: 900, fontSize: isMobile ? 15 : 18,
-                color: COLORS.fg, letterSpacing: "-0.02em",
-              }}>
-                {stat.value}
-              </div>
-              <div style={{
-                fontFamily: "var(--font-jetbrains-mono), monospace",
-                fontSize: 10, color: COLORS.fgMuted,
-                textTransform: "uppercase", letterSpacing: "0.1em", marginTop: 2,
-              }}>
-                {stat.label}
-              </div>
-            </div>
-          ))}
+          Inside most financial institutions, these signals remain scattered across
+          dozens of disconnected systems — unheard and unrealised.
+          What if every customer interaction could become an opportunity to serve
+          customers better, in real time?
+        </motion.p>
+
+        {/* Signal badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 5.2, duration: 0.7, ease: EASE_OUT }}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "12px 26px",
+            border: "1px solid rgba(59,130,246,0.38)",
+            borderRadius: 100,
+            background: "rgba(37,99,235,0.13)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          <motion.div
+            animate={{ opacity: [1, 0.3, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              width: 7, height: 7, borderRadius: "50%",
+              background: "#60A5FA",
+              flexShrink: 0,
+            }}
+          />
+          <span style={{
+            fontFamily: "var(--font-space-grotesk), sans-serif",
+            fontWeight: 500,
+            fontSize: "clamp(0.8rem, 1.4vw, 0.95rem)",
+            color: "#93C5FD",
+            letterSpacing: "0.01em",
+          }}>
+            A Customer Data Platform changes that
+          </span>
         </motion.div>
       </div>
-    </SceneWrapper>
+    </motion.section>
   );
 }

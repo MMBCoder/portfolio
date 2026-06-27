@@ -2,150 +2,193 @@
 
 import { motion } from "framer-motion";
 import SceneWrapper from "../shared/SceneWrapper";
-import PulsingDot from "../shared/PulsingDot";
-import { COLORS, STAGGER_CHILDREN, EASE_OUT } from "../constants";
+import { COLORS, EASE_OUT, STAGGER_CHILDREN } from "../constants";
+import { useIsMobile } from "../shared/useIsMobile";
 
 interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
-const IDENTITY_SIGNALS = [
-  { label: "Cookie ID", value: "usr_8f3k2m9x", color: COLORS.blue },
-  { label: "Email", value: "alex.c@email.com", color: COLORS.purple },
-  { label: "Device ID", value: "iOS · Safari", color: COLORS.cyan },
-  { label: "CRM ID", value: "CRM-70041822", color: COLORS.green },
+const CHANNELS = [
+  { label: "Mobile App", sub: "Banking app · iOS & Android", icon: "📱", color: "#2563EB" },
+  { label: "Banking Website", sub: "Digital banking portal", icon: "🖥️", color: "#7C3AED" },
+  { label: "Credit Card Portal", sub: "Card management", icon: "💳", color: "#0891B2" },
+  { label: "Email", sub: "Marketing & service comms", icon: "✉️", color: "#059669" },
+  { label: "Partner Marketplace", sub: "Third-party products", icon: "🤝", color: "#D97706" },
+  { label: "Customer Support", sub: "Phone, chat & in-branch", icon: "🎧", color: "#DC2626" },
 ];
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: STAGGER_CHILDREN, delayChildren: 0.6 } },
+  show: { transition: { staggerChildren: STAGGER_CHILDREN, delayChildren: 0.5 } },
 };
 const item = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_OUT } },
+  hidden: { opacity: 0, y: 16, scale: 0.95 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: EASE_OUT } },
 };
 
 export default function Scene01Customer(_props: Props) {
-  return (
-    <SceneWrapper sceneIndex={1} title="Meet the Customer">
-      <div style={{ width: "100%", maxWidth: 680, textAlign: "center" }}>
+  const isMobile = useIsMobile();
 
-        {/* Scene label */}
+  return (
+    <SceneWrapper sceneIndex={1} title="Sarah's World">
+      <div style={{ width: "100%", maxWidth: 860 }}>
+
+        {/* Eyebrow */}
         <motion.p
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: 13, letterSpacing: "0.18em",
-            textTransform: "uppercase", color: COLORS.fgMuted,
-            marginBottom: 24,
+            fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase",
+            color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 01 · The Customer
+          Scene 02 · Customer Journey
         </motion.p>
 
-        {/* Avatar */}
-        <motion.div
-          initial={{ scale: 0.6, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.7, ease: EASE_OUT }}
-          style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}
-        >
-          <div style={{
-            width: 96, height: 96, borderRadius: "50%",
-            background: `linear-gradient(135deg, ${COLORS.blue}, ${COLORS.purple})`,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 38, boxShadow: `0 0 0 6px rgba(37,99,235,0.08), 0 0 0 12px rgba(37,99,235,0.04)`,
-          }}>
-            👤
-          </div>
-        </motion.div>
-
-        {/* Name */}
         <motion.h2
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6, ease: EASE_OUT }}
+          transition={{ delay: 0.1, ease: EASE_OUT }}
           style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
-            fontWeight: 900, fontSize: "clamp(2rem, 5vw, 3.5rem)",
+            fontWeight: 900, fontSize: "clamp(1.8rem, 4vw, 3rem)",
             letterSpacing: "-0.04em", color: COLORS.fg,
-            textTransform: "lowercase", marginBottom: 8,
+            textTransform: "lowercase", textAlign: "center", marginBottom: 6,
           }}
         >
-          alex chen.
+          meet sarah.
         </motion.h2>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          style={{
-            fontSize: 15, color: COLORS.fgSecondary,
-            marginBottom: 48, lineHeight: 1.6,
-          }}
+          transition={{ delay: 0.2 }}
+          style={{ fontSize: 15, color: COLORS.fgSecondary, textAlign: "center", marginBottom: 36 }}
         >
-          A real customer with a digital life — across devices, channels, and moments.
+          An existing credit card customer engaging across six separate channels.
         </motion.p>
 
-        {/* Identity signals */}
+        {/* Sarah's profile card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.3, duration: 0.6, ease: EASE_OUT }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 16,
+            padding: "20px 28px",
+            background: "linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)",
+            border: `1px solid ${COLORS.blueMid}`,
+            borderRadius: 16,
+            marginBottom: 28,
+            maxWidth: 480,
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          <div style={{
+            width: 52, height: 52, borderRadius: "50%",
+            background: `linear-gradient(135deg, ${COLORS.blue} 0%, #1D4ED8 100%)`,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            flexShrink: 0,
+            boxShadow: "0 4px 16px rgba(37,99,235,0.25)",
+          }}>
+            <span style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 22, color: "#fff" }}>S</span>
+          </div>
+          <div>
+            <p style={{
+              fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
+              fontSize: 18, color: COLORS.fg, marginBottom: 2,
+            }}>Sarah</p>
+            <p style={{ fontSize: 13, color: COLORS.fgSecondary }}>
+              Premium Credit Card Holder · 7 years · High Lifetime Value
+            </p>
+          </div>
+          <div style={{
+            marginLeft: "auto",
+            padding: "5px 12px",
+            background: "#DEF7EC",
+            border: "1px solid #6EE7B7",
+            borderRadius: 20,
+            fontSize: 12,
+            color: "#065F46",
+            fontFamily: "var(--font-jetbrains-mono)",
+            whiteSpace: "nowrap",
+          }}>
+            Active Customer
+          </div>
+        </motion.div>
+
+        {/* Channels grid */}
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gap: 12,
-            maxWidth: 480,
-            margin: "0 auto",
+            gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(3, 1fr)",
+            gap: 10,
+            marginBottom: 28,
           }}
         >
-          {IDENTITY_SIGNALS.map((sig) => (
+          {CHANNELS.map(({ label, sub, icon, color }) => (
             <motion.div
-              key={sig.label}
+              key={label}
               variants={item}
               style={{
-                background: COLORS.muted,
-                border: `1px solid ${COLORS.border}`,
-                borderRadius: 12,
-                padding: "12px 16px",
-                textAlign: "left",
+                background: "#FFFFFF",
+                border: `1px solid ${color}20`,
+                borderRadius: 14,
+                padding: "16px 14px",
                 display: "flex",
-                alignItems: "center",
-                gap: 10,
+                flexDirection: "column",
+                gap: 8,
+                position: "relative",
+                overflow: "hidden",
               }}
             >
-              <PulsingDot color={sig.color} size={8} />
+              <div style={{
+                position: "absolute", top: 0, left: 0, right: 0, height: 3,
+                background: color,
+              }} />
+              <span style={{ fontSize: 22 }}>{icon}</span>
               <div>
-                <div style={{
-                  fontFamily: "var(--font-jetbrains-mono), monospace",
-                  fontSize: 11, color: COLORS.fgMuted,
-                  letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 3,
-                }}>
-                  {sig.label}
-                </div>
-                <div style={{ fontSize: 14, color: COLORS.fg, fontWeight: 600 }}>
-                  {sig.value}
-                </div>
+                <p style={{
+                  fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
+                  fontSize: 13, color: COLORS.fg, marginBottom: 2,
+                }}>{label}</p>
+                <p style={{ fontSize: 11, color: COLORS.fgMuted }}>{sub}</p>
               </div>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 0.8 }}
+        {/* Insight banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.2, duration: 0.6 }}
           style={{
-            marginTop: 40,
-            fontSize: 13, color: COLORS.fgMuted,
-            fontFamily: "var(--font-jetbrains-mono), monospace",
-            letterSpacing: "0.08em",
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            padding: "14px 20px",
+            background: "#FFF7ED",
+            border: "1px solid #FED7AA",
+            borderRadius: 12,
           }}
         >
-          Multiple identities · One real person
-        </motion.p>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EA580C" strokeWidth="2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          <p style={{ fontSize: 13, color: "#9A3412", lineHeight: 1.5 }}>
+            <strong>Six channels. Zero connected views.</strong> Sarah is a different person in every system.
+            No team currently knows the complete picture of who she is.
+          </p>
+        </motion.div>
       </div>
     </SceneWrapper>
   );

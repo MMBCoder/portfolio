@@ -2,35 +2,37 @@
 
 import { motion } from "framer-motion";
 import SceneWrapper from "../shared/SceneWrapper";
-import PulsingDot from "../shared/PulsingDot";
 import { COLORS, EASE_OUT } from "../constants";
+import { useIsMobile } from "../shared/useIsMobile";
 
 interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
 const CHANNELS = [
-  { icon: "📧", label: "Email", detail: "Personalised HTML · Tuesday 9AM", color: COLORS.blue, delay: 0.6 },
-  { icon: "💬", label: "SMS", detail: "Short-form · opt-in confirmed", color: COLORS.green, delay: 0.8 },
-  { icon: "🔔", label: "Push Notification", detail: "Mobile · deep-link to apply", color: COLORS.purple, delay: 1.0 },
-  { icon: "🌐", label: "Website Personalisation", detail: "Hero banner swap · BlueConic listener", color: COLORS.cyan, delay: 1.2 },
-  { icon: "🛒", label: "Marketplace", detail: "Sponsored placement · Travel category", color: COLORS.amber, delay: 1.4 },
-  { icon: "🎧", label: "Call Center", detail: "Agent script updated · CRM flag set", color: "#EF4444", delay: 1.6 },
+  { label: "Personalised Email", time: "1.2s", icon: "✉️", color: COLORS.blue, detail: "Subject: \"Your exclusive travel rewards offer, Sarah\"" },
+  { label: "Website Banner", time: "0.8s", icon: "🖥️", color: COLORS.purple, detail: "Dynamic hero banner · 3-click application flow" },
+  { label: "Mobile Notification", time: "1.5s", icon: "📱", color: "#0891B2", detail: "Push · \"Complete your Premium Card application\"" },
+  { label: "Call Centre Context", time: "2.1s", icon: "🎧", color: COLORS.green, detail: "Agent briefed with Sarah's profile and offer details" },
+  { label: "Ad Suppression", time: "0.5s", icon: "🚫", color: "#D97706", detail: "Retargeting paused — organic journey in progress" },
+  { label: "Chat Trigger", time: "1.8s", icon: "💬", color: "#DC2626", detail: "Proactive chat offer on return visit · 72-hour window" },
 ];
 
 export default function Scene08Activation(_props: Props) {
+  const isMobile = useIsMobile();
+
   return (
-    <SceneWrapper sceneIndex={8} title="Omnichannel Activation">
-      <div style={{ width: "100%", maxWidth: 760 }}>
+    <SceneWrapper sceneIndex={8} title="Activated in Real Time">
+      <div style={{ width: "100%", maxWidth: 880 }}>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: 13, letterSpacing: "0.2em", textTransform: "uppercase",
-            color: COLORS.fgMuted, marginBottom: 12, textAlign: "center",
+            fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase",
+            color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 08 · Activation
+          Scene 09 · Real-Time Activation
         </motion.p>
 
         <motion.h2
@@ -39,88 +41,180 @@ export default function Scene08Activation(_props: Props) {
           transition={{ delay: 0.1, ease: EASE_OUT }}
           style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
-            fontWeight: 900, fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)",
+            fontWeight: 900, fontSize: "clamp(1.6rem, 3.5vw, 2.8rem)",
             letterSpacing: "-0.04em", color: COLORS.fg,
-            textTransform: "lowercase", textAlign: "center", marginBottom: 8,
+            textTransform: "lowercase", textAlign: "center", marginBottom: 6,
           }}
         >
-          delivering the decision.
+          activated in real time.
         </motion.h2>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.25 }}
-          style={{ fontSize: 15, color: COLORS.fgSecondary, textAlign: "center", marginBottom: 36 }}
+          transition={{ delay: 0.2 }}
+          style={{ fontSize: 15, color: COLORS.fgSecondary, textAlign: "center", marginBottom: 24 }}
         >
-          The recommendation is pushed simultaneously to every active channel.
+          The CDP triggers Sarah's personalised experience across every channel simultaneously.
         </motion.p>
 
-        {/* Center source */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 24 }}>
+        {/* Trigger event */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.3, ease: EASE_OUT }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+            padding: "14px 20px",
+            background: "#FFF7ED",
+            border: "1.5px solid #FED7AA",
+            borderRadius: 14,
+            marginBottom: 20,
+          }}
+        >
+          <div style={{ fontSize: 24 }}>⚡</div>
+          <div style={{ flex: 1 }}>
+            <p style={{
+              fontFamily: "var(--font-jetbrains-mono)", fontSize: 10,
+              letterSpacing: "0.16em", color: "#D97706", marginBottom: 2,
+            }}>TRIGGER EVENT · 09:42 AM</p>
+            <p style={{
+              fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
+              fontSize: 15, color: COLORS.fg,
+            }}>
+              Sarah abandoned her Premium Card application — 3 fields from completion
+            </p>
+          </div>
+          <div style={{
+            padding: "5px 12px", background: "#FEF3C7",
+            border: "1px solid #FDE68A", borderRadius: 20,
+            fontSize: 10, color: "#92400E",
+            fontFamily: "var(--font-jetbrains-mono)", flexShrink: 0,
+          }}>
+            HIGH INTENT
+          </div>
+        </motion.div>
+
+        {/* CDP hub + channel cards */}
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 12,
+        }}>
+          {/* CDP hub */}
           <motion.div
-            initial={{ scale: 0.7, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.55, ease: EASE_OUT }}
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.6, ease: EASE_OUT }}
             style={{
-              width: 72, height: 72, borderRadius: "50%",
-              background: `linear-gradient(135deg, ${COLORS.blue}, ${COLORS.purple})`,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 28, color: "#FFF",
-              boxShadow: `0 0 0 8px rgba(37,99,235,0.08), 0 0 0 16px rgba(37,99,235,0.04)`,
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              padding: "14px 24px",
+              background: `linear-gradient(135deg, ${COLORS.blue}10, ${COLORS.blue}1a)`,
+              border: `2px solid ${COLORS.blue}`,
+              borderRadius: 14,
+              boxShadow: `0 0 0 4px ${COLORS.blue}10`,
             }}
           >
-            ⚡
+            <motion.div
+              animate={{ scale: [1, 1.12, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              style={{
+                width: 10, height: 10, borderRadius: "50%",
+                background: COLORS.blue,
+                boxShadow: `0 0 12px ${COLORS.blue}`,
+              }}
+            />
+            <span style={{
+              fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
+              fontSize: 16, color: COLORS.blue,
+            }}>CDP Activation Engine</span>
+            <span style={{
+              fontFamily: "var(--font-jetbrains-mono)", fontSize: 10,
+              color: COLORS.blue, letterSpacing: "0.12em",
+            }}>· LIVE</span>
           </motion.div>
 
-          {/* Channel grid */}
+          {/* Activation channels */}
           <div style={{
-            display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(155px, 1fr))",
-            gap: 10, width: "100%",
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+            gap: 8,
+            width: "100%",
           }}>
-            {CHANNELS.map((ch) => (
+            {CHANNELS.map(({ label, time, icon, color, detail }, i) => (
               <motion.div
-                key={ch.label}
-                initial={{ opacity: 0, y: 16, scale: 0.93 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: ch.delay, duration: 0.5, ease: EASE_OUT }}
+                key={label}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -12 : 12, scale: 0.95 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                transition={{ delay: 0.7 + i * 0.18, duration: 0.5, ease: EASE_OUT }}
                 style={{
                   background: "#FFFFFF",
-                  border: `1px solid ${ch.color}25`,
-                  borderRadius: 14,
-                  padding: "16px",
-                  boxShadow: `0 2px 12px ${ch.color}0D`,
+                  border: `1px solid ${color}20`,
+                  borderRadius: 12,
+                  padding: "14px 16px",
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: 12,
+                  position: "relative",
+                  overflow: "hidden",
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-                  <span style={{ fontSize: 20 }}>{ch.icon}</span>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    <PulsingDot color={ch.color} size={6} delay={ch.delay + 0.3} />
-                    <span style={{ fontSize: 13, fontWeight: 600, color: COLORS.fg }}>{ch.label}</span>
-                  </div>
-                </div>
                 <div style={{
-                  fontFamily: "var(--font-jetbrains-mono), monospace",
-                  fontSize: 11, color: COLORS.fgMuted, lineHeight: 1.6,
-                }}>
-                  {ch.detail}
+                  position: "absolute", top: 0, left: 0, bottom: 0, width: 3,
+                  background: color,
+                }} />
+                <span style={{ fontSize: 20, flexShrink: 0 }}>{icon}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
+                    <p style={{
+                      fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
+                      fontSize: 13, color: COLORS.fg,
+                    }}>{label}</p>
+                    <span style={{
+                      fontFamily: "var(--font-jetbrains-mono)", fontSize: 10,
+                      color, fontWeight: 700, letterSpacing: "0.06em",
+                    }}>↗ {time}</span>
+                  </div>
+                  <p style={{ fontSize: 11, color: COLORS.fgMuted, lineHeight: 1.4 }}>{detail}</p>
                 </div>
               </motion.div>
             ))}
           </div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2.0 }}
-            style={{
-              fontFamily: "var(--font-jetbrains-mono), monospace",
-              fontSize: 12, color: COLORS.fgMuted, letterSpacing: "0.1em", textAlign: "center",
-            }}
-          >
-            Triggered in &lt;200ms · Consent-gated · Frequency-capped
-          </motion.div>
         </div>
+
+        {/* Timing summary */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2.6 }}
+          style={{
+            marginTop: 20,
+            display: "flex",
+            justifyContent: "center",
+            gap: 28,
+            flexWrap: "wrap",
+          }}
+        >
+          {[
+            { label: "Activation Latency", value: "< 200ms" },
+            { label: "Channels Activated", value: "6 simultaneously" },
+            { label: "Personalisation Signals", value: "9 dimensions" },
+          ].map(({ label, value }) => (
+            <div key={label} style={{ textAlign: "center" }}>
+              <p style={{
+                fontFamily: "var(--font-space-grotesk)", fontWeight: 900,
+                fontSize: "clamp(1.1rem, 2.5vw, 1.6rem)",
+                color: COLORS.blue, letterSpacing: "-0.02em", marginBottom: 2,
+              }}>{value}</p>
+              <p style={{ fontSize: 11, color: COLORS.fgMuted }}>{label}</p>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </SceneWrapper>
   );

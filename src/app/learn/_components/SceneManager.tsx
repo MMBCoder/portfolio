@@ -14,13 +14,11 @@ const Scene07 = lazy(() => import("./scenes/Scene07Decision"));
 const Scene08 = lazy(() => import("./scenes/Scene08Activation"));
 const Scene09 = lazy(() => import("./scenes/Scene09Response"));
 const Scene10 = lazy(() => import("./scenes/Scene10Outcomes"));
-const Scene11 = lazy(() => import("./scenes/Scene11Architecture"));
-const Scene12 = lazy(() => import("./scenes/Scene12Final"));
 
 const SCENES = [
   Scene00, Scene01, Scene02, Scene03, Scene04,
   Scene05, Scene06, Scene07, Scene08,
-  Scene09, Scene10, Scene11, Scene12,
+  Scene09, Scene10,
 ];
 
 interface SceneManagerProps {

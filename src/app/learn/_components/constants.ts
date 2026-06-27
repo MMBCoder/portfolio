@@ -1,21 +1,19 @@
-// Scene durations in milliseconds — extended to give narration room to breathe
+// Scene durations in milliseconds — calibrated to narration length + visual absorption time
 export const SCENE_DURATIONS: Record<number, number> = {
-  0: 14000,
-  1: 11000,
-  2: 14000,
-  3: 15000,
-  4: 17000,
-  5: 15000,
-  6: 15000,
-  7: 17000,
-  8: 14000,
-  9: 13000,
-  10: 15000,
-  11: 17000,
-  12: 0, // No auto-advance on final scene
+  0:  20000,  // The Opportunity — opening hook needs time to land
+  1:  19000,  // Sarah's World
+  2:  20000,  // Every Event Matters
+  3:  18000,  // Consent First
+  4:  18000,  // One Identity
+  5:  22000,  // Customer 360 — rich profile takes time to absorb
+  6:  19000,  // AI Intelligence
+  7:  24000,  // Human Accountability — governance flow has 5 steps
+  8:  20000,  // Activated in Real Time
+  9:  20000,  // Continuous Learning
+  10: 0,      // The Promise — no auto-advance on final scene
 };
 
-export const TOTAL_SCENES = 13;
+export const TOTAL_SCENES = 11;
 
 // Transition duration between scenes
 export const SCENE_TRANSITION_MS = 350;
@@ -53,17 +51,15 @@ export const COLORS = {
 
 // Scene metadata (used by ProgressBar, SceneLabel, aria-labels)
 export const SCENE_META: Array<{ title: string; subtitle: string }> = [
-  { title: "Background", subtitle: "The context behind the story" },
-  { title: "Meet the Customer", subtitle: "A customer enters the ecosystem" },
-  { title: "Digital Touchpoints", subtitle: "Every interaction becomes an event" },
-  { title: "Enterprise Data Sources", subtitle: "Data flows from every system" },
-  { title: "Customer Data Platform", subtitle: "Identity resolution begins" },
-  { title: "Unified Customer Profile", subtitle: "A single view of the customer" },
-  { title: "AI Agents", subtitle: "Intelligent agents begin working" },
-  { title: "Decision Engine", subtitle: "AI evaluates and recommends" },
-  { title: "Omnichannel Activation", subtitle: "Delivering the decision" },
-  { title: "Customer Response", subtitle: "The customer acts" },
-  { title: "Business Outcomes", subtitle: "Value is generated" },
-  { title: "Enterprise Architecture", subtitle: "The complete picture" },
-  { title: "Intelligent Experiences", subtitle: "Turning data into decisions" },
+  { title: "The Opportunity", subtitle: "A different way to hear your customers" },
+  { title: "Sarah's World", subtitle: "A customer across six channels, unrecognised" },
+  { title: "Every Event Matters", subtitle: "Capturing signals in real time" },
+  { title: "Consent First", subtitle: "Data collection begins with permission" },
+  { title: "One Identity", subtitle: "Resolving fragments into a unified view" },
+  { title: "Customer 360", subtitle: "A complete profile, finally" },
+  { title: "AI Intelligence", subtitle: "Models that recommend, not decide" },
+  { title: "Human Accountability", subtitle: "Governance at every step" },
+  { title: "Activated in Real Time", subtitle: "Delivering the right experience instantly" },
+  { title: "Continuous Learning", subtitle: "The loop that makes tomorrow better" },
+  { title: "The Promise", subtitle: "Enterprise capability at scale" },
 ];
