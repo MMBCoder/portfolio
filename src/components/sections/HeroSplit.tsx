@@ -217,7 +217,7 @@ export default function HeroSplit() {
               ai transformation.
             </span>
           </Link>
-          <Link href="/experience" style={{
+          <Link href="/learn" style={{
             flex: 1,
             display: "flex",
             flexDirection: "column",

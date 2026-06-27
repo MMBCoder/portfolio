@@ -21,7 +21,7 @@ export default function Scene07Decision(_props: Props) {
   const isMobile = useIsMobile();
 
   return (
-    <SceneWrapper sceneIndex={6} title="Decision Engine">
+    <SceneWrapper sceneIndex={7} title="Decision Engine">
       <div style={{ width: "100%", maxWidth: isMobile ? "100%" : 840 }}>
 
         <motion.p

@@ -19,7 +19,7 @@ const STEPS = [
 export default function Scene09Response(_props: Props) {
   const isMobile = useIsMobile();
   return (
-    <SceneWrapper sceneIndex={8} title="Customer Response">
+    <SceneWrapper sceneIndex={9} title="Customer Response">
       <div style={{ width: "100%", maxWidth: 600 }}>
 
         <motion.p

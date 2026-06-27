@@ -10,8 +10,6 @@ interface ProgressBarProps {
 }
 
 export default function ProgressBar({ scene, isPlaying, onGoto }: ProgressBarProps) {
-  const segmentWidth = 100 / TOTAL_SCENES;
-
   return (
     <nav
       aria-label="Scene navigation"
@@ -21,9 +19,10 @@ export default function ProgressBar({ scene, isPlaying, onGoto }: ProgressBarPro
         left: 0,
         right: 0,
         zIndex: 50,
-        height: "3px",
-        background: "#F0F0F0",
+        height: "4px",
         display: "flex",
+        gap: "2px",
+        background: "transparent",
       }}
     >
       {Array.from({ length: TOTAL_SCENES }, (_, i) => {
@@ -40,32 +39,27 @@ export default function ProgressBar({ scene, isPlaying, onGoto }: ProgressBarPro
             title={SCENE_META[i].title}
             style={{
               position: "relative",
-              width: `${segmentWidth}%`,
+              flex: 1,
               height: "100%",
-              background: "transparent",
+              background: isCompleted ? COLORS.blue : isActive ? "#BFDBFE" : "#DEDEDE",
               border: "none",
               padding: 0,
               cursor: "pointer",
               outline: "none",
+              overflow: "hidden",
             }}
           >
-            {/* Completed segment */}
-            {isCompleted && (
-              <div style={{ position: "absolute", inset: 0, background: COLORS.blue }} />
-            )}
-
-            {/* Active segment — animates from 0 to 100% */}
             {isActive && (
               <motion.div
                 key={`active-${scene}`}
                 style={{
                   position: "absolute",
-                  top: 0, left: 0, bottom: 0,
+                  top: 0, left: 0, bottom: 0, right: 0,
                   background: COLORS.blue,
                   originX: 0,
                 }}
                 initial={{ scaleX: 0 }}
-                animate={{ scaleX: isPlaying && duration > 0 ? 1 : undefined }}
+                animate={{ scaleX: isPlaying && duration > 0 ? 1 : 0 }}
                 transition={
                   isPlaying && duration > 0
                     ? { duration: duration / 1000, ease: "linear" }
@@ -73,14 +67,6 @@ export default function ProgressBar({ scene, isPlaying, onGoto }: ProgressBarPro
                 }
               />
             )}
-
-            {/* Segment divider */}
-            <div style={{
-              position: "absolute",
-              top: 0, right: 0, bottom: 0,
-              width: "1px",
-              background: "rgba(255,255,255,0.5)",
-            }} />
           </button>
         );
       })}

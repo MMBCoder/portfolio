@@ -1,20 +1,21 @@
 // Scene durations in milliseconds
 export const SCENE_DURATIONS: Record<number, number> = {
-  0: 7000,
-  1: 10000,
-  2: 11000,
-  3: 13000,
-  4: 11000,
+  0: 10000,
+  1: 7000,
+  2: 10000,
+  3: 11000,
+  4: 13000,
   5: 11000,
-  6: 13000,
-  7: 10000,
-  8: 9000,
-  9: 11000,
-  10: 13000,
-  11: 0, // No auto-advance on final scene
+  6: 11000,
+  7: 13000,
+  8: 10000,
+  9: 9000,
+  10: 11000,
+  11: 13000,
+  12: 0, // No auto-advance on final scene
 };
 
-export const TOTAL_SCENES = 12;
+export const TOTAL_SCENES = 13;
 
 // Transition duration between scenes
 export const SCENE_TRANSITION_MS = 350;
@@ -52,6 +53,7 @@ export const COLORS = {
 
 // Scene metadata (used by ProgressBar, SceneLabel, aria-labels)
 export const SCENE_META: Array<{ title: string; subtitle: string }> = [
+  { title: "Background", subtitle: "The context behind the story" },
   { title: "Meet the Customer", subtitle: "A customer enters the ecosystem" },
   { title: "Digital Touchpoints", subtitle: "Every interaction becomes an event" },
   { title: "Enterprise Data Sources", subtitle: "Data flows from every system" },

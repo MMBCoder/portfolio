@@ -12,7 +12,7 @@ interface Props {
 
 export default function Scene12Final(_props: Props) {
   return (
-    <SceneWrapper sceneIndex={11} title="Intelligent Experiences">
+    <SceneWrapper sceneIndex={12} title="Intelligent Experiences">
       <div style={{ width: "100%", maxWidth: 640, textAlign: "center" }}>
 
         {/* Gradient orb */}

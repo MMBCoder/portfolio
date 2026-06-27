@@ -27,7 +27,7 @@ const card = {
 
 export default function Scene02Channels(_props: Props) {
   return (
-    <SceneWrapper sceneIndex={1} title="Digital Touchpoints">
+    <SceneWrapper sceneIndex={2} title="Digital Touchpoints">
       <div style={{ width: "100%", maxWidth: 760, textAlign: "center" }}>
 
         <motion.p

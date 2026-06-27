@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { personalInfo } from "@/data/portfolioData";
 
 export default function Footer() {
@@ -19,8 +20,15 @@ export default function Footer() {
         </div>
 
         <nav className="footer-nav flex items-center gap-6">
-          {["#about", "#projects", "#experience", "#awards", "#publications", "#contact"].map((href) => (
-            <a
+          {[
+            { href: "/about", label: "about" },
+            { href: "/portfolio", label: "projects" },
+            { href: "/experience", label: "experience" },
+            { href: "/awards", label: "awards" },
+            { href: "/#publications", label: "publications" },
+            { href: "/contact", label: "contact" },
+          ].map(({ href, label }) => (
+            <Link
               key={href}
               href={href}
               className="text-xs font-mono lowercase transition-opacity"
@@ -28,8 +36,8 @@ export default function Footer() {
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.9)"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.35)"; }}
             >
-              {href.slice(1)}
-            </a>
+              {label}
+            </Link>
           ))}
         </nav>
 

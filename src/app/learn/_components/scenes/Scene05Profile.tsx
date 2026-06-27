@@ -57,7 +57,7 @@ const card = {
 
 export default function Scene05Profile(_props: Props) {
   return (
-    <SceneWrapper sceneIndex={4} title="Unified Customer Profile">
+    <SceneWrapper sceneIndex={5} title="Unified Customer Profile">
       <div style={{ width: "100%", maxWidth: 800 }}>
 
         <motion.p

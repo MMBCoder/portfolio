@@ -3,6 +3,7 @@
 import { lazy, Suspense } from "react";
 import { AnimatePresence } from "framer-motion";
 
+const Scene00 = lazy(() => import("./scenes/Scene00Background"));
 const Scene01 = lazy(() => import("./scenes/Scene01Customer"));
 const Scene02 = lazy(() => import("./scenes/Scene02Channels"));
 const Scene03 = lazy(() => import("./scenes/Scene03DataSources"));
@@ -17,7 +18,7 @@ const Scene11 = lazy(() => import("./scenes/Scene11Architecture"));
 const Scene12 = lazy(() => import("./scenes/Scene12Final"));
 
 const SCENES = [
-  Scene01, Scene02, Scene03, Scene04,
+  Scene00, Scene01, Scene02, Scene03, Scene04,
   Scene05, Scene06, Scene07, Scene08,
   Scene09, Scene10, Scene11, Scene12,
 ];

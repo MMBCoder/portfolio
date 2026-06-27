@@ -30,7 +30,7 @@ export default function Scene04CDP(_props: Props) {
   const isMobile = useIsMobile();
 
   return (
-    <SceneWrapper sceneIndex={3} title="Customer Data Platform">
+    <SceneWrapper sceneIndex={4} title="Customer Data Platform">
       <div style={{ width: "100%", maxWidth: isMobile ? "100%" : 760 }}>
 
         <motion.p

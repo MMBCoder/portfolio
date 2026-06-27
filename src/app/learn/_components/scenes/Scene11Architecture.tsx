@@ -22,7 +22,7 @@ export default function Scene11Architecture(_props: Props) {
   const isMobile = useIsMobile();
 
   return (
-    <SceneWrapper sceneIndex={10} title="Enterprise Architecture">
+    <SceneWrapper sceneIndex={11} title="Enterprise Architecture">
       <div style={{ width: "100%", maxWidth: 860 }}>
 
         <motion.p

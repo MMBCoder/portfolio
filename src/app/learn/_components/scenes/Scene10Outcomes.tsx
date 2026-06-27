@@ -22,7 +22,7 @@ const container = {
 
 export default function Scene10Outcomes(_props: Props) {
   return (
-    <SceneWrapper sceneIndex={9} title="Business Outcomes">
+    <SceneWrapper sceneIndex={10} title="Business Outcomes">
       <div style={{ width: "100%", maxWidth: 840 }}>
 
         <motion.p

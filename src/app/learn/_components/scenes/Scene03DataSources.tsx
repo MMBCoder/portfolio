@@ -24,7 +24,7 @@ export default function Scene03DataSources(_props: Props) {
   const isMobile = useIsMobile();
 
   return (
-    <SceneWrapper sceneIndex={2} title="Enterprise Data Sources">
+    <SceneWrapper sceneIndex={3} title="Enterprise Data Sources">
       <div style={{ width: "100%", maxWidth: isMobile ? "100%" : 920 }}>
 
         {/* Header */}

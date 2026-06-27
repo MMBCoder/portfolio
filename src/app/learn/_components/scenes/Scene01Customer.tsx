@@ -25,7 +25,7 @@ const item = {
 
 export default function Scene01Customer(_props: Props) {
   return (
-    <SceneWrapper sceneIndex={0} title="Meet the Customer">
+    <SceneWrapper sceneIndex={1} title="Meet the Customer">
       <div style={{ width: "100%", maxWidth: 680, textAlign: "center" }}>
 
         {/* Scene label */}

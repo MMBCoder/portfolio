@@ -18,7 +18,7 @@ const CHANNELS = [
 
 export default function Scene08Activation(_props: Props) {
   return (
-    <SceneWrapper sceneIndex={7} title="Omnichannel Activation">
+    <SceneWrapper sceneIndex={8} title="Omnichannel Activation">
       <div style={{ width: "100%", maxWidth: 760 }}>
 
         <motion.p

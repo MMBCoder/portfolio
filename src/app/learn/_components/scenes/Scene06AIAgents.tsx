@@ -58,7 +58,7 @@ const card = {
 
 export default function Scene06AIAgents(_props: Props) {
   return (
-    <SceneWrapper sceneIndex={5} title="AI Agents">
+    <SceneWrapper sceneIndex={6} title="AI Agents">
       <div style={{ width: "100%", maxWidth: 820 }}>
 
         <motion.p

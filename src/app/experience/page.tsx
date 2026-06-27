@@ -61,8 +61,61 @@ function Counter({ to }: { to: number }) {
 function NodeEcosystem() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    setIsMobile(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
   const inner = SYNC_NODES.map(n => ({ ...n, ...pct(n.angle, 31) }));
   const outer = SYNC_OUTER.map(n => ({ ...n, ...pct(n.angle, n.r) }));
+
+  if (isMobile) {
+    return (
+      <div ref={ref} style={{ width: "100%" }}>
+        {/* CDP core badge */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={inView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.5 }}
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 20, background: "linear-gradient(135deg,#3B82F6,#1D4ED8)", boxShadow: "0 0 16px rgba(37,99,235,0.3)" }}>
+            <span style={{ fontSize: 10, fontWeight: 800, color: "#fff", fontFamily: "var(--font-jetbrains-mono),monospace", letterSpacing: "0.1em" }}>CDP CORE</span>
+          </div>
+        </motion.div>
+        {/* Inner nodes 2-col grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 7, marginBottom: 10 }}>
+          {SYNC_NODES.map((n, i) => (
+            <motion.div key={n.id}
+              initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.2 + i * 0.08, duration: 0.4 }}
+              style={{ padding: "7px 10px", borderRadius: 7, background: "#FFFFFF", border: `1.5px solid ${n.color}`, boxShadow: `0 1px 6px ${n.color}18`, display: "flex", alignItems: "center", gap: 6 }}
+            >
+              <span style={{ width: 7, height: 7, borderRadius: "50%", background: n.color, flexShrink: 0 }} />
+              <span style={{ fontSize: 12, color: n.color, fontWeight: 700, fontFamily: "var(--font-jetbrains-mono),monospace" }}>{n.label}</span>
+            </motion.div>
+          ))}
+        </div>
+        {/* Outer capabilities */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+          {SYNC_OUTER.map((n, i) => (
+            <motion.div key={n.id}
+              initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.8 + i * 0.1, duration: 0.4 }}
+              style={{ padding: "5px 10px", borderRadius: 5, background: `${n.color}12`, border: `1px solid ${n.color}40` }}
+            >
+              <span style={{ fontSize: 11, color: n.color, fontWeight: 500, fontFamily: "var(--font-jetbrains-mono),monospace" }}>{n.label}</span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={ref} style={{
