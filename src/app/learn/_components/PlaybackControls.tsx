@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { TOTAL_SCENES, COLORS } from "./constants";
 import { useIsMobile } from "./shared/useIsMobile";
 
@@ -14,144 +15,329 @@ interface PlaybackControlsProps {
   onReplay: () => void;
 }
 
-const BTN_BASE: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  width: 36,
-  height: 36,
-  borderRadius: "50%",
-  border: "1px solid rgba(229,229,229,0.8)",
-  background: "rgba(255,255,255,0.9)",
-  backdropFilter: "blur(8px)",
-  WebkitBackdropFilter: "blur(8px)",
-  cursor: "pointer",
-  color: COLORS.fg,
-  transition: "background 0.15s, border-color 0.15s",
-  flexShrink: 0,
-};
+// ── Icon components with AnimatePresence-compatible enter/exit ────────────────
 
-interface IconBtnProps {
-  onClick: () => void;
-  label: string;
-  disabled?: boolean;
-  primary?: boolean;
-  children: React.ReactNode;
-}
-
-function IconBtn({ onClick, label, disabled = false, primary = false, children }: IconBtnProps) {
+function PlayIcon() {
   return (
-    <motion.button
-      onClick={onClick}
-      aria-label={label}
-      disabled={disabled}
-      whileHover={disabled ? undefined : { scale: 1.08 }}
-      whileTap={disabled ? undefined : { scale: 0.94 }}
-      style={{
-        ...BTN_BASE,
-        ...(primary ? {
-          background: COLORS.blue,
-          borderColor: COLORS.blue,
-          color: "#FFFFFF",
-          width: 44,
-          height: 44,
-        } : {}),
-        opacity: disabled ? 0.35 : 1,
-        cursor: disabled ? "not-allowed" : "pointer",
-      }}
+    <motion.svg
+      key="play"
+      width="17" height="17"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      initial={{ opacity: 0, scale: 0.55 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.55 }}
+      transition={{ duration: 0.16, ease: "easeOut" }}
     >
-      {children}
-    </motion.button>
+      <polygon points="5 3 19 12 5 21 5 3" />
+    </motion.svg>
   );
 }
 
+function PauseIcon() {
+  return (
+    <motion.svg
+      key="pause"
+      width="17" height="17"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      initial={{ opacity: 0, scale: 0.55 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.55 }}
+      transition={{ duration: 0.16, ease: "easeOut" }}
+    >
+      <rect x="6" y="4" width="4" height="16" rx="1" />
+      <rect x="14" y="4" width="4" height="16" rx="1" />
+    </motion.svg>
+  );
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
+
 export default function PlaybackControls({
-  scene, isPlaying, onPause, onResume, onNext, onPrev, onReplay,
+  scene, isPlaying, onPause, onResume, onNext, onPrev,
 }: PlaybackControlsProps) {
+  const [appeared, setAppeared] = useState(false);
+  const [idle, setIdle] = useState(false);
+  const [dockHover, setDockHover] = useState(false);
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isPlayingRef = useRef(isPlaying);
+  const isMobile = useIsMobile();
+  const reduced = useReducedMotion() ?? false;
+
   const isFirst = scene === 0;
   const isLast = scene === TOTAL_SCENES - 1;
-  const isMobile = useIsMobile();
+
+  // Initial entrance delay
+  useEffect(() => {
+    const t = setTimeout(() => setAppeared(true), 600);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Keep isPlaying accessible inside stable callbacks
+  useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
+
+  const clearIdleTimer = useCallback(() => {
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+      idleTimerRef.current = null;
+    }
+  }, []);
+
+  const startIdleTimer = useCallback(() => {
+    clearIdleTimer();
+    idleTimerRef.current = setTimeout(() => setIdle(true), 2500);
+  }, [clearIdleTimer]);
+
+  const onActivity = useCallback(() => {
+    setIdle(false);
+    if (isPlayingRef.current) startIdleTimer();
+  }, [startIdleTimer]);
+
+  // Auto-hide: only when playing and not hovering over dock
+  useEffect(() => {
+    if (!isPlaying || dockHover) {
+      setIdle(false);
+      clearIdleTimer();
+      return;
+    }
+    startIdleTimer();
+    window.addEventListener("mousemove", onActivity);
+    window.addEventListener("keydown", onActivity);
+    window.addEventListener("touchstart", onActivity, { passive: true });
+    return () => {
+      clearIdleTimer();
+      window.removeEventListener("mousemove", onActivity);
+      window.removeEventListener("keydown", onActivity);
+      window.removeEventListener("touchstart", onActivity);
+    };
+  }, [isPlaying, dockHover, startIdleTimer, clearIdleTimer, onActivity]);
+
+  const isHidden = idle && !dockHover;
+
+  // Compute opacity target: not appeared → 0, idle → 0.18, else → 1
+  const opacityTarget = !appeared ? 0 : isHidden ? 0.18 : 1;
+  const yTarget = appeared ? 0 : 12;
+
+  const btnSize = isMobile ? 48 : 44;
+  const playBtnSize = isMobile ? 52 : 48;
+
+  const neutralColor = "rgba(0,0,0,0.45)";
+  const neutralHover = "rgba(0,0,0,0.85)";
+  const disabledColor = "rgba(0,0,0,0.18)";
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.8, duration: 0.5 }}
+      animate={{
+        opacity: reduced ? 1 : opacityTarget,
+        y: reduced ? 0 : yTarget,
+      }}
+      transition={{
+        opacity: { duration: isHidden ? 0.5 : 0.3, ease: "easeOut" },
+        y: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+      }}
+      onMouseEnter={() => setDockHover(true)}
+      onMouseLeave={() => {
+        setDockHover(false);
+        if (isPlayingRef.current) startIdleTimer();
+      }}
       style={{
         position: "fixed",
-        bottom: isMobile ? 16 : 28,
+        bottom: isMobile
+          ? "calc(20px + env(safe-area-inset-bottom, 0px))"
+          : 36,
         left: "50%",
         transform: "translateX(-50%)",
         zIndex: 50,
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        gap: 10,
-        padding: "8px 14px",
-        background: "rgba(255,255,255,0.85)",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
-        border: "1px solid rgba(229,229,229,0.8)",
-        borderRadius: 40,
-        boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
+        gap: 7,
+        willChange: "opacity, transform",
       }}
       role="toolbar"
-      aria-label="Playback controls"
+      aria-label="Presentation controls"
     >
-      {/* Replay */}
-      <IconBtn onClick={onReplay} label="Replay from beginning">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 .49-3" />
-        </svg>
-      </IconBtn>
-
-      {/* Prev */}
-      <IconBtn onClick={onPrev} label="Previous scene" disabled={isFirst}>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="15 18 9 12 15 6" />
-        </svg>
-      </IconBtn>
-
-      {/* Play / Pause (primary) */}
-      <IconBtn
-        onClick={isPlaying ? onPause : onResume}
-        label={isPlaying ? "Pause" : "Play"}
-        primary
-      >
-        {isPlaying ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <rect x="6" y="4" width="4" height="16" rx="1" />
-            <rect x="14" y="4" width="4" height="16" rx="1" />
-          </svg>
-        ) : (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <polygon points="5 3 19 12 5 21 5 3" />
-          </svg>
-        )}
-      </IconBtn>
-
-      {/* Next */}
-      <IconBtn onClick={onNext} label="Next scene" disabled={isLast}>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="9 18 15 12 9 6" />
-        </svg>
-      </IconBtn>
-
-      {/* Keyboard hint — desktop only */}
+      {/* ── Glass dock ─────────────────────────────────────────────────────── */}
       <div
-        className="hidden md:flex"
-        style={{ alignItems: "center", gap: 4, marginLeft: 4, paddingLeft: 10, borderLeft: "1px solid #E5E5E5" }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: isMobile ? 6 : 4,
+          padding: isMobile ? "10px 18px" : "10px 22px",
+          background: "rgba(255,255,255,0.58)",
+          backdropFilter: "blur(22px)",
+          WebkitBackdropFilter: "blur(22px)",
+          border: "1px solid rgba(255,255,255,0.72)",
+          borderRadius: 24,
+          boxShadow: [
+            "0 8px 40px rgba(0,0,0,0.09)",
+            "0 2px 6px rgba(0,0,0,0.05)",
+            "inset 0 1px 0 rgba(255,255,255,0.9)",
+          ].join(", "),
+        }}
       >
-        {["←", "Space", "→"].map((key) => (
-          <kbd key={key} style={{
-            fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: 10, color: "#888", background: "#F7F7F7",
-            border: "1px solid #E5E5E5", borderRadius: 4,
-            padding: "2px 5px", lineHeight: 1.4,
-          }}>
-            {key}
-          </kbd>
-        ))}
+        {/* ── Prev ─────────────────────────────────────────────────────────── */}
+        <motion.button
+          onClick={isFirst ? undefined : onPrev}
+          disabled={isFirst}
+          aria-label="Previous scene"
+          whileHover={!isFirst && !reduced ? { scale: 1.05 } : undefined}
+          whileTap={!isFirst && !reduced ? { scale: 0.93 } : undefined}
+          transition={{ duration: 0.2 }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: btnSize,
+            height: btnSize,
+            border: "none",
+            background: "transparent",
+            cursor: isFirst ? "default" : "pointer",
+            color: isFirst ? disabledColor : neutralColor,
+            borderRadius: 12,
+            flexShrink: 0,
+            WebkitTapHighlightColor: "transparent",
+            transition: "color 0.2s",
+          }}
+          onMouseEnter={(e) => {
+            if (!isFirst) (e.currentTarget as HTMLElement).style.color = neutralHover;
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.color = isFirst ? disabledColor : neutralColor;
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.outline = "2px solid rgba(37,99,235,0.4)";
+            e.currentTarget.style.outlineOffset = "2px";
+          }}
+          onBlur={(e) => { e.currentTarget.style.outline = "none"; }}
+        >
+          <svg
+            width="18" height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </motion.button>
+
+        {/* ── Play / Pause ──────────────────────────────────────────────────── */}
+        <motion.button
+          onClick={isPlaying ? onPause : onResume}
+          aria-label={isPlaying ? "Pause presentation" : "Resume presentation"}
+          whileHover={!reduced ? { scale: 1.05 } : undefined}
+          whileTap={!reduced ? { scale: 0.93 } : undefined}
+          transition={{ duration: 0.2 }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: playBtnSize,
+            height: playBtnSize,
+            border: "none",
+            background: COLORS.blue,
+            color: "#FFFFFF",
+            borderRadius: 14,
+            cursor: "pointer",
+            flexShrink: 0,
+            boxShadow: "0 2px 12px rgba(37,99,235,0.30)",
+            WebkitTapHighlightColor: "transparent",
+            transition: "box-shadow 0.22s",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.boxShadow =
+              "0 4px 22px rgba(37,99,235,0.48)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.boxShadow =
+              "0 2px 12px rgba(37,99,235,0.30)";
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.outline = "2px solid rgba(37,99,235,0.55)";
+            e.currentTarget.style.outlineOffset = "3px";
+          }}
+          onBlur={(e) => { e.currentTarget.style.outline = "none"; }}
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            {isPlaying
+              ? <PauseIcon key="pause" />
+              : <PlayIcon key="play" />
+            }
+          </AnimatePresence>
+        </motion.button>
+
+        {/* ── Next ─────────────────────────────────────────────────────────── */}
+        <motion.button
+          onClick={isLast ? undefined : onNext}
+          disabled={isLast}
+          aria-label="Next scene"
+          whileHover={!isLast && !reduced ? { scale: 1.05 } : undefined}
+          whileTap={!isLast && !reduced ? { scale: 0.93 } : undefined}
+          transition={{ duration: 0.2 }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: btnSize,
+            height: btnSize,
+            border: "none",
+            background: "transparent",
+            cursor: isLast ? "default" : "pointer",
+            color: isLast ? disabledColor : neutralColor,
+            borderRadius: 12,
+            flexShrink: 0,
+            WebkitTapHighlightColor: "transparent",
+            transition: "color 0.2s",
+          }}
+          onMouseEnter={(e) => {
+            if (!isLast) (e.currentTarget as HTMLElement).style.color = neutralHover;
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.color = isLast ? disabledColor : neutralColor;
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.outline = "2px solid rgba(37,99,235,0.4)";
+            e.currentTarget.style.outlineOffset = "2px";
+          }}
+          onBlur={(e) => { e.currentTarget.style.outline = "none"; }}
+        >
+          <svg
+            width="18" height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </motion.button>
       </div>
+
+      {/* ── Scene counter ─────────────────────────────────────────────────── */}
+      <motion.div
+        animate={{ opacity: isHidden ? 0 : 0.48 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          fontFamily: "var(--font-jetbrains-mono), monospace",
+          fontSize: 10,
+          color: "#111111",
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          pointerEvents: "none",
+          userSelect: "none",
+          whiteSpace: "nowrap",
+        }}
+        aria-hidden="true"
+      >
+        Scene {String(scene + 1).padStart(2, "0")} of {String(TOTAL_SCENES).padStart(2, "0")}
+      </motion.div>
     </motion.div>
   );
 }
