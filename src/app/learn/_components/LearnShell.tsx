@@ -72,7 +72,7 @@ export default function LearnShell() {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Narration — plays voice-over for each scene automatically
-  useNarration(state.scene, state.isPlaying, isMuted);
+  const { triggerManualNav } = useNarration(state.scene, state.isPlaying, isMuted);
 
   const handleToggleMute = useCallback(() => setIsMuted(prev => !prev), []);
 
@@ -113,10 +113,12 @@ export default function LearnShell() {
       switch (e.key) {
         case "ArrowRight":
           e.preventDefault();
+          triggerManualNav();
           dispatch({ type: "NEXT_SCENE" });
           break;
         case "ArrowLeft":
           e.preventDefault();
+          triggerManualNav();
           dispatch({ type: "PREV_SCENE" });
           break;
         case " ":
@@ -126,19 +128,23 @@ export default function LearnShell() {
         case "r":
         case "R":
           e.preventDefault();
+          triggerManualNav();
           dispatch({ type: "REPLAY" });
           break;
         default:
           if (e.key >= "1" && e.key <= "9") {
             const idx = parseInt(e.key, 10) - 1;
-            if (idx < TOTAL_SCENES) dispatch({ type: "GOTO_SCENE", scene: idx });
+            if (idx < TOTAL_SCENES) {
+              triggerManualNav();
+              dispatch({ type: "GOTO_SCENE", scene: idx });
+            }
           }
       }
     };
 
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [state.isPlaying]);
+  }, [state.isPlaying, triggerManualNav]);
 
   // Touch swipe bindings
   useEffect(() => {
@@ -149,6 +155,7 @@ export default function LearnShell() {
     const onTouchEnd = (e: TouchEvent) => {
       const dx = touchStartX - e.changedTouches[0].clientX;
       if (Math.abs(dx) < SWIPE_THRESHOLD) return;
+      triggerManualNav();
       dispatch({ type: dx > 0 ? "NEXT_SCENE" : "PREV_SCENE" });
     };
 
@@ -158,14 +165,26 @@ export default function LearnShell() {
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchend", onTouchEnd);
     };
-  }, []);
+  }, [triggerManualNav]);
 
   const handlePause = useCallback(() => dispatch({ type: "PAUSE" }), []);
   const handleResume = useCallback(() => dispatch({ type: "RESUME" }), []);
-  const handleNext = useCallback(() => dispatch({ type: "NEXT_SCENE" }), []);
-  const handlePrev = useCallback(() => dispatch({ type: "PREV_SCENE" }), []);
-  const handleReplay = useCallback(() => dispatch({ type: "REPLAY" }), []);
-  const handleGoto = useCallback((s: number) => dispatch({ type: "GOTO_SCENE", scene: s }), []);
+  const handleNext = useCallback(() => {
+    triggerManualNav();
+    dispatch({ type: "NEXT_SCENE" });
+  }, [triggerManualNav]);
+  const handlePrev = useCallback(() => {
+    triggerManualNav();
+    dispatch({ type: "PREV_SCENE" });
+  }, [triggerManualNav]);
+  const handleReplay = useCallback(() => {
+    triggerManualNav();
+    dispatch({ type: "REPLAY" });
+  }, [triggerManualNav]);
+  const handleGoto = useCallback((s: number) => {
+    triggerManualNav();
+    dispatch({ type: "GOTO_SCENE", scene: s });
+  }, [triggerManualNav]);
 
   return (
     <main

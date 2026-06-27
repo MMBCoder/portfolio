@@ -1,17 +1,17 @@
-// Scene durations in milliseconds
+// Scene durations in milliseconds — extended to give narration room to breathe
 export const SCENE_DURATIONS: Record<number, number> = {
-  0: 10000,
-  1: 7000,
-  2: 10000,
-  3: 11000,
-  4: 13000,
-  5: 11000,
-  6: 11000,
-  7: 13000,
-  8: 10000,
-  9: 9000,
-  10: 11000,
-  11: 13000,
+  0: 14000,
+  1: 11000,
+  2: 14000,
+  3: 15000,
+  4: 17000,
+  5: 15000,
+  6: 15000,
+  7: 17000,
+  8: 14000,
+  9: 13000,
+  10: 15000,
+  11: 17000,
   12: 0, // No auto-advance on final scene
 };
 
