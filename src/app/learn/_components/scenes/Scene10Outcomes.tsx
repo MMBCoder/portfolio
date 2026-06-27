@@ -103,7 +103,7 @@ export default function Scene10Outcomes(_props: Props) {
             fontSize: 12, color: COLORS.fgMuted, letterSpacing: "0.1em",
           }}
         >
-          Measured across Synchrony&apos;s 70M+ customer base · Real enterprise outcomes
+          Measured across 70M+ customer profiles · Real enterprise outcomes
         </motion.div>
       </div>
     </SceneWrapper>
