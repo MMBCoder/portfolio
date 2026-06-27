@@ -1,11 +1,12 @@
 "use client";
 
-import { useReducer, useEffect, useCallback, useRef } from "react";
+import { useReducer, useEffect, useCallback, useRef, useState } from "react";
 import { TOTAL_SCENES, SCENE_DURATIONS, SCENE_TRANSITION_MS } from "./constants";
 import SceneManager from "./SceneManager";
 import ProgressBar from "./ProgressBar";
 import PlaybackControls from "./PlaybackControls";
 import SceneLabel from "./SceneLabel";
+import { useNarration } from "./useNarration";
 
 // ─── State ───────────────────────────────────────────────────────────────────
 
@@ -67,7 +68,13 @@ const INITIAL_STATE: PlaybackState = {
 
 export default function LearnShell() {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+  const [isMuted, setIsMuted] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Narration — plays voice-over for each scene automatically
+  useNarration(state.scene, state.isPlaying, isMuted);
+
+  const handleToggleMute = useCallback(() => setIsMuted(prev => !prev), []);
 
   const clearTimer = useCallback(() => {
     if (timerRef.current !== null) {
@@ -193,11 +200,13 @@ export default function LearnShell() {
       <PlaybackControls
         scene={state.scene}
         isPlaying={state.isPlaying}
+        isMuted={isMuted}
         onPause={handlePause}
         onResume={handleResume}
         onNext={handleNext}
         onPrev={handlePrev}
         onReplay={handleReplay}
+        onToggleMute={handleToggleMute}
       />
     </main>
   );

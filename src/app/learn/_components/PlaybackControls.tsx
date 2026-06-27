@@ -8,11 +8,13 @@ import { useIsMobile } from "./shared/useIsMobile";
 interface PlaybackControlsProps {
   scene: number;
   isPlaying: boolean;
+  isMuted: boolean;
   onPause: () => void;
   onResume: () => void;
   onNext: () => void;
   onPrev: () => void;
   onReplay: () => void;
+  onToggleMute: () => void;
 }
 
 // ── Icon components with AnimatePresence-compatible enter/exit ────────────────
@@ -54,8 +56,30 @@ function PauseIcon() {
 
 // ── Main component ────────────────────────────────────────────────────────────
 
+// ── Speaker / mute icons ──────────────────────────────────────────────────────
+
+function SpeakerIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    </svg>
+  );
+}
+
+function MutedIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <line x1="23" y1="9" x2="17" y2="15" />
+      <line x1="17" y1="9" x2="23" y2="15" />
+    </svg>
+  );
+}
+
 export default function PlaybackControls({
-  scene, isPlaying, onPause, onResume, onNext, onPrev,
+  scene, isPlaying, isMuted, onPause, onResume, onNext, onPrev, onToggleMute,
 }: PlaybackControlsProps) {
   const [appeared, setAppeared] = useState(false);
   const [idle, setIdle] = useState(false);
@@ -317,6 +341,79 @@ export default function PlaybackControls({
           >
             <polyline points="9 18 15 12 9 6" />
           </svg>
+        </motion.button>
+
+        {/* ── Separator + Mute toggle ───────────────────────────────────────── */}
+        <div style={{
+          width: 1,
+          height: 20,
+          background: "rgba(0,0,0,0.10)",
+          flexShrink: 0,
+          marginLeft: isMobile ? 2 : 4,
+          marginRight: isMobile ? 2 : 4,
+        }} />
+
+        <motion.button
+          onClick={onToggleMute}
+          aria-label={isMuted ? "Unmute narration" : "Mute narration"}
+          aria-pressed={isMuted}
+          whileHover={!reduced ? { scale: 1.05 } : undefined}
+          whileTap={!reduced ? { scale: 0.93 } : undefined}
+          transition={{ duration: 0.2 }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: isMobile ? 40 : 36,
+            height: isMobile ? 40 : 36,
+            border: "none",
+            background: "transparent",
+            cursor: "pointer",
+            color: isMuted ? "rgba(0,0,0,0.22)" : neutralColor,
+            borderRadius: 10,
+            flexShrink: 0,
+            WebkitTapHighlightColor: "transparent",
+            transition: "color 0.22s",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.color = isMuted ? "rgba(0,0,0,0.45)" : neutralHover;
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.color = isMuted ? "rgba(0,0,0,0.22)" : neutralColor;
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.outline = "2px solid rgba(37,99,235,0.4)";
+            e.currentTarget.style.outlineOffset = "2px";
+          }}
+          onBlur={(e) => { e.currentTarget.style.outline = "none"; }}
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            {isMuted
+              ? (
+                <motion.span
+                  key="muted"
+                  initial={{ opacity: 0, scale: 0.7 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.7 }}
+                  transition={{ duration: 0.15 }}
+                  style={{ display: "flex" }}
+                >
+                  <MutedIcon />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="speaker"
+                  initial={{ opacity: 0, scale: 0.7 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.7 }}
+                  transition={{ duration: 0.15 }}
+                  style={{ display: "flex" }}
+                >
+                  <SpeakerIcon />
+                </motion.span>
+              )
+            }
+          </AnimatePresence>
         </motion.button>
       </div>
 
