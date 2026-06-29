@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { X, ArrowUpRight } from "lucide-react";
 import { aiProjects } from "@/data/portfolioData";
@@ -10,6 +10,20 @@ export default function AIProjects() {
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const [selected, setSelected] = useState<string | null>(null);
   const active = aiProjects.find((p) => p.id === selected) ?? null;
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Close modal on Escape key
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelected(null);
+    };
+    if (selected) {
+      document.addEventListener("keydown", onKey);
+      // Focus the close button for keyboard accessibility
+      setTimeout(() => closeButtonRef.current?.focus(), 50);
+    }
+    return () => document.removeEventListener("keydown", onKey);
+  }, [selected]);
 
   return (
     <section id="projects" ref={ref} style={{ background: "#FFFFFF", borderTop: "1px solid #E8E8E8" }}>
@@ -150,7 +164,7 @@ export default function AIProjects() {
                 {project.title}
               </h3>
               <p style={{ fontSize: "14px", color: "#888888", lineHeight: 1.6, maxWidth: "600px" }}>
-                {project.problem.slice(0, 120)}…
+                {project.problem.slice(0, 160)}{project.problem.length > 160 ? "…" : ""}
               </p>
               {/* Metrics */}
               <div className="project-metrics-row" style={{ display: "flex", gap: "28px", marginTop: "16px" }}>
@@ -179,7 +193,8 @@ export default function AIProjects() {
             </div>
 
             {/* Arrow */}
-            <div style={{ padding: "28px 32px", color: "#CCCCCC" }}>
+            <div style={{ padding: "28px 32px", color: "#AAAAAA", transition: "color 0.2s" }}
+              className="group-hover/card:text-black">
               <ArrowUpRight size={20} />
             </div>
           </motion.button>
@@ -206,6 +221,9 @@ export default function AIProjects() {
             }}
           >
             <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="project-modal-title"
               initial={{ opacity: 0, y: 32, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20 }}
@@ -217,6 +235,7 @@ export default function AIProjects() {
                 width: "100%",
                 maxHeight: "90vh",
                 overflowY: "auto",
+                borderRadius: "8px",
               }}
             >
               {/* Top color bar */}
@@ -241,7 +260,7 @@ export default function AIProjects() {
                   }}>
                     {active.category}
                   </div>
-                  <h3 style={{
+                  <h3 id="project-modal-title" style={{
                     fontFamily: "var(--font-space-grotesk), sans-serif",
                     fontWeight: 900,
                     fontSize: "28px",
@@ -252,6 +271,7 @@ export default function AIProjects() {
                   </h3>
                 </div>
                 <button
+                  ref={closeButtonRef}
                   onClick={() => setSelected(null)}
                   style={{
                     width: "36px",
@@ -262,10 +282,14 @@ export default function AIProjects() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "#999",
+                    color: "#666",
                     flexShrink: 0,
+                    borderRadius: "6px",
+                    transition: "background 0.15s",
                   }}
-                  aria-label="Close"
+                  aria-label="Close project details"
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#F3F3F3"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "none"; }}
                 >
                   <X size={16} />
                 </button>

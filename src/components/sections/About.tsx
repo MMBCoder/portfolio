@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 const consultantList = [
   "Agentic AI systems & LLM orchestration",
@@ -22,13 +23,55 @@ const scientistList = [
   "Data pipeline architecture",
 ];
 
-const skillBars = [
-  { label: "Agentic AI & LLM Engineering", pct: 95 },
-  { label: "Machine Learning & Data Science", pct: 88 },
-  { label: "Data Engineering & Platforms", pct: 90 },
-  { label: "AI Strategy & Consulting", pct: 92 },
-  { label: "People Leadership & Mentoring", pct: 88 },
-  { label: "Python, PySpark & SQL", pct: 95 },
+// Evidence-based expertise cards — replace arbitrary skill bars
+const expertiseCards = [
+  {
+    domain: "Agentic AI & LLM Engineering",
+    tools: ["LangChain", "LangGraph", "RAG", "GPT-4"],
+    evidence: "RAG Campaign Copilot — 96% time saved, $2M+ annual savings",
+    accent: "#2563EB",
+  },
+  {
+    domain: "Machine Learning & Data Science",
+    tools: ["Python", "PySpark", "Scikit-learn", "XGBoost"],
+    evidence: "Propensity & churn models for 70M+ customer profiles",
+    accent: "#7C3AED",
+  },
+  {
+    domain: "Customer Data Platforms",
+    tools: ["BlueConic", "Identity Resolution", "Real-time Activation"],
+    evidence: "Synchrony CDP architecture serving 70M+ customers",
+    accent: "#0891B2",
+  },
+  {
+    domain: "AI Strategy & Governance",
+    tools: ["Human-in-the-Loop", "AI Ethics", "Enterprise Policy"],
+    evidence: "3× CEO Award winning AI governance programs",
+    accent: "#059669",
+  },
+  {
+    domain: "Data Engineering & Platforms",
+    tools: ["AWS", "Databricks", "Snowflake", "Airflow"],
+    evidence: "End-to-end pipelines enabling 200+ business stakeholders",
+    accent: "#D97706",
+  },
+  {
+    domain: "Conversational Analytics",
+    tools: ["NLP", "Power BI", "Azure OpenAI", "Semantic Kernel"],
+    evidence: "Ask Insight — 48h query turnaround reduced to 2 minutes",
+    accent: "#DB2777",
+  },
+];
+
+const quickFacts = [
+  "Three-time Synchrony CEO Award winner (2021, 2023, 2025)",
+  "LEAP leadership programme — high-potential leader designation",
+  "First-author published in Springer (2016 & 2021)",
+  "IIT Delhi M.Tech · LJMU MS in AI & ML",
+  "12+ years in financial services AI",
+  "Led 20+ engineers, scientists & analysts",
+  "Built AI systems used by 200+ stakeholders daily",
+  "Based in Hyderabad, India",
 ];
 
 export default function About() {
@@ -47,7 +90,6 @@ export default function About() {
           minHeight: "clamp(420px, 72vh, 820px)",
         }}
       >
-        {/* LEFT — heading + text: full width on mobile, 50% on desktop */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -76,33 +118,20 @@ export default function About() {
             about.
           </h2>
 
-          <p style={{ fontSize: "clamp(16px, 1.8vw, 20px)", color: "#555555", maxWidth: "440px", lineHeight: 1.65, marginBottom: "16px" }}>
-            I&apos;m an AI Transformation Leader and Data Scientist based in Hyderabad, India.
+          <p style={{ fontSize: "clamp(16px, 1.8vw, 20px)", color: "#333333", maxWidth: "440px", lineHeight: 1.65, marginBottom: "16px" }}>
+            I&apos;m an AI Transformation Leader and Data Scientist based in Hyderabad, India — with 12+ years turning complex enterprise problems into intelligent AI solutions.
           </p>
 
-          <p style={{ fontSize: "clamp(14px, 1.4vw, 16px)", color: "#888888", maxWidth: "440px", lineHeight: 1.7 }}>
-            Since 2012, I&apos;ve enjoyed turning complex enterprise problems into intelligent AI solutions. When I&apos;m not building RAG pipelines or agentic workflows, you&apos;ll find me mentoring teams, exploring research, or reading about the next frontier in AI.
+          <p style={{ fontSize: "clamp(14px, 1.4vw, 16px)", color: "#555555", maxWidth: "440px", lineHeight: 1.7, marginBottom: "16px" }}>
+            I started as an analytics practitioner at Genpact, grew into an analytics manager at Citibank, and now lead enterprise AI transformation at Synchrony Financial — architecting systems that serve 70M+ customers daily.
           </p>
 
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "28px" }}>
-            {["AI Transformation Leader", "Data Scientist", "Data Engineer", "Researcher", "People Leader"].map((r) => (
-              <span
-                key={r}
-                style={{
-                  fontFamily: "var(--font-jetbrains-mono), monospace",
-                  fontSize: "11px",
-                  padding: "5px 12px",
-                  border: "1px solid #E5E5E5",
-                  color: "#888888",
-                }}
-              >
-                {r}
-              </span>
-            ))}
-          </div>
+          <p style={{ fontSize: "clamp(14px, 1.4vw, 16px)", color: "#555555", maxWidth: "440px", lineHeight: 1.7 }}>
+            When I&apos;m not building RAG pipelines or agentic workflows, you&apos;ll find me mentoring teams, publishing research, or reading about the next frontier in AI.
+          </p>
         </motion.div>
 
-        {/* RIGHT — Photo: full width on mobile, 50% on desktop */}
+        {/* Photo */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
@@ -124,7 +153,7 @@ export default function About() {
         </motion.div>
       </div>
 
-      {/* ─── Row 2: Part AI Consultant + Part Data Scientist ─── */}
+      {/* ─── Row 2: Part AI Leader + Part Data Scientist ─── */}
       <div className="grid grid-cols-1 md:grid-cols-2" style={{ borderBottom: "1px solid #E5E5E5" }}>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -143,7 +172,7 @@ export default function About() {
             {consultantList.map((s) => (
               <li key={s} style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "12px" }}>
                 <span style={{ marginTop: "8px", width: "5px", height: "5px", borderRadius: "50%", background: "#111111", flexShrink: 0 }} />
-                <span style={{ fontSize: "14px", color: "#666666", lineHeight: 1.6 }}>{s}</span>
+                <span style={{ fontSize: "14px", color: "#444444", lineHeight: 1.6 }}>{s}</span>
               </li>
             ))}
           </ul>
@@ -165,14 +194,14 @@ export default function About() {
             {scientistList.map((s) => (
               <li key={s} style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "12px" }}>
                 <span style={{ marginTop: "8px", width: "5px", height: "5px", borderRadius: "50%", background: "#111111", flexShrink: 0 }} />
-                <span style={{ fontSize: "14px", color: "#666666", lineHeight: 1.6 }}>{s}</span>
+                <span style={{ fontSize: "14px", color: "#444444", lineHeight: 1.6 }}>{s}</span>
               </li>
             ))}
           </ul>
         </motion.div>
       </div>
 
-      {/* ─── Row 3: Skills ─── */}
+      {/* ─── Row 3: Expertise Cards (replaces skill percentage bars) ─── */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -181,27 +210,76 @@ export default function About() {
         style={{ borderBottom: "1px solid #E5E5E5", background: "#F9F9F9" }}
       >
         <h3
-          className="font-heading font-black lowercase mb-10 leading-tight"
+          className="font-heading font-black lowercase mb-3 leading-tight"
           style={{ fontSize: "clamp(1.4rem, 2.8vw, 2.2rem)", letterSpacing: "-0.03em", color: "#111111" }}
         >
-          my skills.
+          areas of expertise.
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-5 max-w-4xl">
-          {skillBars.map((s, i) => (
-            <div key={s.label}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-                <span style={{ fontSize: "13px", color: "#444444" }}>{s.label}</span>
-                <span style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: "11px", color: "#999999" }}>{s.pct}%</span>
+        <p style={{ fontSize: "14px", color: "#555555", marginBottom: "32px", maxWidth: "520px", lineHeight: 1.65 }}>
+          Each capability grounded in real delivery — measured outcomes, not self-assessed percentages.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: "12px" }}>
+          {expertiseCards.map((card, i) => (
+            <motion.div
+              key={card.domain}
+              initial={{ opacity: 0, y: 12 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.45 + i * 0.06 }}
+              style={{
+                background: "#FFFFFF",
+                border: "1px solid #E5E5E5",
+                borderRadius: "10px",
+                padding: "20px",
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
+              {/* Left accent bar */}
+              <div style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                bottom: 0,
+                width: "3px",
+                background: card.accent,
+              }} />
+              <h4 style={{
+                fontFamily: "var(--font-space-grotesk), sans-serif",
+                fontWeight: 700,
+                fontSize: "14px",
+                color: "#111111",
+                letterSpacing: "-0.02em",
+                marginBottom: "10px",
+              }}>
+                {card.domain}
+              </h4>
+              {/* Tool chips */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "12px" }}>
+                {card.tools.map((t) => (
+                  <span key={t} style={{
+                    fontFamily: "var(--font-jetbrains-mono), monospace",
+                    fontSize: "10px",
+                    padding: "3px 8px",
+                    background: `${card.accent}10`,
+                    color: card.accent,
+                    borderRadius: "3px",
+                    border: `1px solid ${card.accent}25`,
+                  }}>
+                    {t}
+                  </span>
+                ))}
               </div>
-              <div style={{ height: "3px", background: "#E5E5E5", borderRadius: "2px" }}>
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={inView ? { width: `${s.pct}%` } : {}}
-                  transition={{ duration: 1.1, delay: 0.5 + i * 0.06, ease: "easeOut" }}
-                  style={{ height: "100%", borderRadius: "2px", background: "#111111" }}
-                />
-              </div>
-            </div>
+              {/* Evidence */}
+              <p style={{
+                fontSize: "12px",
+                color: "#555555",
+                lineHeight: 1.55,
+                fontStyle: "italic",
+              }}>
+                {card.evidence}
+              </p>
+            </motion.div>
           ))}
         </div>
       </motion.div>
@@ -220,22 +298,80 @@ export default function About() {
         >
           quick facts.
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-3 max-w-3xl">
-          {[
-            "Three-time Synchrony CEO Award winner",
-            "LEAP leadership program — high-potential leader",
-            "First-author published in Springer",
-            "IIT Delhi M.Tech. graduate",
-            "12+ years in financial services AI",
-            "Led 20+ engineers, scientists & analysts",
-            "Built AI systems used by 200+ stakeholders",
-            "Based in Hyderabad, India",
-          ].map((f) => (
-            <div key={f} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-              <span style={{ marginTop: "8px", width: "5px", height: "5px", borderRadius: "50%", background: "#BBBBBB", flexShrink: 0 }} />
-              <span style={{ fontSize: "13px", color: "#666666", lineHeight: 1.6 }}>{f}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "0 64px", maxWidth: "800px" }}>
+          {quickFacts.map((f) => (
+            <div key={f} style={{ display: "flex", alignItems: "flex-start", gap: "12px", paddingBottom: "12px", marginBottom: "4px" }}>
+              <span style={{ marginTop: "7px", width: "5px", height: "5px", borderRadius: "50%", background: "#CCCCCC", flexShrink: 0 }} />
+              <span style={{ fontSize: "14px", color: "#444444", lineHeight: 1.6 }}>{f}</span>
             </div>
           ))}
+        </div>
+      </motion.div>
+
+      {/* ─── CTA row ─── */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: 0.6 }}
+        className="px-8 md:px-16 lg:px-24 py-12"
+        style={{ background: "#111111", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "24px" }}
+      >
+        <div>
+          <p style={{
+            fontFamily: "var(--font-space-grotesk), sans-serif",
+            fontWeight: 900,
+            fontSize: "clamp(1.4rem, 3vw, 2.4rem)",
+            color: "#FFFFFF",
+            letterSpacing: "-0.03em",
+            lineHeight: 1.1,
+            marginBottom: "8px",
+          }}>
+            Let&apos;s build something intelligent.
+          </p>
+          <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.55)", maxWidth: "380px", lineHeight: 1.6 }}>
+            Open to AI consulting, speaking engagements, and executive advisory.
+          </p>
+        </div>
+        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+          <Link
+            href="/contact"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "14px 28px",
+              background: "#FFFFFF",
+              color: "#111111",
+              fontFamily: "var(--font-space-grotesk), sans-serif",
+              fontWeight: 700,
+              fontSize: "14px",
+              letterSpacing: "-0.01em",
+              textDecoration: "none",
+              borderRadius: "6px",
+              whiteSpace: "nowrap",
+            }}
+          >
+            get in touch →
+          </Link>
+          <Link
+            href="/experience"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "14px 28px",
+              background: "transparent",
+              color: "#FFFFFF",
+              fontFamily: "var(--font-space-grotesk), sans-serif",
+              fontWeight: 600,
+              fontSize: "14px",
+              letterSpacing: "-0.01em",
+              textDecoration: "none",
+              borderRadius: "6px",
+              border: "1px solid rgba(255,255,255,0.25)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            view experience
+          </Link>
         </div>
       </motion.div>
     </section>

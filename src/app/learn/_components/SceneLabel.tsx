@@ -12,7 +12,43 @@ export default function SceneLabel({ scene }: SceneLabelProps) {
   const meta = SCENE_META[scene];
   const number = String(scene + 1).padStart(2, "0");
   const isMobile = useIsMobile();
-  if (isMobile) return null;
+
+  if (isMobile) {
+    return (
+      <div
+        style={{
+          position: "fixed",
+          top: 76,
+          left: 0,
+          right: 0,
+          zIndex: 50,
+          textAlign: "center",
+          pointerEvents: "none",
+        }}
+        aria-hidden="true"
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={scene}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <span style={{
+              fontFamily: "var(--font-jetbrains-mono), monospace",
+              fontSize: 9,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: "#AAAAAA",
+            }}>
+              {number} / {String(TOTAL_SCENES).padStart(2, "0")} · {meta.title}
+            </span>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    );
+  }
 
   return (
     <div

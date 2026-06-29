@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import SceneWrapper from "../shared/SceneWrapper";
 import { COLORS, EASE_OUT, STAGGER_CHILDREN } from "../constants";
 import { useIsMobile } from "../shared/useIsMobile";
@@ -189,6 +190,7 @@ export default function Scene10Outcomes(_props: Props) {
             background: "linear-gradient(135deg, #0b1640, #1a3a8f)",
             borderRadius: 16,
             textAlign: "center",
+            marginBottom: 16,
           }}
         >
           <p style={{
@@ -201,6 +203,41 @@ export default function Scene10Outcomes(_props: Props) {
             <span style={{ color: "#93C5FD" }}> A genuine enterprise capability</span>,
             ready to serve millions of customers the way they deserve to be served.
           </p>
+        </motion.div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 3.0 }}
+          style={{ textAlign: "center" }}
+        >
+          <p style={{
+            fontFamily: "var(--font-jetbrains-mono), monospace",
+            fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase",
+            color: COLORS.fgMuted, marginBottom: 12,
+          }}>
+            Ready to build this for your organisation?
+          </p>
+          <Link
+            href="/contact"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "12px 28px",
+              background: COLORS.blue,
+              color: "#FFFFFF",
+              fontFamily: "var(--font-space-grotesk), sans-serif",
+              fontWeight: 700,
+              fontSize: 14,
+              letterSpacing: "-0.01em",
+              textDecoration: "none",
+              borderRadius: 8,
+            }}
+          >
+            start the conversation →
+          </Link>
         </motion.div>
       </div>
     </SceneWrapper>

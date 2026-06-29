@@ -105,6 +105,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   overflow-x: hidden;          /* prevent horizontal scroll at document level */
+  scroll-padding-top: 80px;   /* offset anchor links below the 68px fixed nav */
 }
 
 body {
@@ -340,4 +341,44 @@ body {
   .px-10 { padding-left: 16px !important; padding-right: 16px !important; }
   .md\:px-16 { padding-left: 16px !important; padding-right: 16px !important; }
   .lg\:px-24 { padding-left: 16px !important; padding-right: 16px !important; }
+}
+
+/* ─── Skip-to-content link ─── */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 9999;
+  padding: 8px 16px;
+  background: #111111;
+  color: #FFFFFF;
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 6px 6px;
+  transition: top 0.15s;
+}
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* ─── Hero center identity — hide on mobile ─── */
+@media (max-width: 768px) {
+  .hero-center-identity {
+    display: none !important;
+  }
+}
+
+/* ─── Reduced motion — suppress CSS animations ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-pulse {
+    animation: none !important;
+  }
 }

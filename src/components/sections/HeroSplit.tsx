@@ -18,25 +18,25 @@ export default function HeroSplit() {
         background: "#111111",
       }}
     >
-      {/* Full-screen background image */}
+      {/* Background photo */}
       <Image
         src="/images/mirza_home.png"
-        alt="Mirza Minhaz Baig"
+        alt="Mirza Minhaz Baig — AI Transformation Leader"
         fill
         sizes="100vw"
         style={{ objectFit: "cover", objectPosition: "center top" }}
         priority
       />
 
-      {/* Gradient overlay — darkens edges, keeps center bright */}
+      {/* Dark overlay — darkens edges for text legibility */}
       <div style={{
         position: "absolute",
         inset: 0,
-        background: "linear-gradient(to right, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.04) 38%, rgba(0,0,0,0.04) 62%, rgba(0,0,0,0.42) 100%)",
+        background: "linear-gradient(to right, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.18) 38%, rgba(0,0,0,0.18) 62%, rgba(0,0,0,0.58) 100%)",
         zIndex: 1,
       }} />
 
-      {/* LEFT — AI Consultant → /about */}
+      {/* LEFT half — About → /about */}
       <Link
         href="/about"
         onMouseEnter={() => setHovered("left")}
@@ -52,8 +52,8 @@ export default function HeroSplit() {
           flexDirection: "column",
           justifyContent: "flex-end",
           padding: "clamp(24px, 4vw, 64px)",
-          background: hovered === "left" ? "rgba(0,0,0,0.18)" : "transparent",
-          transition: "background 0.35s ease",
+          background: hovered === "left" ? "rgba(0,0,0,0.22)" : "transparent",
+          transition: "background 0.3s ease",
           textDecoration: "none",
         }}
       >
@@ -61,22 +61,22 @@ export default function HeroSplit() {
           className="hero-overlay-content"
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.2 }}
+          transition={{ duration: 0.9, delay: 0.25 }}
         >
           <p className="hero-label-text" style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: "clamp(9px, 0.9vw, 11px)",
-            color: "rgba(255,255,255,0.5)",
+            fontSize: "clamp(9px, 0.85vw, 11px)",
+            color: "rgba(255,255,255,0.6)",
             letterSpacing: "0.25em",
             textTransform: "uppercase",
-            marginBottom: "12px",
+            marginBottom: "10px",
           }}>
-            click to explore
+            about me →
           </p>
           <h2 style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
             fontWeight: 900,
-            fontSize: "clamp(1.8rem, 4.5vw, 5.5rem)",
+            fontSize: "clamp(1.6rem, 3.2vw, 3.8rem)",
             letterSpacing: "-0.04em",
             color: "#FFFFFF",
             textTransform: "lowercase",
@@ -86,17 +86,17 @@ export default function HeroSplit() {
             ai<br />transformation.
           </h2>
           <p className="hero-label-text" style={{
-            fontSize: "clamp(11px, 1.1vw, 14px)",
-            color: "rgba(255,255,255,0.5)",
-            maxWidth: "240px",
+            fontSize: "clamp(11px, 1vw, 14px)",
+            color: "rgba(255,255,255,0.55)",
+            maxWidth: "220px",
             lineHeight: 1.6,
           }}>
-            AI transformation leadership, Agentic AI systems &amp; enterprise strategy
+            12+ years building enterprise AI in financial services
           </p>
         </motion.div>
       </Link>
 
-      {/* Thin vertical divider */}
+      {/* Vertical divider */}
       <div
         className="hero-divider"
         style={{
@@ -110,7 +110,7 @@ export default function HeroSplit() {
         }}
       />
 
-      {/* RIGHT — Customer Data Platform → /learn */}
+      {/* RIGHT half — CDP Demo → /learn */}
       <Link
         href="/learn"
         onMouseEnter={() => setHovered("right")}
@@ -127,8 +127,8 @@ export default function HeroSplit() {
           justifyContent: "flex-end",
           alignItems: "flex-end",
           padding: "clamp(24px, 4vw, 64px)",
-          background: hovered === "right" ? "rgba(0,0,0,0.18)" : "transparent",
-          transition: "background 0.35s ease",
+          background: hovered === "right" ? "rgba(0,0,0,0.22)" : "transparent",
+          transition: "background 0.3s ease",
           textDecoration: "none",
           textAlign: "right",
         }}
@@ -137,53 +137,43 @@ export default function HeroSplit() {
           className="hero-overlay-content"
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.3 }}
+          transition={{ duration: 0.9, delay: 0.35 }}
           style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}
         >
           <p className="hero-label-text" style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: "clamp(9px, 0.9vw, 11px)",
-            color: "rgba(255,255,255,0.5)",
+            fontSize: "clamp(9px, 0.85vw, 11px)",
+            color: "rgba(255,255,255,0.6)",
             letterSpacing: "0.25em",
             textTransform: "uppercase",
-            marginBottom: "12px",
+            marginBottom: "10px",
           }}>
-            click to explore
+            watch the demo →
           </p>
           <h2 style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
             fontWeight: 900,
-            fontSize: "clamp(1.8rem, 4.5vw, 5.5rem)",
+            fontSize: "clamp(1.6rem, 3.2vw, 3.8rem)",
             letterSpacing: "-0.04em",
             color: "#FFFFFF",
             textTransform: "lowercase",
             lineHeight: 0.95,
-            marginBottom: "8px",
+            marginBottom: "12px",
           }}>
             customer<br />data platform.
           </h2>
           <p className="hero-label-text" style={{
-            fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: "clamp(9px, 0.85vw, 11px)",
-            color: "rgba(255,255,255,0.65)",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            marginBottom: "10px",
-          }}>
-            Data Scientist &amp; Data Engineer
-          </p>
-          <p className="hero-label-text" style={{
-            fontSize: "clamp(11px, 1.1vw, 14px)",
-            color: "rgba(255,255,255,0.5)",
-            maxWidth: "240px",
+            fontSize: "clamp(11px, 1vw, 14px)",
+            color: "rgba(255,255,255,0.55)",
+            maxWidth: "220px",
             lineHeight: 1.6,
           }}>
-            BlueConic CDP · customer identity · real-time marketing activation
+            11-scene interactive enterprise demo — narrated
           </p>
         </motion.div>
       </Link>
 
-      {/* Mobile cards — shown only at ≤768px via CSS, hidden on desktop */}
+      {/* Mobile bottom bar — shown only at ≤768px */}
       <div className="hero-mobile-bar" style={{
         position: "absolute",
         bottom: 0,
@@ -191,8 +181,9 @@ export default function HeroSplit() {
         right: 0,
         zIndex: 4,
         display: "none",
-        background: "rgba(0,0,0,0.82)",
+        background: "rgba(0,0,0,0.9)",
       }}>
+        {/* Two nav buttons */}
         <div style={{ display: "flex", alignItems: "stretch" }}>
           <Link href="/about" style={{
             flex: 1,
@@ -200,21 +191,29 @@ export default function HeroSplit() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            padding: "22px 14px",
+            padding: "16px 14px",
             color: "#FFFFFF",
             textDecoration: "none",
             textAlign: "center",
-            borderRight: "1px solid rgba(255,255,255,0.12)",
+            borderRight: "1px solid rgba(255,255,255,0.1)",
+            gap: "3px",
           }}>
             <span style={{
               fontFamily: "var(--font-space-grotesk), sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(13px, 3.5vw, 16px)",
+              fontWeight: 700,
+              fontSize: "14px",
               letterSpacing: "-0.02em",
-              textTransform: "lowercase",
-              lineHeight: 1.2,
             }}>
-              ai transformation.
+              about me
+            </span>
+            <span style={{
+              fontFamily: "var(--font-jetbrains-mono), monospace",
+              fontSize: "8px",
+              color: "rgba(255,255,255,0.4)",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+            }}>
+              ai transformation
             </span>
           </Link>
           <Link href="/learn" style={{
@@ -223,30 +222,28 @@ export default function HeroSplit() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            padding: "22px 14px",
+            padding: "16px 14px",
             color: "#FFFFFF",
             textDecoration: "none",
             textAlign: "center",
+            gap: "3px",
           }}>
             <span style={{
               fontFamily: "var(--font-space-grotesk), sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(13px, 3.5vw, 16px)",
+              fontWeight: 700,
+              fontSize: "14px",
               letterSpacing: "-0.02em",
-              textTransform: "lowercase",
-              lineHeight: 1.2,
             }}>
-              customer<br />data platform.
+              watch demo
             </span>
             <span style={{
               fontFamily: "var(--font-jetbrains-mono), monospace",
-              fontSize: "clamp(8px, 2vw, 10px)",
-              color: "rgba(255,255,255,0.5)",
-              letterSpacing: "0.12em",
+              fontSize: "8px",
+              color: "rgba(255,255,255,0.4)",
+              letterSpacing: "0.1em",
               textTransform: "uppercase",
-              marginTop: "5px",
             }}>
-              data scientist &amp; data engineer
+              CDP interactive
             </span>
           </Link>
         </div>

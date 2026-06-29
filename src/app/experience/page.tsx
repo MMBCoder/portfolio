@@ -258,28 +258,36 @@ export default function ExperiencePage() {
               From Analytics Practitioner to AI Transformation Leader — 12+ years building customer data platforms and enterprise AI systems across financial services.
             </p>
 
-            {/* Chapter pills */}
+            {/* Chapter pills — anchor links to each section */}
             <div style={{ display: "flex", gap: "clamp(10px,2vw,20px)", marginTop: 32, flexWrap: "wrap" }}>
               {[
-                { num: "01", label: "Synchrony Financial", current: true },
-                { num: "02", label: "Citibank" },
-                { num: "03", label: "Genpact" },
+                { num: "01", label: "Synchrony Financial", href: "#synchrony", current: true },
+                { num: "02", label: "Citibank", href: "#citibank" },
+                { num: "03", label: "Genpact", href: "#genpact" },
               ].map((c, i) => (
-                <motion.div key={c.num}
+                <motion.a key={c.num}
+                  href={c.href}
                   initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 + i * 0.09 }}
-                  style={{ display: "flex", alignItems: "center", gap: 10, padding: "7px 16px", background: c.current ? "#111111" : "#F3F3F3", borderRadius: 40 }}
+                  style={{
+                    display: "flex", alignItems: "center", gap: 10, padding: "7px 16px",
+                    background: c.current ? "#111111" : "#F3F3F3", borderRadius: 40,
+                    textDecoration: "none", cursor: "pointer",
+                    transition: "background 0.2s",
+                  }}
+                  onMouseEnter={(e) => { if (!c.current) (e.currentTarget as HTMLElement).style.background = "#E5E5E5"; }}
+                  onMouseLeave={(e) => { if (!c.current) (e.currentTarget as HTMLElement).style.background = "#F3F3F3"; }}
                 >
                   <span style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 10, color: c.current ? "#999" : "#888", fontWeight: 700 }}>{c.num}</span>
                   <span style={{ fontSize: 12, color: c.current ? "#FFFFFF" : "#666666", fontWeight: c.current ? 600 : 400 }}>{c.label}</span>
                   {c.current && <span style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 8, color: "#888", letterSpacing: "0.1em" }}>CURRENT</span>}
-                </motion.div>
+                </motion.a>
               ))}
             </div>
           </motion.div>
         </div>
 
         {/* ── SYNCHRONY FINANCIAL ─────────────────────────────────────────── */}
-        <section ref={syncRef} style={{ background: "#FFFFFF", borderBottom: "1px solid #E5E5E5" }}>
+        <section id="synchrony" ref={syncRef} style={{ background: "#FFFFFF", borderBottom: "1px solid #E5E5E5" }}>
 
           {/* Company header strip */}
           <div style={{ padding: "clamp(32px,5vw,56px) clamp(24px,6vw,96px) 0", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
@@ -355,7 +363,7 @@ export default function ExperiencePage() {
         </section>
 
         {/* ── CITIBANK ─────────────────────────────────────────────────────── */}
-        <section ref={citiRef} style={{ background: "#F9F9F9", borderBottom: "1px solid #E5E5E5" }}>
+        <section id="citibank" ref={citiRef} style={{ background: "#F9F9F9", borderBottom: "1px solid #E5E5E5" }}>
           <div style={{ padding: "clamp(32px,5vw,56px) clamp(24px,6vw,96px) 0", display: "flex", alignItems: "center", gap: 16 }}>
             <motion.span initial={{ opacity: 0 }} animate={citiInView ? { opacity: 1 } : {}} style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 10, color: "#888888", letterSpacing: "0.3em", textTransform: "uppercase" }}>Chapter 02</motion.span>
             <div style={{ flex: 1, height: 1, background: "#E5E5E5" }} />
@@ -415,7 +423,7 @@ export default function ExperiencePage() {
         </section>
 
         {/* ── GENPACT ──────────────────────────────────────────────────────── */}
-        <section ref={genpactRef} style={{ background: "#FFFFFF", borderBottom: "1px solid #E5E5E5" }}>
+        <section id="genpact" ref={genpactRef} style={{ background: "#FFFFFF", borderBottom: "1px solid #E5E5E5" }}>
           <div style={{ padding: "clamp(32px,5vw,56px) clamp(24px,6vw,96px) 0", display: "flex", alignItems: "center", gap: 16 }}>
             <motion.span initial={{ opacity: 0 }} animate={genpactInView ? { opacity: 1 } : {}} style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 10, color: "#888888", letterSpacing: "0.3em", textTransform: "uppercase" }}>Chapter 03 · Where It Began</motion.span>
             <div style={{ flex: 1, height: 1, background: "#E5E5E5", minWidth: 24 }} />
