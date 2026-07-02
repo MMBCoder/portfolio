@@ -1,177 +1,223 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function HeroSplit() {
-  const [hovered, setHovered] = useState<"left" | "right" | null>(null);
-
   return (
     <section
       id="hero"
       className="hero-section"
-      style={{
-        position: "relative",
-        overflow: "hidden",
-        background: "#111111",
-      }}
+      style={{ position: "relative", overflow: "hidden", background: "#0a0a0a" }}
     >
-      {/* Background photo */}
+      {/* Background photo — image opacity reduced via overlay depth */}
       <Image
         src="/images/mirza_home.png"
         alt="Mirza Minhaz Baig — AI Transformation Leader"
         fill
         sizes="100vw"
-        style={{ objectFit: "cover", objectPosition: "center top" }}
+        style={{ objectFit: "cover", objectPosition: "center top", opacity: 0.8 }}
         priority
       />
 
-      {/* Dark overlay — darkens edges for text legibility */}
+      {/* Gradient — heavy dark on left where copy lives, opens up on right */}
       <div style={{
         position: "absolute",
         inset: 0,
-        background: "linear-gradient(to right, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.18) 38%, rgba(0,0,0,0.18) 62%, rgba(0,0,0,0.58) 100%)",
+        background: "linear-gradient(105deg, rgba(0,0,0,0.93) 0%, rgba(0,0,0,0.85) 38%, rgba(0,0,0,0.48) 62%, rgba(0,0,0,0.12) 100%)",
         zIndex: 1,
       }} />
 
-      {/* LEFT half — About → /about */}
-      <Link
-        href="/about"
-        onMouseEnter={() => setHovered("left")}
-        onMouseLeave={() => setHovered(null)}
-        style={{
-          position: "absolute",
-          left: 0,
-          top: 0,
-          width: "50%",
-          height: "100%",
-          zIndex: 2,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
-          padding: "clamp(24px, 4vw, 64px)",
-          background: hovered === "left" ? "rgba(0,0,0,0.22)" : "transparent",
-          transition: "background 0.3s ease",
-          textDecoration: "none",
-        }}
-      >
-        <motion.div
-          className="hero-overlay-content"
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.25 }}
-        >
-          <p className="hero-label-text" style={{
-            fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: "clamp(9px, 0.85vw, 11px)",
-            color: "rgba(255,255,255,0.6)",
-            letterSpacing: "0.25em",
-            textTransform: "uppercase",
-            marginBottom: "10px",
-          }}>
-            about me →
-          </p>
-          <h2 style={{
-            fontFamily: "var(--font-space-grotesk), sans-serif",
-            fontWeight: 900,
-            fontSize: "clamp(1.6rem, 3.2vw, 3.8rem)",
-            letterSpacing: "-0.04em",
-            color: "#FFFFFF",
-            textTransform: "lowercase",
-            lineHeight: 0.95,
-            marginBottom: "12px",
-          }}>
-            ai<br />transformation.
-          </h2>
-          <p className="hero-label-text" style={{
-            fontSize: "clamp(11px, 1vw, 14px)",
-            color: "rgba(255,255,255,0.55)",
-            maxWidth: "220px",
-            lineHeight: 1.6,
-          }}>
-            12+ years building enterprise AI in financial services
-          </p>
-        </motion.div>
-      </Link>
-
-      {/* Vertical divider */}
+      {/* Left-aligned content */}
       <div
-        className="hero-divider"
         style={{
           position: "absolute",
-          left: "50%",
-          top: "8%",
-          bottom: "8%",
-          width: "1px",
-          background: "rgba(255,255,255,0.15)",
-          zIndex: 3,
-        }}
-      />
-
-      {/* RIGHT half — CDP Demo → /learn */}
-      <Link
-        href="/learn"
-        onMouseEnter={() => setHovered("right")}
-        onMouseLeave={() => setHovered(null)}
-        style={{
-          position: "absolute",
-          right: 0,
-          top: 0,
-          width: "50%",
-          height: "100%",
+          inset: 0,
           zIndex: 2,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "flex-end",
-          alignItems: "flex-end",
-          padding: "clamp(24px, 4vw, 64px)",
-          background: hovered === "right" ? "rgba(0,0,0,0.22)" : "transparent",
-          transition: "background 0.3s ease",
-          textDecoration: "none",
-          textAlign: "right",
+          justifyContent: "center",
+          padding: "clamp(28px, 5vw, 96px)",
+          maxWidth: "clamp(340px, 60vw, 740px)",
         }}
       >
+        {/* Result stat — trust signal above the fold */}
         <motion.div
-          className="hero-overlay-content"
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.35 }}
-          style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}
+          transition={{ delay: 0.1, duration: 0.6 }}
+          style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "32px", flexWrap: "wrap" }}
         >
-          <p className="hero-label-text" style={{
+          <div style={{
+            display: "inline-flex",
+            alignItems: "baseline",
+            gap: "8px",
+            padding: "7px 16px",
+            background: "rgba(37,99,235,0.15)",
+            border: "1px solid rgba(37,99,235,0.4)",
+            borderRadius: "4px",
+          }}>
+            <span style={{
+              fontFamily: "var(--font-space-grotesk), sans-serif",
+              fontWeight: 900,
+              fontSize: "clamp(15px, 1.5vw, 20px)",
+              color: "#60A5FA",
+              letterSpacing: "-0.02em",
+            }}>$50M+</span>
+            <span style={{
+              fontFamily: "var(--font-jetbrains-mono), monospace",
+              fontSize: "9px",
+              color: "rgba(255,255,255,0.45)",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>revenue impact</span>
+          </div>
+          <div style={{
+            display: "inline-flex",
+            alignItems: "baseline",
+            gap: "8px",
+            padding: "7px 16px",
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            borderRadius: "4px",
+          }}>
+            <span style={{
+              fontFamily: "var(--font-space-grotesk), sans-serif",
+              fontWeight: 900,
+              fontSize: "clamp(15px, 1.5vw, 20px)",
+              color: "rgba(255,255,255,0.85)",
+              letterSpacing: "-0.02em",
+            }}>70M+</span>
+            <span style={{
+              fontFamily: "var(--font-jetbrains-mono), monospace",
+              fontSize: "9px",
+              color: "rgba(255,255,255,0.4)",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}>profiles activated</span>
+          </div>
+        </motion.div>
+
+        {/* Three-word benefit */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
             fontSize: "clamp(9px, 0.85vw, 11px)",
-            color: "rgba(255,255,255,0.6)",
-            letterSpacing: "0.25em",
+            color: "#3B82F6",
+            letterSpacing: "0.3em",
             textTransform: "uppercase",
-            marginBottom: "10px",
-          }}>
-            watch the demo →
-          </p>
-          <h2 style={{
+            marginBottom: "16px",
+            fontWeight: 700,
+          }}
+        >
+          AI · Data · Impact
+        </motion.p>
+
+        {/* Main headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.08, duration: 0.75 }}
+          style={{
             fontFamily: "var(--font-space-grotesk), sans-serif",
             fontWeight: 900,
-            fontSize: "clamp(1.6rem, 3.2vw, 3.8rem)",
+            fontSize: "clamp(2.4rem, 5.8vw, 6rem)",
             letterSpacing: "-0.04em",
             color: "#FFFFFF",
+            lineHeight: 0.94,
+            marginBottom: "20px",
             textTransform: "lowercase",
-            lineHeight: 0.95,
-            marginBottom: "12px",
-          }}>
-            customer<br />data platform.
-          </h2>
-          <p className="hero-label-text" style={{
-            fontSize: "clamp(11px, 1vw, 14px)",
-            color: "rgba(255,255,255,0.55)",
-            maxWidth: "220px",
-            lineHeight: 1.6,
-          }}>
-            11-scene interactive enterprise demo — narrated
-          </p>
+          }}
+        >
+          enterprise ai<br />that moves<br />the needle.
+        </motion.h1>
+
+        {/* 12+ years — bold, surfaces beside the headline */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.32, duration: 0.55 }}
+          style={{
+            fontFamily: "var(--font-space-grotesk), sans-serif",
+            fontWeight: 700,
+            fontSize: "clamp(13px, 1.2vw, 16px)",
+            color: "rgba(255,255,255,0.88)",
+            letterSpacing: "-0.01em",
+            marginBottom: "10px",
+          }}
+        >
+          12+ years building enterprise AI in financial services.
+        </motion.p>
+
+        {/* Single-line subcopy */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.55 }}
+          style={{
+            fontSize: "clamp(12px, 1.1vw, 15px)",
+            color: "rgba(255,255,255,0.48)",
+            lineHeight: 1.65,
+            maxWidth: "400px",
+            marginBottom: "40px",
+          }}
+        >
+          From LLM strategy to shipped product — AI that generates real revenue in regulated environments.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.55 }}
+          className="hero-overlay-content"
+          style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}
+        >
+          <Link
+            href="/portfolio"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "13px 28px",
+              background: "#FFFFFF",
+              color: "#111111",
+              fontFamily: "var(--font-space-grotesk), sans-serif",
+              fontWeight: 700,
+              fontSize: "14px",
+              letterSpacing: "-0.01em",
+              textDecoration: "none",
+              borderRadius: "6px",
+              whiteSpace: "nowrap",
+            }}
+          >
+            view portfolio →
+          </Link>
+          <Link
+            href="/learn"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "13px 28px",
+              background: "transparent",
+              color: "#FFFFFF",
+              border: "1px solid rgba(255,255,255,0.28)",
+              fontFamily: "var(--font-space-grotesk), sans-serif",
+              fontWeight: 600,
+              fontSize: "14px",
+              letterSpacing: "-0.01em",
+              textDecoration: "none",
+              borderRadius: "6px",
+              whiteSpace: "nowrap",
+            }}
+          >
+            watch the demo
+          </Link>
         </motion.div>
-      </Link>
+      </div>
 
       {/* Mobile bottom bar — shown only at ≤768px */}
       <div className="hero-mobile-bar" style={{
@@ -181,70 +227,44 @@ export default function HeroSplit() {
         right: 0,
         zIndex: 4,
         display: "none",
-        background: "rgba(0,0,0,0.9)",
+        background: "rgba(0,0,0,0.93)",
+        padding: "14px 16px",
       }}>
-        {/* Two nav buttons */}
-        <div style={{ display: "flex", alignItems: "stretch" }}>
-          <Link href="/about" style={{
+        <div style={{ display: "flex", gap: "10px" }}>
+          <Link href="/portfolio" style={{
             flex: 1,
             display: "flex",
-            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            padding: "16px 14px",
-            color: "#FFFFFF",
+            padding: "14px 12px",
+            background: "#FFFFFF",
+            color: "#111111",
             textDecoration: "none",
-            textAlign: "center",
-            borderRight: "1px solid rgba(255,255,255,0.1)",
-            gap: "3px",
+            fontFamily: "var(--font-space-grotesk), sans-serif",
+            fontWeight: 700,
+            fontSize: "14px",
+            borderRadius: "6px",
+            letterSpacing: "-0.01em",
           }}>
-            <span style={{
-              fontFamily: "var(--font-space-grotesk), sans-serif",
-              fontWeight: 700,
-              fontSize: "14px",
-              letterSpacing: "-0.02em",
-            }}>
-              about me
-            </span>
-            <span style={{
-              fontFamily: "var(--font-jetbrains-mono), monospace",
-              fontSize: "8px",
-              color: "rgba(255,255,255,0.4)",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-            }}>
-              ai transformation
-            </span>
+            view portfolio
           </Link>
           <Link href="/learn" style={{
             flex: 1,
             display: "flex",
-            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            padding: "16px 14px",
+            padding: "14px 12px",
+            background: "transparent",
             color: "#FFFFFF",
+            border: "1px solid rgba(255,255,255,0.28)",
             textDecoration: "none",
-            textAlign: "center",
-            gap: "3px",
+            fontFamily: "var(--font-space-grotesk), sans-serif",
+            fontWeight: 600,
+            fontSize: "14px",
+            borderRadius: "6px",
+            letterSpacing: "-0.01em",
           }}>
-            <span style={{
-              fontFamily: "var(--font-space-grotesk), sans-serif",
-              fontWeight: 700,
-              fontSize: "14px",
-              letterSpacing: "-0.02em",
-            }}>
-              watch demo
-            </span>
-            <span style={{
-              fontFamily: "var(--font-jetbrains-mono), monospace",
-              fontSize: "8px",
-              color: "rgba(255,255,255,0.4)",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-            }}>
-              CDP interactive
-            </span>
+            watch demo
           </Link>
         </div>
       </div>

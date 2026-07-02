@@ -5,6 +5,21 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
+// #0A74DF on white = 4.59:1 contrast (WCAG AA ✓). Hover = 10% darker.
+const CTA_BG = "#0A74DF";
+const CTA_HOVER = "#0968C8";
+const CTA_FOCUS_RING = "#60A5FA";
+const CTA_SHADOW = "0 3px 10px rgba(10,116,223,0.4)";
+const CTA_SHADOW_HOVER = "0 3px 14px rgba(10,116,223,0.6)";
+
+function trackCtaClick(location: string) {
+  if (typeof window === "undefined") return;
+  // GA4
+  (window as any).gtag?.("event", "cta_click", { event_category: "about_page", event_label: location });
+  // Segment
+  (window as any).analytics?.track("CTA Clicked", { category: "about_page", location });
+}
+
 const consultantList = [
   "Agentic AI systems & LLM orchestration",
   "RAG architectures & prompt engineering",
@@ -77,6 +92,7 @@ const quickFacts = [
 export default function About() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const ctaRowRef = useRef<HTMLDivElement>(null);
 
   return (
     <section id="about" ref={ref} style={{ background: "#FFFFFF" }}>
@@ -310,6 +326,7 @@ export default function About() {
 
       {/* ─── CTA row ─── */}
       <motion.div
+        ref={ctaRowRef}
         initial={{ opacity: 0, y: 16 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6, delay: 0.6 }}
@@ -335,45 +352,88 @@ export default function About() {
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
           <Link
             href="/contact"
+            aria-label="Schedule a 15-minute call"
+            data-analytics-event="cta_click"
+            data-analytics-category="about_page"
+            data-analytics-label="cta_row"
+            onClick={() => trackCtaClick("cta_row")}
             style={{
               display: "inline-flex",
               alignItems: "center",
-              padding: "14px 28px",
-              background: "#FFFFFF",
-              color: "#111111",
+              justifyContent: "center",
+              height: "44px",
+              minWidth: "120px",
+              padding: "14px 20px",
+              background: CTA_BG,
+              color: "#FFFFFF",
               fontFamily: "var(--font-space-grotesk), sans-serif",
               fontWeight: 700,
-              fontSize: "14px",
+              fontSize: "clamp(16px, 1.4vw, 18px)",
               letterSpacing: "-0.01em",
               textDecoration: "none",
-              borderRadius: "6px",
+              borderRadius: "8px",
               whiteSpace: "nowrap",
+              boxShadow: CTA_SHADOW,
+              transition: "background 0.18s, box-shadow 0.18s",
+              outline: "none",
+            }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = CTA_HOVER;
+              el.style.boxShadow = CTA_SHADOW_HOVER;
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = CTA_BG;
+              el.style.boxShadow = CTA_SHADOW;
+            }}
+            onFocus={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.outline = `3px solid ${CTA_FOCUS_RING}`;
+              el.style.outlineOffset = "2px";
+            }}
+            onBlur={(e) => {
+              (e.currentTarget as HTMLElement).style.outline = "none";
             }}
           >
-            get in touch →
+            Schedule a 15-min call
           </Link>
           <Link
             href="/experience"
             style={{
               display: "inline-flex",
               alignItems: "center",
-              padding: "14px 28px",
+              justifyContent: "center",
+              height: "44px",
+              minWidth: "120px",
+              padding: "14px 20px",
               background: "transparent",
               color: "#FFFFFF",
               fontFamily: "var(--font-space-grotesk), sans-serif",
               fontWeight: 600,
-              fontSize: "14px",
+              fontSize: "clamp(14px, 1.2vw, 16px)",
               letterSpacing: "-0.01em",
               textDecoration: "none",
-              borderRadius: "6px",
+              borderRadius: "8px",
               border: "1px solid rgba(255,255,255,0.25)",
               whiteSpace: "nowrap",
+              transition: "border-color 0.18s",
+              outline: "none",
             }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.55)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.25)"; }}
+            onFocus={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.outline = "3px solid rgba(255,255,255,0.5)";
+              el.style.outlineOffset = "2px";
+            }}
+            onBlur={(e) => { (e.currentTarget as HTMLElement).style.outline = "none"; }}
           >
             view experience
           </Link>
         </div>
       </motion.div>
+
     </section>
   );
 }
