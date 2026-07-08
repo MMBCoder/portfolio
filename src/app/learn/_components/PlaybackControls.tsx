@@ -417,24 +417,7 @@ export default function PlaybackControls({
         </motion.button>
       </div>
 
-      {/* ── Scene counter ─────────────────────────────────────────────────── */}
-      <motion.div
-        animate={{ opacity: isHidden ? 0 : 0.48 }}
-        transition={{ duration: 0.3 }}
-        style={{
-          fontFamily: "var(--font-jetbrains-mono), monospace",
-          fontSize: 10,
-          color: "#111111",
-          letterSpacing: "0.12em",
-          textTransform: "uppercase",
-          pointerEvents: "none",
-          userSelect: "none",
-          whiteSpace: "nowrap",
-        }}
-        aria-hidden="true"
-      >
-        Scene {String(scene + 1).padStart(2, "0")} of {String(TOTAL_SCENES).padStart(2, "0")}
-      </motion.div>
+
     </motion.div>
   );
 }

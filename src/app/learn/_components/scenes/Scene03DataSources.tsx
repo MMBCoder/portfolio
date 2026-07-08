@@ -10,7 +10,7 @@ const STEPS = [
   {
     id: 1,
     title: "Customer Interaction",
-    desc: "Sarah visits your website and sees a product promotion.",
+    desc: "Mirza clicks a card advertisement and lands on your online application.",
     icon: "👤",
     color: COLORS.blue,
     bg: "#EFF6FF",
@@ -28,7 +28,7 @@ const STEPS = [
   {
     id: 3,
     title: "Privacy Preference Centre",
-    desc: "Sarah chooses exactly what she permits — marketing, analytics, personalisation. Granular control. Full transparency.",
+    desc: "Mirza chooses exactly what he permits — marketing, analytics, personalisation. Granular control. Full transparency.",
     icon: "⚙️",
     color: "#D97706",
     bg: "#FFFBEB",
@@ -43,7 +43,7 @@ const STEPS = [
   {
     id: 4,
     title: "Consent Captured",
-    desc: "Sarah's preferences are recorded with a timestamp, jurisdiction, and legal basis.",
+    desc: "Mirza's preferences are recorded with a timestamp, jurisdiction, and legal basis.",
     icon: "✅",
     color: COLORS.green,
     bg: "#ECFDF5",
@@ -52,7 +52,7 @@ const STEPS = [
   {
     id: 5,
     title: "Approved Data Enters CDP",
-    desc: "Only the data Sarah has explicitly authorised flows into the Customer Data Platform. Nothing else.",
+    desc: "Only the data Mirza has explicitly authorised flows into the Customer Data Platform. Nothing else.",
     icon: "🔐",
     color: "#1D4ED8",
     bg: "#DBEAFE",
@@ -74,7 +74,7 @@ export default function Scene03DataSources(_props: Props) {
             color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 04 · Consent Management
+          Consent Management
         </motion.p>
 
         <motion.h2

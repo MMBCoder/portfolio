@@ -8,12 +8,12 @@ import { useIsMobile } from "../shared/useIsMobile";
 interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
 const CHANNELS = [
-  { label: "Mobile App", sub: "Banking app · iOS & Android", icon: "📱", color: "#2563EB" },
-  { label: "Banking Website", sub: "Digital banking portal", icon: "🖥️", color: "#7C3AED" },
-  { label: "Credit Card Portal", sub: "Card management", icon: "💳", color: "#0891B2" },
-  { label: "Email", sub: "Marketing & service comms", icon: "✉️", color: "#059669" },
-  { label: "Partner Marketplace", sub: "Third-party products", icon: "🤝", color: "#D97706" },
-  { label: "Customer Support", sub: "Phone, chat & in-branch", icon: "🎧", color: "#DC2626" },
+  { label: "Digital Advertising", sub: "Display · social · retargeting", icon: "📢", color: "#2563EB" },
+  { label: "Partner Marketplace", sub: "Card comparison sites", icon: "🤝", color: "#D97706" },
+  { label: "Prescreen Offer", sub: "Pre-approved mail & email", icon: "✉️", color: "#059669" },
+  { label: "Bank Website", sub: "Online card application", icon: "🖥️", color: "#7C3AED" },
+  { label: "Mobile App", sub: "Apply in-app", icon: "📱", color: "#0891B2" },
+  { label: "Paid Search", sub: "Search & affiliate traffic", icon: "🔍", color: "#DC2626" },
 ];
 
 const container = {
@@ -29,7 +29,7 @@ export default function Scene01Customer(_props: Props) {
   const isMobile = useIsMobile();
 
   return (
-    <SceneWrapper sceneIndex={1} title="Sarah's World">
+    <SceneWrapper sceneIndex={1} title="Mirza's World">
       <div style={{ width: "100%", maxWidth: 860 }}>
 
         {/* Eyebrow */}
@@ -42,7 +42,7 @@ export default function Scene01Customer(_props: Props) {
             color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 02 · Customer Journey
+          Customer Journey
         </motion.p>
 
         <motion.h2
@@ -56,7 +56,7 @@ export default function Scene01Customer(_props: Props) {
             textTransform: "lowercase", textAlign: "center", marginBottom: 6,
           }}
         >
-          meet sarah.
+          meet mirza.
         </motion.h2>
 
         <motion.p
@@ -65,10 +65,10 @@ export default function Scene01Customer(_props: Props) {
           transition={{ delay: 0.2 }}
           style={{ fontSize: 15, color: COLORS.fgSecondary, textAlign: "center", marginBottom: 36 }}
         >
-          An existing credit card customer engaging across six separate channels.
+          An in-market credit card prospect, discovered across six acquisition channels.
         </motion.p>
 
-        {/* Sarah's profile card */}
+        {/* Mirza's profile card */}
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -94,15 +94,15 @@ export default function Scene01Customer(_props: Props) {
             flexShrink: 0,
             boxShadow: "0 4px 16px rgba(37,99,235,0.25)",
           }}>
-            <span style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 22, color: "#fff" }}>S</span>
+            <span style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 22, color: "#fff" }}>M</span>
           </div>
           <div>
             <p style={{
               fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
               fontSize: 18, color: COLORS.fg, marginBottom: 2,
-            }}>Sarah</p>
+            }}>Mirza</p>
             <p style={{ fontSize: 13, color: COLORS.fgSecondary }}>
-              Premium Credit Card Holder · 7 years · High Lifetime Value
+              In-market Credit Card Prospect · High Intent · Not Yet a Customer
             </p>
           </div>
           <div style={{
@@ -116,7 +116,7 @@ export default function Scene01Customer(_props: Props) {
             fontFamily: "var(--font-jetbrains-mono)",
             whiteSpace: "nowrap",
           }}>
-            Active Customer
+            Prospect
           </div>
         </motion.div>
 
@@ -185,8 +185,8 @@ export default function Scene01Customer(_props: Props) {
             <line x1="12" y1="16" x2="12.01" y2="16" />
           </svg>
           <p style={{ fontSize: 13, color: "#9A3412", lineHeight: 1.5 }}>
-            <strong>Six channels. Zero connected views.</strong> Sarah is a different person in every system.
-            No team currently knows the complete picture of who she is.
+            <strong>Six acquisition channels. Zero connected views.</strong> Mirza is a different person in every system.
+            No team knows they are all chasing the same prospect.
           </p>
         </motion.div>
       </div>

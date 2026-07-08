@@ -8,10 +8,10 @@ import { useIsMobile } from "../shared/useIsMobile";
 interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
 const CHANNELS = [
-  { label: "Personalised Email", time: "1.2s", icon: "✉️", color: COLORS.blue, detail: "Subject: \"Your exclusive travel rewards offer, Sarah\"" },
+  { label: "Personalised Email", time: "1.2s", icon: "✉️", color: COLORS.blue, detail: "Subject: \"Mirza, your card application is 3 fields from done\"" },
   { label: "Website Banner", time: "0.8s", icon: "🖥️", color: COLORS.purple, detail: "Dynamic hero banner · 3-click application flow" },
   { label: "Mobile Notification", time: "1.5s", icon: "📱", color: "#0891B2", detail: "Push · \"Complete your Premium Card application\"" },
-  { label: "Call Centre Context", time: "2.1s", icon: "🎧", color: COLORS.green, detail: "Agent briefed with Sarah's profile and offer details" },
+  { label: "Call Centre Context", time: "2.1s", icon: "🎧", color: COLORS.green, detail: "Agent briefed with Mirza's profile and offer details" },
   { label: "Ad Suppression", time: "0.5s", icon: "🚫", color: "#D97706", detail: "Retargeting paused — organic journey in progress" },
   { label: "Chat Trigger", time: "1.8s", icon: "💬", color: "#DC2626", detail: "Proactive chat offer on return visit · 72-hour window" },
 ];
@@ -32,7 +32,7 @@ export default function Scene08Activation(_props: Props) {
             color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 09 · Real-Time Activation
+          Real-Time Activation
         </motion.p>
 
         <motion.h2
@@ -55,7 +55,7 @@ export default function Scene08Activation(_props: Props) {
           transition={{ delay: 0.2 }}
           style={{ fontSize: 15, color: COLORS.fgSecondary, textAlign: "center", marginBottom: 24 }}
         >
-          The CDP triggers Sarah's personalised experience across every channel simultaneously.
+          The CDP re-engages Mirza across every channel simultaneously.
         </motion.p>
 
         {/* Trigger event */}
@@ -84,7 +84,7 @@ export default function Scene08Activation(_props: Props) {
               fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
               fontSize: 15, color: COLORS.fg,
             }}>
-              Sarah abandoned her Premium Card application — 3 fields from completion
+              Mirza abandoned his Premier Card application — 3 fields from completion
             </p>
           </div>
           <div style={{

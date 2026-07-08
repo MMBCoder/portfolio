@@ -9,7 +9,7 @@ interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
 const FRAGMENTS = [
   { label: "Cookie", value: "abc_7f3k9d", system: "Analytics Platform", color: COLORS.blue, delay: 0.3 },
-  { label: "Email Address", value: "sarah@example.com", system: "Marketing Stack", color: COLORS.purple, delay: 0.5 },
+  { label: "Email Address", value: "mirza@example.com", system: "Marketing Stack", color: COLORS.purple, delay: 0.5 },
   { label: "CRM ID", value: "CRM-4829-XK", system: "Salesforce CRM", color: "#0891B2", delay: 0.7 },
   { label: "Device Fingerprint", value: "iPhone 15 · iOS 17", system: "Mobile SDK", color: "#059669", delay: 0.9 },
   { label: "Customer Number", value: "ACC-00291847", system: "Core Banking", color: "#D97706", delay: 1.1 },
@@ -32,7 +32,7 @@ export default function Scene04CDP(_props: Props) {
             color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 05 · Identity Resolution
+          Identity Resolution
         </motion.p>
 
         <motion.h2
@@ -168,7 +168,7 @@ export default function Scene04CDP(_props: Props) {
             <p style={{
               fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
               fontSize: 20, color: COLORS.fg, marginBottom: 2,
-            }}>Sarah — ACC-00291847</p>
+            }}>Mirza — PRS-00291847</p>
             <p style={{ fontSize: 12, color: COLORS.fgSecondary }}>
               6 identifiers resolved · Trust score: 97% · Last updated: real-time
             </p>

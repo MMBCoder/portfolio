@@ -8,12 +8,12 @@ import { useIsMobile } from "../shared/useIsMobile";
 interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
 const SOURCES = [
-  { label: "Mobile App", icon: "📱", color: "#2563EB" },
-  { label: "Banking Website", icon: "🖥️", color: "#7C3AED" },
-  { label: "Credit Card Portal", icon: "💳", color: "#0891B2" },
-  { label: "Email", icon: "✉️", color: "#059669" },
+  { label: "Digital Advertising", icon: "📢", color: "#2563EB" },
   { label: "Partner Marketplace", icon: "🤝", color: "#D97706" },
-  { label: "Customer Support", icon: "🎧", color: "#DC2626" },
+  { label: "Prescreen Offer", icon: "✉️", color: "#059669" },
+  { label: "Bank Website", icon: "🖥️", color: "#7C3AED" },
+  { label: "Mobile App", icon: "📱", color: "#0891B2" },
+  { label: "Paid Search", icon: "🔍", color: "#DC2626" },
 ];
 
 const LISTENERS = [
@@ -26,14 +26,14 @@ const LISTENERS = [
 ];
 
 const EVENTS = [
-  { label: "Login", type: "AUTH", color: COLORS.blue },
-  { label: "Product View", type: "BROWSE", color: COLORS.purple },
-  { label: "Credit Card Search", type: "BROWSE", color: COLORS.purple },
+  { label: "Ad Click", type: "ENGAGE", color: COLORS.blue },
+  { label: "Marketplace Compare", type: "BROWSE", color: COLORS.purple },
+  { label: "Prescreen Match", type: "SIGNAL", color: "#D97706" },
   { label: "Application Started", type: "CONVERSION", color: COLORS.green },
   { label: "Application Abandoned", type: "SIGNAL", color: "#D97706" },
-  { label: "Transaction", type: "FINANCIAL", color: COLORS.cyan },
   { label: "Email Open", type: "ENGAGE", color: COLORS.blue },
-  { label: "Support Interaction", type: "SERVICE", color: "#DC2626" },
+  { label: "Site Return Visit", type: "BROWSE", color: COLORS.purple },
+  { label: "Support Chat", type: "SERVICE", color: "#DC2626" },
 ];
 
 export default function Scene02Channels(_props: Props) {
@@ -52,7 +52,7 @@ export default function Scene02Channels(_props: Props) {
             color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 03 · Event Capture
+          Event Capture
         </motion.p>
 
         <motion.h2
@@ -75,7 +75,7 @@ export default function Scene02Channels(_props: Props) {
           transition={{ delay: 0.2 }}
           style={{ fontSize: 15, color: COLORS.fgSecondary, textAlign: "center", marginBottom: 32 }}
         >
-          As Sarah moves through your ecosystem, listeners capture every signal in real time.
+          As Mirza shops for the right card, listeners capture every signal in real time.
         </motion.p>
 
         {isMobile ? (

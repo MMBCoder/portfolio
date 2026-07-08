@@ -85,7 +85,7 @@ export default function Scene06AIAgents(_props: Props) {
             color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 07 · AI Analysis Engine
+          AI Analysis Engine
         </motion.p>
 
         <motion.h2
@@ -108,7 +108,7 @@ export default function Scene06AIAgents(_props: Props) {
           transition={{ delay: 0.2 }}
           style={{ fontSize: 15, color: COLORS.fgSecondary, textAlign: "center", marginBottom: 28 }}
         >
-          Six models analyse Sarah's unified profile simultaneously.
+          Six models analyse Mirza's unified profile simultaneously.
         </motion.p>
 
         {/* Input indicator */}
@@ -139,7 +139,7 @@ export default function Scene06AIAgents(_props: Props) {
             <span style={{ color: "#fff", fontWeight: 700, fontSize: 14 }}>S</span>
           </div>
           <div>
-            <p style={{ fontSize: 12, fontWeight: 600, color: COLORS.fg }}>Input: Sarah's Customer 360 Profile</p>
+            <p style={{ fontSize: 12, fontWeight: 600, color: COLORS.fg }}>Input: Mirza's Prospect 360 Profile</p>
             <p style={{ fontSize: 11, color: COLORS.fgMuted }}>9 data dimensions · Real-time enrichment</p>
           </div>
           <motion.div

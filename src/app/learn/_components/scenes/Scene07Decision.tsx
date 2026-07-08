@@ -63,7 +63,7 @@ const STEPS = [
     id: 5,
     role: "Campaign Published",
     action: "CDP Activates in Real Time",
-    detail: "Sarah's personalised experience is now live across email, web, and mobile.",
+    detail: "Mirza's personalised retargeting is now live across email, web, and mobile.",
     icon: "✅",
     color: COLORS.green,
     bg: "#ECFDF5",
@@ -88,7 +88,7 @@ export default function Scene07Decision(_props: Props) {
             color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 08 · Human-in-the-Loop Governance
+          Human-in-the-Loop Governance
         </motion.p>
 
         <motion.h2

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { TOTAL_SCENES, SCENE_META } from "./constants";
+import { SCENE_META } from "./constants";
 import { useIsMobile } from "./shared/useIsMobile";
 
 interface SceneLabelProps {
@@ -10,7 +10,6 @@ interface SceneLabelProps {
 
 export default function SceneLabel({ scene }: SceneLabelProps) {
   const meta = SCENE_META[scene];
-  const number = String(scene + 1).padStart(2, "0");
   const isMobile = useIsMobile();
 
   if (isMobile) {
@@ -42,7 +41,7 @@ export default function SceneLabel({ scene }: SceneLabelProps) {
               textTransform: "uppercase",
               color: "#AAAAAA",
             }}>
-              {number} / {String(TOTAL_SCENES).padStart(2, "0")} · {meta.title}
+              {meta.title}
             </span>
           </motion.div>
         </AnimatePresence>
@@ -70,16 +69,6 @@ export default function SceneLabel({ scene }: SceneLabelProps) {
           exit={{ opacity: 0, y: 6 }}
           transition={{ duration: 0.3 }}
         >
-          <div style={{
-            fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: 10,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "#BBBBBB",
-            marginBottom: 2,
-          }}>
-            {number} / {String(TOTAL_SCENES).padStart(2, "0")}
-          </div>
           <div style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
             fontSize: 10,

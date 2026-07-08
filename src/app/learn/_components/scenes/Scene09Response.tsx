@@ -9,7 +9,7 @@ interface Props { isPlaying: boolean; isTransitioning: boolean; }
 
 const LOOP_STEPS = [
   {
-    id: 1, label: "Sarah Opens Email", icon: "✉️",
+    id: 1, label: "Mirza Opens Email", icon: "✉️",
     detail: "10:14 AM · Travel Rewards Card offer",
     color: COLORS.blue, delay: 0.3,
   },
@@ -45,7 +45,7 @@ const LOOP_STEPS = [
   },
   {
     id: 8, label: "Better Future Campaigns", icon: "🎯",
-    detail: "Every future Sarah interaction informed by this conversion",
+    detail: "Every future Mirza interaction informed by this conversion",
     color: COLORS.green, delay: 2.4,
   },
 ];
@@ -66,7 +66,7 @@ export default function Scene09Response(_props: Props) {
             color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 10 · Feedback Loop
+          Feedback Loop
         </motion.p>
 
         <motion.h2
@@ -89,7 +89,7 @@ export default function Scene09Response(_props: Props) {
           transition={{ delay: 0.2 }}
           style={{ fontSize: 15, color: COLORS.fgSecondary, textAlign: "center", marginBottom: 32 }}
         >
-          Every interaction Sarah has makes the next one smarter.
+          Every interaction Mirza has makes the next one smarter.
         </motion.p>
 
         {/* Feedback loop steps */}
@@ -186,7 +186,7 @@ export default function Scene09Response(_props: Props) {
             fontSize: 13, color: "#047857", textAlign: "center", lineHeight: 1.55,
             maxWidth: 540,
           }}>
-            Every future interaction with Sarah — every browse, every transaction, every support call —
+            Every future interaction with Mirza — every swipe, every payment, every support call —
             is now informed by what happened today. The CDP continuously refines her profile,
             her segments, and the AI models that serve her. Each cycle makes the next one more accurate.
           </p>

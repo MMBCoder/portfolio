@@ -6,52 +6,71 @@ import { useEffect, useRef, useCallback } from "react";
 // Written in the voice of a Senior VP of Digital Transformation explaining to
 // leadership. Calm. Confident. Thoughtful. Each scene picks up from the last.
 
+// Voice-directed narration — written as spoken by a warm, confident Indian English
+// narrator (30s, management-consultant tone). Markers: [pause] [short pause] become
+// real pauses at synthesis time; [smile] [slower] [slightly faster] [emphasize] are
+// direction cues and are stripped before speaking.
 export const NARRATIONS: Record<number, string> = {
-  0: "Every login. Every payment. Every abandoned application. Each one tells a story your organisation has never fully heard. Inside most financial institutions, these signals remain scattered, disconnected, unread. A Customer Data Platform is what finally connects them.",
+  0: "Every day… [short pause] thousands of people click on a card ad. They compare offers. They start an application. [pause] And then — they simply walk away. [slower] Each of those moments is a story. A customer, waiting to be won. [pause] The trouble is, in most card businesses these signals sit scattered across dozens of systems that never talk to each other. [short pause] [smile] That's exactly what a Customer Data Platform changes.",
 
-  1: "Meet Sarah — an existing credit card customer. She engages across your mobile app, banking website, credit card portal, email, partner marketplace, and customer support. Six channels. Not a single connected view of who she actually is.",
+  1: "So let me introduce you to Mirza. [short pause] He's shopping for a credit card right now. He's seen your ad on social media… compared cards on a marketplace… even received a prescreen offer in his inbox. [pause] Six different channels. [slower] And here's the problem — not one of them knows he's the same person.",
 
-  2: "As Sarah moves through your ecosystem, she generates a continuous stream of events. A login. A product search. A credit card application started — and then abandoned. An email opened six hours later. Event listeners, embedded across every touchpoint, capture each of these moments in real time.",
+  2: "Now, watch what happens as Mirza shops around. [short pause] Every step he takes creates a signal. An ad click. A comparison. And then the big one — [slower] he starts your application… and abandons it, just three fields from the finish. [pause] Event listeners across every touchpoint quietly capture each of these moments, in real time.",
 
-  3: "Before a single event reaches the CDP, Sarah must give her consent. A Consent Management Platform presents her privacy choices clearly. She decides what she is willing to share. Only the data she has explicitly approved enters the platform. In regulated industries like financial services, consent is not optional. It is foundational.",
+  3: "But before any of that data goes anywhere — [emphasize] Mirza has to say yes. [short pause] A clear consent banner lays out his privacy choices. He decides what he's comfortable sharing, and only that data enters the platform. [pause] In credit cards, consent isn't a checkbox exercise. [slower] It's the foundation everything else stands on.",
 
-  4: "Sarah appears differently in every system. A cookie in your analytics platform. An email address in your marketing stack. A CRM identifier. A mobile device fingerprint. Identity resolution stitches every fragment together — resolving four separate records into one trusted, unified customer identity.",
+  4: "Here's the thing — Mirza looks completely different in every system. [short pause] An anonymous cookie here. An email address there. A device fingerprint from the marketplace. And that half-finished application. [pause] Identity resolution quietly stitches all of these fragments together… [slower] into one single, trusted view of Mirza.",
 
-  5: "The result is a Customer 360 profile — a single, comprehensive view that no individual system could ever provide alone. Demographics. Products she owns. Browsing behaviour. Transaction history. Email engagement. App activity. Support interactions. Her consent status. And AI-generated propensity scores. Every team, from marketing to service, now sees the same Sarah.",
+  5: "And now, for the first time — everyone can see the full picture. [short pause] His journey across channels. His card preferences. That abandoned application, three fields from done. His prescreen eligibility, his consent status… and AI-driven propensity scores on top. [pause] [smile] Marketing, risk and service — they're all finally looking at the same Mirza.",
 
-  6: "With a complete profile, AI models begin their analysis. Purchase propensity. Churn risk. Credit eligibility. Next best offer. Product affinity. Risk signals. Each model generates a recommendation for Sarah based on her actual behaviour and demonstrated intent. These are recommendations — not decisions. That distinction is important.",
+  6: "This is where the AI earns its keep. [short pause] The models study Mirza's profile and start recommending. How likely is he to finish the application? Which channel will reach him best? What's the right offer — and when? [pause] But notice the word. [emphasize] Recommend. [slower] The AI never decides on its own. And that distinction really matters.",
 
-  7: "This is where responsible AI separates genuinely mature organisations from the rest. Artificial intelligence accelerates analysis and surfaces the next best recommendation — but a marketing analyst reviews the campaign logic, a compliance officer confirms regulatory alignment, and a business leader approves activation. Every campaign is reviewed and approved by a human before it reaches a customer. Accountability stays with your team.",
+  7: "Because now, the humans step in. [short pause] A marketing analyst reviews the retargeting plan. A compliance officer checks it against lending regulations. And a business leader gives the final go-ahead. [pause] [slower] Nothing reaches Mirza until a person has looked at it, and approved it. [short pause] That's accountability, built right into the flow.",
 
-  8: "Approval granted. The CDP now activates Sarah's experience in real time. She abandoned a credit card application this morning. Within seconds of returning to the website, a personalised banner appears. A reminder email is triggered. Her mobile app surfaces a contextual prompt. The call centre receives her profile. Every channel — simultaneously, seamlessly — in real time.",
+  8: "Approval's in — now watch the platform go to work. [slightly faster] A reminder email with his saved application. A personalised banner the moment he's back on your site. A prescreen offer right inside his mobile feed. [pause] Within a day, Mirza returns… completes those three fields… [smile] and he's approved. [slower] That's an abandoned application, turned into a customer.",
 
-  9: "Sarah opens the email. She returns to the website. She completes the application. The moment she does, the CDP captures the event, updates her profile, and the AI models recalculate. Every future interaction with Sarah is now informed by what just happened. This is how the system continuously learns — and continuously improves.",
+  9: "And the story doesn't stop at approval. [short pause] Mirza activates his card, and the CDP now guides his whole lifecycle. A warm onboarding series. Spend insights. Reward nudges. A credit line increase the moment his behaviour qualifies. [pause] And if his engagement ever dips — the platform spots it early. [slower] Every step AI-recommended. Every step human-approved.",
 
-  10: "This is the complete picture. A financial institution that listens to every signal, respects every preference, unifies every identity, and acts intelligently — with AI acceleration and human accountability at every step. Not a technology demonstration. A genuine enterprise capability, ready to serve millions of customers the way they deserve to be served.",
+  10: "So, step back and look at the whole journey. [short pause] A card business that recognises every prospect… respects every preference… recovers every abandoned application… and grows every relationship. [pause] AI for speed. Humans for judgement. [slower] From acquisition, all the way through the lifecycle. [smile] One platform. One customer. One journey.",
 };
+
+// Convert voice-direction markers into synthesis-friendly text:
+// pauses become punctuation the TTS engine honours; style cues are stripped.
+export function toSpeakable(text: string): string {
+  return text
+    .replace(/\[pause\]/gi, " ... ")
+    .replace(/\[short pause\]/gi, ", ")
+    .replace(/\[(smile|emphasize|slower|slightly faster)\]/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
 // ── Voice preference order ────────────────────────────────────────────────────
 const PREFERRED_VOICES = [
-  "Daniel",                  // macOS/iOS — warm UK English, most natural
-  "Arthur",                  // Windows 11 UK English
-  "Google UK English Male",  // Chrome desktop
-  "Alex",                    // macOS US English (classic)
-  "Aaron",                   // macOS/iOS US English
-  "Fred",
-  "Google US English",
+  "Microsoft Ravi",          // Windows — Indian English male
+  "Microsoft Heera",         // Windows — Indian English female
+  "Rishi",                   // macOS/iOS — Indian English male
+  "Veena",                   // macOS — Indian English female
+  "Google English (India)",  // Chrome
+  "Microsoft Neerja",        // Windows/Edge — Indian English female
+  "Microsoft Prabhat",       // Edge — Indian English male
+  "Daniel",
+  "Google UK English Male",
   "Samantha",
-  "Karen",
-  "Google UK English Female",
-  "Moira",
 ];
 
 function pickVoice(voices: SpeechSynthesisVoice[]): SpeechSynthesisVoice | null {
+  // 1. Named Indian-English voices (most natural)
   for (const name of PREFERRED_VOICES) {
     const hit = voices.find(
       v => (v.name === name || v.name.startsWith(name)) && v.lang.startsWith("en"),
     );
     if (hit) return hit;
   }
+  // 2. Any Indian-English voice by locale
+  const enIN = voices.find(v => v.lang === "en-IN" || v.lang.startsWith("en-IN"));
+  if (enIN) return enIN;
+  // 3. Any English voice
   return voices.find(v => v.lang.startsWith("en")) ?? null;
 }
 
@@ -97,9 +116,9 @@ export function useNarration(
       const synth = synthRef.current;
       if (!synth || !isPlayingRef.current || mutedRef.current) return;
 
-      const u = new SpeechSynthesisUtterance(text);
+      const u = new SpeechSynthesisUtterance(toSpeakable(text));
       u.rate   = 0.9;   // Deliberate, expert pacing — slower than default
-      u.pitch  = 0.95;  // Slightly deeper for authority
+      u.pitch  = 1.02;  // warm, natural  // Slightly deeper for authority
       u.volume = 0.9;
       if (voiceRef.current) u.voice = voiceRef.current;
 

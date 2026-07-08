@@ -217,14 +217,14 @@ export default function Navigation() {
             id="contact-cta"
             href="/contact"
             className="hidden md:inline-flex"
-            aria-label="Contact: book 15 minute call"
+            aria-label="Contact: let's talk"
             style={{
               alignItems: "center",
               justifyContent: "center",
               height: "40px",
               padding: "10px 18px",
-              background: CTA_BG,
-              color: "#FFFFFF",
+              background: "#FFFFFF",
+              color: "#111111",
               fontFamily: "var(--font-space-grotesk), sans-serif",
               fontWeight: 700,
               fontSize: "16px",
@@ -232,17 +232,17 @@ export default function Navigation() {
               textDecoration: "none",
               borderRadius: "8px",
               whiteSpace: "nowrap",
-              boxShadow: "0 2px 8px rgba(0,102,204,0.45)",
+              boxShadow: "0 2px 8px rgba(255,255,255,0.15)",
               transition: "background 0.18s, box-shadow 0.18s",
               outline: "none",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = CTA_HOVER;
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(0,102,204,0.6)";
+              (e.currentTarget as HTMLElement).style.background = "#E8E8E8";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(255,255,255,0.25)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = CTA_BG;
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 8px rgba(0,102,204,0.45)";
+              (e.currentTarget as HTMLElement).style.background = "#FFFFFF";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 8px rgba(255,255,255,0.15)";
             }}
             onFocus={(e) => {
               (e.currentTarget as HTMLElement).style.outline = `3px solid ${CTA_FOCUS_RING}`;
@@ -252,7 +252,7 @@ export default function Navigation() {
               (e.currentTarget as HTMLElement).style.outline = "none";
             }}
           >
-            Book 15-min call
+            let&apos;s talk
           </Link>
 
           {/* Hamburger — mobile */}

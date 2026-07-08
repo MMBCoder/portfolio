@@ -75,7 +75,7 @@ export default function Scene10Outcomes(_props: Props) {
             color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 11 · Enterprise Capability
+          Enterprise Capability
         </motion.p>
 
         <motion.h2

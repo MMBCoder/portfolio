@@ -214,7 +214,7 @@ export default function HeroSplit() {
               whiteSpace: "nowrap",
             }}
           >
-            watch the demo
+            watch the CDP journey demo
           </Link>
         </motion.div>
       </div>
@@ -264,7 +264,7 @@ export default function HeroSplit() {
             borderRadius: "6px",
             letterSpacing: "-0.01em",
           }}>
-            watch demo
+            CDP journey demo
           </Link>
         </div>
       </div>

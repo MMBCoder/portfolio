@@ -11,7 +11,7 @@ const PROFILE_SECTIONS = [
   {
     category: "Demographics",
     color: COLORS.blue,
-    items: ["Sarah M. · Age 34", "Chicago, IL", "Senior Marketing Manager"],
+    items: ["Mirza M. · Age 34", "Hyderabad, IN", "Senior Product Manager"],
   },
   {
     category: "Products Owned",
@@ -81,7 +81,7 @@ export default function Scene05Profile(_props: Props) {
             color: COLORS.fgMuted, marginBottom: 10, textAlign: "center",
           }}
         >
-          Scene 06 · Customer 360
+          Prospect 360
         </motion.p>
 
         <motion.h2
@@ -107,7 +107,7 @@ export default function Scene05Profile(_props: Props) {
           A single, comprehensive view that no individual system could ever provide alone.
         </motion.p>
 
-        {/* Sarah header */}
+        {/* Mirza header */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -133,7 +133,7 @@ export default function Scene05Profile(_props: Props) {
           </div>
           <div style={{ flex: 1 }}>
             <p style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 17, color: COLORS.fg }}>
-              Sarah — Unified Customer Profile
+              Mirza — Unified Prospect Profile
             </p>
             <p style={{ fontSize: 12, color: COLORS.blue }}>
               ACC-00291847 · 9 data dimensions · Updated in real time
@@ -203,7 +203,7 @@ export default function Scene05Profile(_props: Props) {
             fontSize: 11, color: COLORS.fgMuted, textAlign: "center", letterSpacing: "0.08em",
           }}
         >
-          Every team · Marketing, Service, Risk, Sales · now sees the same Sarah
+          Every team · Marketing, Service, Risk, Sales · now sees the same Mirza
         </motion.p>
       </div>
     </SceneWrapper>
