@@ -1,13 +1,13 @@
 // Scene durations in milliseconds — calibrated to narration length + visual absorption time
 export const SCENE_DURATIONS: Record<number, number> = {
-  0:  27000,  // The Opportunity
-  1:  22000,  // Meet Mirza
-  2:  24000,  // Every Signal Matters
-  3:  24000,  // Consent First
-  4:  23000,  // One Identity
-  5:  26000,  // Prospect 360
-  6:  26000,  // AI Recommends
-  7:  26000,  // Human in the Loop
+  0:  29000,  // The Opportunity
+  1:  26000,  // Meet Mirza
+  2:  25000,  // Every Signal Matters
+  3:  25000,  // Consent First
+  4:  26000,  // One Identity
+  5:  25000,  // Prospect 360
+  6:  27000,  // AI Recommends
+  7:  27000,  // Human in the Loop
   8:  27000,  // Winning Mirza Back
   9:  27000,  // Lifecycle Begins
   10: 0,      // The Promise — no auto-advance on final scene
