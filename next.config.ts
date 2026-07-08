@@ -49,6 +49,17 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  // /awards content now lives on the portfolio page
+  async redirects() {
+    return [
+      {
+        source: "/awards",
+        destination: "/portfolio#awards",
+        permanent: true,
+      },
+    ];
+  },
+
   // Optimise images
   images: {
     formats: ["image/avif", "image/webp"],

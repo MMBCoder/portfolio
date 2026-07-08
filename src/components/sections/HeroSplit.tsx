@@ -51,7 +51,7 @@ export default function HeroSplit() {
         >
           <div style={{
             display: "inline-flex",
-            alignItems: "baseline",
+            alignItems: "center",
             gap: "8px",
             padding: "7px 16px",
             background: "rgba(37,99,235,0.15)",
@@ -59,23 +59,16 @@ export default function HeroSplit() {
             borderRadius: "4px",
           }}>
             <span style={{
-              fontFamily: "var(--font-space-grotesk), sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(15px, 1.5vw, 20px)",
-              color: "#60A5FA",
-              letterSpacing: "-0.02em",
-            }}>$50M+</span>
-            <span style={{
               fontFamily: "var(--font-jetbrains-mono), monospace",
-              fontSize: "9px",
-              color: "rgba(255,255,255,0.45)",
+              fontSize: "10px",
+              color: "#93C5FD",
               letterSpacing: "0.14em",
               textTransform: "uppercase",
-            }}>revenue impact</span>
+            }}>AVP · Synchrony Financial</span>
           </div>
           <div style={{
             display: "inline-flex",
-            alignItems: "baseline",
+            alignItems: "center",
             gap: "8px",
             padding: "7px 16px",
             background: "rgba(255,255,255,0.05)",
@@ -83,19 +76,12 @@ export default function HeroSplit() {
             borderRadius: "4px",
           }}>
             <span style={{
-              fontFamily: "var(--font-space-grotesk), sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(15px, 1.5vw, 20px)",
-              color: "rgba(255,255,255,0.85)",
-              letterSpacing: "-0.02em",
-            }}>70M+</span>
-            <span style={{
               fontFamily: "var(--font-jetbrains-mono), monospace",
-              fontSize: "9px",
-              color: "rgba(255,255,255,0.4)",
+              fontSize: "10px",
+              color: "rgba(255,255,255,0.6)",
               letterSpacing: "0.14em",
               textTransform: "uppercase",
-            }}>profiles activated</span>
+            }}>IIT Delhi Alumnus</span>
           </div>
         </motion.div>
 
@@ -105,13 +91,13 @@ export default function HeroSplit() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
           style={{
-            fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: "clamp(9px, 0.85vw, 11px)",
+            fontFamily: "var(--font-space-grotesk), sans-serif",
+            fontSize: "clamp(14px, 1.3vw, 18px)",
             color: "#3B82F6",
-            letterSpacing: "0.3em",
+            letterSpacing: "0.18em",
             textTransform: "uppercase",
             marginBottom: "16px",
-            fontWeight: 700,
+            fontWeight: 800,
           }}
         >
           AI · Data · Impact

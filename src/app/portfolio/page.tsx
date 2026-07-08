@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { aiProjects, testimonials, personalInfo } from "@/data/portfolioData";
+import { aiProjects, achievements, personalInfo } from "@/data/portfolioData";
 import Publications from "@/components/sections/Publications";
 import Footer from "@/components/layout/Footer";
 
@@ -308,6 +308,63 @@ export default function PortfolioPage() {
           </div>
         </div>
         <style>{`@media(max-width:860px){.pf-pillars{grid-template-columns:1fr !important;}}`}</style>
+      </section>
+
+      {/* ═══ RECOGNITION — awards merged from /awards ═══ */}
+      <section id="awards" style={{ background: "#FFFFFF", borderTop: "1px solid #E8E8E8", padding: "clamp(64px,8vw,110px) clamp(20px,4vw,80px)" }}>
+        <div style={{ maxWidth: 1180, margin: "0 auto" }}>
+          <motion.div initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} style={{ marginBottom: 48 }}>
+            <p style={{ fontFamily: fm, fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "#2563EB", fontWeight: 700, marginBottom: 14 }}>
+              Recognition
+            </p>
+            <h2 style={{ fontFamily: fd, fontWeight: 900, fontSize: "clamp(1.9rem,4vw,3.4rem)", letterSpacing: "-0.04em", color: "#111111", textTransform: "lowercase", lineHeight: 1.02, maxWidth: 640 }}>
+              awards that follow<br />the results.
+            </h2>
+          </motion.div>
+
+          {/* Featured: CEO Award triple winner */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}
+            className="pf-award-hero"
+            style={{
+              display: "grid", gridTemplateColumns: "auto 1fr auto", gap: "clamp(20px,3vw,40px)", alignItems: "center",
+              padding: "clamp(28px,3.5vw,44px)", borderRadius: 16, marginBottom: 20,
+              background: "#0A0A0A", border: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            <div style={{ fontSize: "clamp(36px,4vw,52px)", lineHeight: 1 }}>🏆</div>
+            <div>
+              <h3 style={{ fontFamily: fd, fontWeight: 700, fontSize: "clamp(19px,2.2vw,26px)", letterSpacing: "-0.03em", color: "#FFFFFF", textTransform: "lowercase", marginBottom: 8 }}>
+                {achievements[0].title.toLowerCase()}
+              </h3>
+              <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.7, maxWidth: 560 }}>{achievements[0].description}</p>
+            </div>
+            <div style={{ textAlign: "right" }} className="pf-award-year">
+              <div style={{ fontFamily: fm, fontSize: 11, color: "#60A5FA", letterSpacing: "0.1em", whiteSpace: "nowrap" }}>{achievements[0].organization}</div>
+              <div style={{ fontFamily: fd, fontWeight: 900, fontSize: "clamp(18px,2vw,24px)", color: "#FFFFFF", letterSpacing: "-0.02em", marginTop: 6 }}>{achievements[0].year}</div>
+            </div>
+          </motion.div>
+
+          {/* Other awards */}
+          <div className="pf-awards-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20 }}>
+            {achievements.slice(1).map((a, i) => (
+              <motion.div key={a.id}
+                initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.1 }} viewport={{ once: true }}
+                style={{ border: "1px solid #E5E5E5", borderRadius: 16, padding: "clamp(24px,2.6vw,32px)", display: "flex", flexDirection: "column", background: "#FFFFFF" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
+                  <span style={{ fontSize: 26 }}>{a.icon}</span>
+                  <span style={{ fontFamily: fm, fontSize: 11, color: "#999999" }}>{a.year}</span>
+                </div>
+                <h3 style={{ fontFamily: fd, fontWeight: 700, fontSize: "clamp(15px,1.6vw,18px)", letterSpacing: "-0.02em", color: "#111111", textTransform: "lowercase", marginBottom: 10, lineHeight: 1.25 }}>
+                  {a.title.toLowerCase()}
+                </h3>
+                <p style={{ fontSize: 13, color: "#777777", lineHeight: 1.65, flex: 1 }}>{a.description}</p>
+                <p style={{ fontFamily: fm, fontSize: 10, color: "#2563EB", letterSpacing: "0.08em", textTransform: "uppercase", marginTop: 16, borderTop: "1px solid #F0F0F0", paddingTop: 12 }}>{a.organization}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+        <style>{`@media(max-width:860px){.pf-awards-grid{grid-template-columns:1fr !important;}.pf-award-hero{grid-template-columns:auto 1fr !important;}.pf-award-year{grid-column:2;text-align:left !important;}}`}</style>
       </section>
 
       {/* ═══ VOICES — real recommendations ═══ */}
