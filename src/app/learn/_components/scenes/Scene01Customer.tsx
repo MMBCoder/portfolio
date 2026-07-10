@@ -85,8 +85,54 @@ export default function Scene01Customer(_props: Props) {
             maxWidth: 480,
             marginLeft: "auto",
             marginRight: "auto",
+            position: "relative",
           }}
         >
+          {/* 3D floating boarding pass — the trip he's planning */}
+          {!isMobile && (
+            <div style={{ position: "absolute", top: -64, right: -120, perspective: 800, zIndex: 3 }}>
+              <motion.div
+                initial={{ opacity: 0, y: 12, rotateY: -18 }}
+                animate={{ opacity: 1, y: [0, -7, 0], rotateY: [-18, -8, -18], rotateX: [6, 2, 6] }}
+                transition={{ opacity: { delay: 1.4, duration: 0.6 }, duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
+                style={{
+                  transformStyle: "preserve-3d",
+                  width: 168,
+                  background: "#FFFFFF",
+                  border: `1px solid ${COLORS.border}`,
+                  borderRadius: 12,
+                  boxShadow: "0 18px 44px rgba(15,23,42,0.16)",
+                  overflow: "hidden",
+                }}
+              >
+                <div style={{ padding: "8px 12px", background: "linear-gradient(90deg, #1D4ED8, #2563EB)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontFamily: "var(--font-jetbrains-mono)", fontSize: 8, letterSpacing: "0.14em", color: "rgba(255,255,255,0.85)", textTransform: "uppercase" }}>Boarding Pass</span>
+                  <span style={{ fontSize: 11 }}>✈️</span>
+                </div>
+                <div style={{ padding: "10px 12px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 900, fontSize: 17, color: COLORS.fg, letterSpacing: "-0.02em" }}>HYD</div>
+                    <div style={{ fontFamily: "var(--font-jetbrains-mono)", fontSize: 7, color: COLORS.fgMuted, letterSpacing: "0.1em" }}>HYDERABAD</div>
+                  </div>
+                  <motion.div
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                    style={{ color: COLORS.blue, fontSize: 12 }}
+                  >
+                    ──✈──
+                  </motion.div>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 900, fontSize: 17, color: COLORS.fg, letterSpacing: "-0.02em" }}>SIN</div>
+                    <div style={{ fontFamily: "var(--font-jetbrains-mono)", fontSize: 7, color: COLORS.fgMuted, letterSpacing: "0.1em" }}>SINGAPORE</div>
+                  </div>
+                </div>
+                <div style={{ padding: "6px 12px 9px", borderTop: `1px dashed ${COLORS.border}`, display: "flex", justifyContent: "space-between" }}>
+                  <span style={{ fontFamily: "var(--font-jetbrains-mono)", fontSize: 7.5, color: COLORS.fgMuted, letterSpacing: "0.08em" }}>FAMILY · 4 SEATS</span>
+                  <span style={{ fontFamily: "var(--font-jetbrains-mono)", fontSize: 7.5, color: "#059669", letterSpacing: "0.08em" }}>BOOKED ✓</span>
+                </div>
+              </motion.div>
+            </div>
+          )}
           <div style={{
             width: 52, height: 52, borderRadius: "50%",
             background: `linear-gradient(135deg, ${COLORS.blue} 0%, #1D4ED8 100%)`,

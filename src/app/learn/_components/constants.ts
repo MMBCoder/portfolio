@@ -1,19 +1,20 @@
 // Scene durations in milliseconds — calibrated to narration length + visual absorption time
 export const SCENE_DURATIONS: Record<number, number> = {
-  0:  29000,  // The Opportunity
-  1:  26000,  // Meet Mirza
-  2:  25000,  // Every Signal Matters
-  3:  25000,  // Consent First
-  4:  26000,  // One Identity
-  5:  25000,  // Prospect 360
-  6:  27000,  // AI Recommends
-  7:  27000,  // Human in the Loop
-  8:  27000,  // Winning Mirza Back
-  9:  27000,  // Lifecycle Begins
-  10: 0,      // The Promise — no auto-advance on final scene
+  0:  46000,  // The Opportunity (93 words)
+  1:  29000,  // Meet Mirza (55)
+  2:  30000,  // One Customer, Many Signals (57)
+  3:  26000,  // The Lost Opportunity (47)
+  4:  28000,  // Trust Starts with Consent (53)
+  5:  29000,  // Identity Resolution (55)
+  6:  24000,  // Customer 360 (44)
+  7:  30000,  // AI Recommends (59)
+  8:  26000,  // Humans Decide (48)
+  9:  28000,  // Winning Mirza Back (52)
+  10: 29000,  // Beyond Acquisition (55)
+  11: 0,      // The Promise — final scene, no auto-advance
 };
 
-export const TOTAL_SCENES = 11;
+export const TOTAL_SCENES = 12;
 
 // Transition duration between scenes
 export const SCENE_TRANSITION_MS = 350;
@@ -51,15 +52,16 @@ export const COLORS = {
 
 // Scene metadata (used by ProgressBar, SceneLabel, aria-labels)
 export const SCENE_META: Array<{ title: string; subtitle: string }> = [
-  { title: "The Opportunity", subtitle: "Every signal is a customer waiting to be won" },
-  { title: "Meet Mirza", subtitle: "An in-market prospect across six acquisition channels" },
-  { title: "Every Signal Matters", subtitle: "Ad clicks, comparisons, an abandoned application" },
-  { title: "Consent First", subtitle: "Data collection begins with permission" },
-  { title: "One Identity", subtitle: "Fragments resolved into a single prospect" },
-  { title: "Prospect 360", subtitle: "The complete picture, finally" },
-  { title: "AI Recommends", subtitle: "Models that recommend, never decide" },
-  { title: "Human in the Loop", subtitle: "Reviewed and approved before activation" },
-  { title: "Winning Mirza Back", subtitle: "Retargeting that completes the application" },
-  { title: "Lifecycle Begins", subtitle: "From activation to lifetime growth" },
-  { title: "The Promise", subtitle: "Acquisition to lifecycle on one platform" },
+  { title: "The Opportunity", subtitle: "Signals scattered, customers unseen" },
+  { title: "Meet Mirza", subtitle: "Planning a first family trip to Singapore" },
+  { title: "One Customer, Many Signals", subtitle: "One journey, six disconnected events" },
+  { title: "The Lost Opportunity", subtitle: "Abandoned, three fields from the finish" },
+  { title: "Trust Starts with Consent", subtitle: "Trust comes before personalization" },
+  { title: "Identity Resolution", subtitle: "Five identities become one person" },
+  { title: "Customer 360", subtitle: "Every team reads the same story" },
+  { title: "AI Recommends", subtitle: "Understanding needs, personalizing at scale" },
+  { title: "Humans Decide", subtitle: "Intelligence from AI, decisions from people" },
+  { title: "Winning Mirza Back", subtitle: "One click, thirty seconds, approved" },
+  { title: "Beyond Acquisition", subtitle: "Approval is only the beginning" },
+  { title: "The Promise", subtitle: "Customers for life" },
 ];

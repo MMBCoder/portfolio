@@ -172,24 +172,36 @@ export default function Scene02Channels(_props: Props) {
               </div>
             </motion.div>
 
-            {/* Center: Flow arrows + label */}
+            {/* Center: live signal stream — packets travelling source → listener */}
             <div style={{
               display: "flex", flexDirection: "column",
               alignItems: "center", justifyContent: "center",
-              paddingTop: 80, gap: 6,
+              paddingTop: 80, gap: 8,
             }}>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 0 }}>
-                <motion.div
-                  animate={{ opacity: [0.3, 1, 0.3] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  style={{
-                    width: 80, height: 1,
-                    background: `linear-gradient(90deg, transparent 0%, ${COLORS.blue} 50%, transparent 100%)`,
-                  }}
-                />
-                <svg width="10" height="10" viewBox="0 0 10 10" style={{ marginTop: -1 }}>
-                  <polygon points="5,0 10,10 0,10" fill={COLORS.blue} />
-                </svg>
+              <div style={{ position: "relative", width: 96, height: 60 }}>
+                {/* stream rail */}
+                <div style={{
+                  position: "absolute", top: "50%", left: 0, right: 0, height: 1,
+                  background: `linear-gradient(90deg, transparent 0%, ${COLORS.blue}55 50%, transparent 100%)`,
+                }} />
+                {/* travelling packets at three depths */}
+                {[
+                  { c: COLORS.blue,   delay: 0,    dur: 1.6, y: -10, size: 7 },
+                  { c: COLORS.purple, delay: 0.55, dur: 1.9, y: 0,   size: 6 },
+                  { c: "#D97706",     delay: 1.1,  dur: 1.7, y: 10,  size: 5 },
+                ].map((p, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{ x: [-8, 92], opacity: [0, 1, 1, 0], scale: [0.7, 1, 1, 0.7] }}
+                    transition={{ duration: p.dur, repeat: Infinity, delay: p.delay, ease: "easeInOut" }}
+                    style={{
+                      position: "absolute", top: `calc(50% + ${p.y}px - ${p.size / 2}px)`, left: 0,
+                      width: p.size, height: p.size, borderRadius: "50%",
+                      background: p.c,
+                      boxShadow: `0 0 10px ${p.c}88`,
+                    }}
+                  />
+                ))}
               </div>
               <p style={{
                 fontFamily: "var(--font-jetbrains-mono)", fontSize: 9,

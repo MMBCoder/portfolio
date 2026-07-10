@@ -6,7 +6,6 @@ import { TOTAL_SCENES, SCENE_DURATIONS, SCENE_TRANSITION_MS, SCENE_META } from "
 import SceneManager from "./SceneManager";
 import ProgressBar from "./ProgressBar";
 import PlaybackControls from "./PlaybackControls";
-import SceneLabel from "./SceneLabel";
 import { useNarration } from "./useNarration";
 
 // ─── State ───────────────────────────────────────────────────────────────────
@@ -438,15 +437,11 @@ export default function LearnShell() {
       </div>
 
       {!showIntro && (
-        <>
-          <ProgressBar
-            scene={state.scene}
-            isPlaying={state.isPlaying}
-            onGoto={handleGoto}
-          />
-
-          <SceneLabel scene={state.scene} />
-        </>
+        <ProgressBar
+          scene={state.scene}
+          isPlaying={state.isPlaying}
+          onGoto={handleGoto}
+        />
       )}
 
       <SceneManager

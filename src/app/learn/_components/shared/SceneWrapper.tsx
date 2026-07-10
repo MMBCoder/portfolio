@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { EASE_OUT } from "../constants";
 import { useIsMobile } from "./useIsMobile";
 
@@ -11,18 +12,36 @@ interface SceneWrapperProps {
 }
 
 export default function SceneWrapper({ sceneIndex, title, children }: SceneWrapperProps) {
-  const sceneNumber = String(sceneIndex + 1).padStart(2, "0");
   const isMobile = useIsMobile();
+
+  /* Subtle mouse-parallax tilt on the scene content plane */
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const rotateY = useSpring(mx, { stiffness: 55, damping: 20 });
+  const rotateX = useSpring(my, { stiffness: 55, damping: 20 });
+  const secRef = useRef<HTMLElement>(null);
+
+  const onMove = (e: React.MouseEvent) => {
+    if (isMobile) return;
+    const r = secRef.current?.getBoundingClientRect();
+    if (!r) return;
+    mx.set(((e.clientX - r.left) / r.width - 0.5) * 4);
+    my.set(((e.clientY - r.top) / r.height - 0.5) * -3);
+  };
+  const onLeave = () => { mx.set(0); my.set(0); };
 
   return (
     <motion.section
+      ref={secRef}
       key={sceneIndex}
       role="region"
-      aria-label={`Scene ${sceneNumber}: ${title}`}
+      aria-label={title}
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.35, ease: EASE_OUT }}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
       style={{
         position: "absolute",
         inset: 0,
@@ -51,9 +70,22 @@ export default function SceneWrapper({ sceneIndex, title, children }: SceneWrapp
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          perspective: 1600,
         }}
       >
-        {children}
+        <motion.div
+          style={{
+            rotateX: isMobile ? 0 : rotateX,
+            rotateY: isMobile ? 0 : rotateY,
+            transformStyle: "preserve-3d",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {children}
+        </motion.div>
       </div>
     </motion.section>
   );

@@ -129,7 +129,7 @@ export default function Scene05Profile(_props: Props) {
             display: "flex", alignItems: "center", justifyContent: "center",
             flexShrink: 0, boxShadow: "0 4px 12px rgba(37,99,235,0.28)",
           }}>
-            <span style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 20, color: "#fff" }}>S</span>
+            <span style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 20, color: "#fff" }}>M</span>
           </div>
           <div style={{ flex: 1 }}>
             <p style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 17, color: COLORS.fg }}>
@@ -193,12 +193,87 @@ export default function Scene05Profile(_props: Props) {
           ))}
         </motion.div>
 
+        {/* Orbit: four teams circling the one profile — everyone sees the same Mirza */}
+        {!isMobile && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2.4, duration: 0.8 }}
+            style={{ display: "flex", justifyContent: "center", marginTop: 28, perspective: 900 }}
+          >
+            <div style={{ position: "relative", width: 300, height: 190, transform: "rotateX(38deg)", transformStyle: "preserve-3d" }}>
+              {/* orbit ring */}
+              <div style={{
+                position: "absolute", inset: 0,
+                borderRadius: "50%",
+                border: `1.5px dashed ${COLORS.blue}45`,
+              }} />
+              {/* centre profile */}
+              <div style={{
+                position: "absolute", top: "50%", left: "50%",
+                transform: "translate(-50%,-50%) rotateX(-38deg)",
+                width: 54, height: 54, borderRadius: "50%",
+                background: `linear-gradient(135deg, ${COLORS.blue}, #1D4ED8)`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                boxShadow: "0 10px 28px rgba(37,99,235,0.35)",
+                zIndex: 2,
+              }}>
+                <span style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: 22, color: "#fff" }}>M</span>
+              </div>
+              {/* orbiting team badges */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+                style={{ position: "absolute", inset: 0 }}
+              >
+                {[
+                  { label: "Marketing", color: COLORS.blue,   angle: 0 },
+                  { label: "Sales",     color: COLORS.green,  angle: 90 },
+                  { label: "Risk",      color: "#D97706",     angle: 180 },
+                  { label: "Service",   color: COLORS.purple, angle: 270 },
+                ].map(t => (
+                  <div
+                    key={t.label}
+                    style={{
+                      position: "absolute", top: "50%", left: "50%",
+                      transform: `rotate(${t.angle}deg) translateX(132px)`,
+                    }}
+                  >
+                    {/* counter-rotate: cancels both the fixed angle and the orbit spin */}
+                    <motion.div
+                      animate={{ rotate: [-t.angle, -t.angle - 360] }}
+                      transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+                      style={{ marginLeft: -34, marginTop: -13 }}
+                    >
+                      <div style={{
+                        transform: "rotateX(-38deg)",
+                        padding: "6px 13px",
+                        background: "#FFFFFF",
+                        border: `1.5px solid ${t.color}`,
+                        borderRadius: 20,
+                        fontFamily: "var(--font-space-grotesk)",
+                        fontWeight: 700,
+                        fontSize: 11,
+                        color: t.color,
+                        whiteSpace: "nowrap",
+                        boxShadow: "0 8px 20px rgba(15,23,42,0.12)",
+                      }}>
+                        {t.label}
+                      </div>
+                    </motion.div>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.8 }}
           style={{
-            marginTop: 20,
+            marginTop: isMobile ? 20 : 10,
             fontFamily: "var(--font-jetbrains-mono), monospace",
             fontSize: 11, color: COLORS.fgMuted, textAlign: "center", letterSpacing: "0.08em",
           }}
