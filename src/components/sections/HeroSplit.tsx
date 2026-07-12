@@ -183,7 +183,7 @@ export default function HeroSplit() {
             view portfolio →
           </Link>
           <Link
-            href="/learn"
+            href="/learn/rag"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -200,7 +200,7 @@ export default function HeroSplit() {
               whiteSpace: "nowrap",
             }}
           >
-            watch the CDP journey demo
+            RAG pipeline visualizer
           </Link>
         </motion.div>
       </div>
@@ -234,7 +234,7 @@ export default function HeroSplit() {
           }}>
             view portfolio
           </Link>
-          <Link href="/learn" style={{
+          <Link href="/learn/rag" style={{
             flex: 1,
             display: "flex",
             alignItems: "center",
@@ -250,7 +250,7 @@ export default function HeroSplit() {
             borderRadius: "6px",
             letterSpacing: "-0.01em",
           }}>
-            CDP journey demo
+            RAG visualizer
           </Link>
         </div>
       </div>

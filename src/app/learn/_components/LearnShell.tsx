@@ -299,6 +299,23 @@ export default function LearnShell() {
                 >
                   start experience →
                 </motion.button>
+
+                <a
+                  href="/learn/rag"
+                  style={{
+                    display: "inline-block",
+                    marginTop: "16px",
+                    fontFamily: "var(--font-jetbrains-mono), monospace",
+                    fontSize: "11px",
+                    letterSpacing: "0.08em",
+                    color: "#555555",
+                    textDecoration: "none",
+                    borderBottom: "1px dotted #999999",
+                    paddingBottom: "2px",
+                  }}
+                >
+                  new · explore the RAG pipeline visualizer →
+                </a>
               </motion.div>
 
               {/* ── Right: 3D credit card + lifecycle journey ── */}
