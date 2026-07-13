@@ -64,9 +64,26 @@ export function splitSentences(text: string): string[] {
 
 /* ── chunking ─────────────────────────────────────────────── */
 
-const MAX_CHUNKS = 150;
+/** Hard ceiling, honestly enforced (M6: was a soft 150 that sentence
+    rounding could overshoot — see the characterization note in tests). */
+export const MAX_CHUNKS = 1000;
 
 export function chunkPages(
+  pages: PageText[],
+  targetSize: number,
+  overlap: number,
+): Chunk[] {
+  // grow the effective target until the ceiling actually holds
+  let effTarget = targetSize;
+  for (let attempt = 0; attempt < 8; attempt++) {
+    const chunks = chunkOnce(pages, effTarget, overlap);
+    if (chunks.length <= MAX_CHUNKS) return chunks;
+    effTarget = Math.ceil(effTarget * ((chunks.length / MAX_CHUNKS) * 1.05));
+  }
+  return chunkOnce(pages, effTarget, overlap);
+}
+
+function chunkOnce(
   pages: PageText[],
   targetSize: number,
   overlap: number,

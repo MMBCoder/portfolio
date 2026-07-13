@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Upload, FlaskConical, Play, Download, SlidersHorizontal, BarChart3 } from "lucide-react";
+import { Upload, FlaskConical, Play, Download, SlidersHorizontal, BarChart3, ChevronDown, GitCompareArrows, MonitorPlay } from "lucide-react";
 import { useRagStore, STAGE_IDS } from "./ragStore";
 import { runIngestion } from "./lib/pipeline";
 import { useIsMobile } from "../../_components/shared/useIsMobile";
@@ -12,7 +12,26 @@ import Inspector from "./Inspector";
 import ParamsPanel from "./ParamsPanel";
 import MetricsPanel from "./MetricsPanel";
 import AnswerPanel from "./AnswerPanel";
+import OutcomeStrip from "./OutcomeStrip";
 import PlayOverlay, { usePlayController } from "./PlayMode";
+import { PersonaSwitch, PersonaWelcome } from "./education/PersonaPicker";
+import MomentToast from "./education/MomentToast";
+import { useLearningMoments } from "./education/learningMoments";
+import { usePersona } from "./education/usePersona";
+import { useJourney, useJourneyDetection } from "./journey/useJourney";
+import JourneyChip from "./journey/JourneyChip";
+import ChapterCard from "./journey/ChapterCard";
+import SoftGate from "./journey/SoftGate";
+import TimelineDock from "./timeline/TimelineDock";
+import CameraRig from "./canvas/CameraRig";
+import DetectiveOverlay from "./detective/DetectiveOverlay";
+import BrainOverlay from "./brain/BrainOverlay";
+import ChunkProfile from "./heatmap/ChunkProfile";
+import Playground from "./playground/Playground";
+import LabPanel from "./lab/LabPanel";
+import CoachPanel from "./coach/CoachPanel";
+import PresentationShell from "./presentation/PresentationShell";
+import { initSoundCues } from "./audio/sound";
 import { T, eyebrow } from "./theme";
 
 function exportSession() {
@@ -51,14 +70,48 @@ const hBtn: React.CSSProperties = {
 export default function RagShell() {
   const isMobile = useIsMobile(900);   // inspector needs side-by-side room
   const fileRef = useRef<HTMLInputElement>(null);
-  const [tab, setTab] = useState<"params" | "metrics">("params");
   const controller = usePlayController();
 
   const ingested = useRagStore(s => s.ingested);
   const docName = useRagStore(s => s.docName);
   const playActive = useRagStore(s => s.play.active);
   const stages = useRagStore(s => s.stages);
+  const tab = useRagStore(s => s.dockTab);
+  const setTab = useRagStore(s => s.setDockTab);
   const busy = STAGE_IDS.some(id => stages[id].status === "running");
+
+  const persona = usePersona();
+  const execView = persona.isCollapsed("pipeline-canvas");
+  const [pipelineOpen, setPipelineOpen] = useState(!execView);
+  // collapse/expand default follows the persona (render-time state adjustment)
+  const [lastExecView, setLastExecView] = useState(execView);
+  if (execView !== lastExecView) {
+    setLastExecView(execView);
+    setPipelineOpen(!execView);
+  }
+
+  // read persisted persona/journey prefs after mount (server HTML must match first paint)
+  useEffect(() => {
+    useRagStore.getState().hydrateUi();
+    useRagStore.getState().hydrateJourney();
+    useRagStore.getState().hydrateHistory();
+    initSoundCues();
+  }, []);
+
+  // the presenter persona lands directly in the demo (once per visit)
+  const persona2 = useRagStore(s => s.persona);
+  const uiHydrated = useRagStore(s => s.uiHydrated);
+  const autoPresentedRef = useRef(false);
+  useEffect(() => {
+    if (uiHydrated && persona2 === "presenter" && !autoPresentedRef.current) {
+      autoPresentedRef.current = true;
+      useRagStore.getState().setPresentationOpen(true);
+    }
+  }, [uiHydrated, persona2]);
+  useLearningMoments();
+  useJourneyDetection();
+  const journey = useJourney();
+  const spotlightLoad = journey.enabled && !ingested && journey.current?.spotlight === "load-sample";
 
   const onFile = (f: File | undefined) => {
     if (f) void runIngestion({ file: f });
@@ -94,7 +147,9 @@ export default function RagShell() {
             </p>
           </div>
 
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <div data-rag-chrome style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+            <JourneyChip />
+            <PersonaSwitch />
             <input
               ref={fileRef} type="file" accept="application/pdf" hidden
               onChange={e => { onFile(e.target.files?.[0]); e.target.value = ""; }}
@@ -102,9 +157,17 @@ export default function RagShell() {
             <button style={hBtn} disabled={busy || playActive} onClick={() => fileRef.current?.click()}>
               <Upload size={15} /> upload pdf
             </button>
-            <button style={hBtn} disabled={busy || playActive} onClick={() => void runIngestion({ sample: true })}>
+            {/* chapter 1's gentle spotlight: a breathing ring, never a blocker */}
+            <motion.button
+              style={hBtn} disabled={busy || playActive}
+              onClick={() => void runIngestion({ sample: true })}
+              animate={spotlightLoad
+                ? { boxShadow: [`${T.cardShadow}, 0 0 0 0px rgba(5,150,105,0.45)`, `${T.cardShadow}, 0 0 0 10px rgba(5,150,105,0)`] }
+                : { boxShadow: `${T.cardShadow}, 0 0 0 0px rgba(5,150,105,0)` }}
+              transition={spotlightLoad ? { duration: 1.6, repeat: Infinity, ease: "easeOut" } : { duration: 0.2 }}
+            >
               <FlaskConical size={15} /> load sample
-            </button>
+            </motion.button>
             <motion.button
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
@@ -118,6 +181,14 @@ export default function RagShell() {
             >
               <Play size={15} fill="#fff" /> play mode
             </motion.button>
+            <button
+              style={hBtn}
+              disabled={playActive}
+              onClick={() => useRagStore.getState().setPresentationOpen(true)}
+              aria-label="Enter presentation mode"
+            >
+              <MonitorPlay size={15} /> present
+            </button>
             {ingested && (
               <button style={hBtn} onClick={exportSession} aria-label="Export session as JSON">
                 <Download size={15} />
@@ -148,6 +219,9 @@ export default function RagShell() {
           </motion.div>
         )}
 
+        {/* ── executive outcome view ── */}
+        {execView && <OutcomeStrip />}
+
         {/* ── pipeline + inspector ── */}
         <div style={{ display: "flex", gap: 18, alignItems: "flex-start" }}>
           <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 18 }}>
@@ -155,36 +229,75 @@ export default function RagShell() {
               padding: isMobile ? "18px 14px" : "24px 22px",
               background: "#FAFBFC", border: `1px solid ${T.border}`, borderRadius: 18,
             }}>
-              <PipelineCanvas isMobile={isMobile} />
+              {execView && (
+                <button
+                  onClick={() => setPipelineOpen(o => !o)}
+                  aria-expanded={pipelineOpen}
+                  style={{
+                    display: "flex", alignItems: "center", gap: 8, cursor: "pointer",
+                    background: "transparent", border: "none", padding: 0,
+                    fontFamily: T.mono, fontSize: 12.5, letterSpacing: "0.1em",
+                    textTransform: "uppercase", color: T.fgSec, fontWeight: 600,
+                    marginBottom: pipelineOpen ? 18 : 0,
+                  }}
+                >
+                  <ChevronDown size={14} style={{ transform: pipelineOpen ? "none" : "rotate(-90deg)", transition: "transform 0.2s" }} />
+                  how it works — the 14-step pipeline
+                </button>
+              )}
+              {(!execView || pipelineOpen) && (
+                <>
+                  <CameraRig>
+                    <PipelineCanvas isMobile={isMobile} />
+                  </CameraRig>
+                  <TimelineDock />
+                </>
+              )}
             </div>
 
             <AnswerPanel isMobile={isMobile} />
 
-            {/* ── dock: parameters / metrics ── */}
-            <div style={{
+            {/* ── dock: parameters / metrics (journey soft-gates it until
+                   the tune-a-parameter chapter — folded, never locked) ── */}
+            <div data-rag-chrome>
+            <SoftGate chapterId="tune-and-ask" surface="parameters & metrics">
+            <div id="rag-dock" style={{
               background: T.panel, border: `1px solid ${T.border}`, borderRadius: 18,
               padding: isMobile ? "16px 16px 20px" : "20px 24px 26px",
               boxShadow: T.cardShadow,
             }}>
-              <div style={{ display: "flex", gap: 10, marginBottom: 22 }}>
-                {([["params", "parameters", SlidersHorizontal], ["metrics", "metrics", BarChart3]] as const).map(([key, label, Icon]) => (
-                  <button
-                    key={key}
-                    onClick={() => setTab(key)}
-                    style={{
-                      display: "flex", alignItems: "center", gap: 8, padding: "10px 18px",
-                      borderRadius: 10, cursor: "pointer",
-                      background: tab === key ? "rgba(124,58,237,0.07)" : "transparent",
-                      border: `1px solid ${tab === key ? "rgba(124,58,237,0.45)" : T.border}`,
-                      fontFamily: T.mono, fontSize: 12.5, letterSpacing: "0.08em", textTransform: "uppercase",
-                      color: tab === key ? T.violet : T.fgSec, fontWeight: 600,
-                    }}
-                  >
-                    <Icon size={14} /> {label}
-                  </button>
-                ))}
+              <div style={{ display: "flex", gap: 10, marginBottom: 22, flexWrap: "wrap" }}>
+                {([
+                  ["params", "parameters", SlidersHorizontal],
+                  ["metrics", "metrics", BarChart3],
+                  ["playground", "a/b playground", GitCompareArrows],
+                  ["lab", "ai lab", FlaskConical],
+                ] as const)
+                  .filter(([key]) => !(key === "lab" && persona.isHidden("lab")))
+                  .map(([key, label, Icon]) => (
+                    <button
+                      key={key}
+                      onClick={() => setTab(key)}
+                      style={{
+                        display: "flex", alignItems: "center", gap: 8, padding: "10px 18px",
+                        borderRadius: 10, cursor: "pointer",
+                        background: tab === key ? "rgba(124,58,237,0.07)" : "transparent",
+                        border: `1px solid ${tab === key ? "rgba(124,58,237,0.45)" : T.border}`,
+                        fontFamily: T.mono, fontSize: 12.5, letterSpacing: "0.08em", textTransform: "uppercase",
+                        color: tab === key ? T.violet : T.fgSec, fontWeight: 600,
+                      }}
+                    >
+                      <Icon size={14} /> {label}
+                    </button>
+                  ))}
               </div>
-              {tab === "params" ? <ParamsPanel /> : <MetricsPanel />}
+              {tab === "params" ? <ParamsPanel />
+                : tab === "metrics" ? <MetricsPanel />
+                : tab === "playground" ? <Playground />
+                : <LabPanel />}
+              <CoachPanel />
+            </div>
+            </SoftGate>
             </div>
           </div>
 
@@ -194,6 +307,13 @@ export default function RagShell() {
 
       {isMobile && <Inspector isMobile />}
       <PlayOverlay controller={controller} isMobile={isMobile} />
+      <MomentToast isMobile={isMobile} />
+      <ChapterCard isMobile={isMobile} />
+      <DetectiveOverlay />
+      <BrainOverlay />
+      <ChunkProfile />
+      <PresentationShell />
+      <PersonaWelcome />
     </div>
   );
 }

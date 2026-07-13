@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FileUp, ScanText, Eraser, Scissors, Binary, Network, Database,
@@ -7,8 +8,13 @@ import {
   Check, AlertTriangle, RotateCcw,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { useRagStore, STAGE_IDS, type StageId, type StageState } from "./ragStore";
+import { useRagStore, STAGE_IDS } from "./ragStore";
+import type { StageState } from "./ragStore";
 import { INGESTION_STAGES, QUERY_STAGES, type StageDef } from "./stages";
+import EdgeLayer from "./canvas/EdgeLayer";
+import { usePipelineView } from "./timeline/usePipelineView";
+import { nodeMotion } from "./motion/grammar";
+import { useReducedMotion } from "./motion/reducedMotion";
 import { T } from "./theme";
 
 const ICONS: Record<string, LucideIcon> = {
@@ -37,21 +43,27 @@ function StatusBadge({ st }: { st: StageState }) {
   return <div style={{ width: 8, height: 8, borderRadius: "50%", background: T.borderStrong }} />;
 }
 
-/* ── one node card ────────────────────────────────────────── */
+/* ── one node card — states speak the motion grammar ──────── */
 
 function NodeCard({ def, dimmed }: { def: StageDef; dimmed: boolean }) {
-  const st = useRagStore(s => s.stages[def.id]);
+  const st = usePipelineView(s => s.stages[def.id]);   // projection-or-live (F2)
   const selected = useRagStore(s => s.selected === def.id);
   const select = useRagStore(s => s.select);
+  const spotlight = useRagStore(s => s.spotlightStage);
+  const reduced = useReducedMotion();
   const Icon = ICONS[def.icon] ?? Sparkles;
   const running = st.status === "running";
+  // recede: play-mode dimming OR the Director's spotlight on another node
+  const recede = (dimmed && !running && !selected) || (spotlight !== null && spotlight !== def.id);
 
   return (
     <motion.button
       layout
+      data-stage-id={def.id}
       onClick={() => select(selected ? null : def.id)}
       whileHover={{ y: -3 }}
-      animate={{ opacity: dimmed && !running && !selected ? 0.45 : 1 }}
+      // grammar: settle (done) · shake (error) · recede (dimming/spotlight)
+      animate={nodeMotion(st.status, recede, reduced)}
       aria-label={`${def.title} — ${st.status}`}
       style={{
         position: "relative", flex: "1 1 0", minWidth: 0,
@@ -66,7 +78,8 @@ function NodeCard({ def, dimmed }: { def: StageDef; dimmed: boolean }) {
         transition: "border-color 0.25s, box-shadow 0.25s, background 0.25s",
       }}
     >
-      {running && (
+      {running && !reduced && (
+        // grammar: pulse — "this component is computing"
         <motion.div
           animate={{ opacity: [0.5, 1, 0.5] }}
           transition={{ duration: 1.4, repeat: Infinity }}
@@ -113,47 +126,12 @@ function NodeCard({ def, dimmed }: { def: StageDef; dimmed: boolean }) {
   );
 }
 
-/* ── edge between nodes ───────────────────────────────────── */
-
-function Edge({ active, vertical = false }: { active: boolean; vertical?: boolean }) {
-  const size = vertical ? { width: 2.5, height: 28 } : { width: 22, height: 2.5 };
-  return (
-    <div style={{
-      position: "relative", flexShrink: 0, alignSelf: "center",
-      ...size,
-      background: active ? "rgba(37,99,235,0.4)" : T.borderStrong,
-      borderRadius: 2, overflow: "visible",
-      transition: "background 0.3s",
-    }}>
-      {active && (
-        <motion.div
-          animate={vertical ? { y: [0, 22] } : { x: [0, 16] }}
-          transition={{ duration: 0.55, repeat: Infinity, ease: "easeIn" }}
-          style={{
-            position: "absolute",
-            top: vertical ? 0 : -2.5, left: vertical ? -2.5 : 0,
-            width: 7, height: 7, borderRadius: "50%",
-            background: T.blue, boxShadow: "0 0 10px rgba(37,99,235,0.7)",
-          }}
-        />
-      )}
-    </div>
-  );
-}
-
 /* ── the canvas ───────────────────────────────────────────── */
 
-function edgeActive(stages: Record<StageId, StageState>, from: StageId, to: StageId): boolean {
-  return stages[to].status === "running" && stages[from].status === "done";
-}
-
-export default function PipelineCanvas({ isMobile }: { isMobile: boolean }) {
-  const stages = useRagStore(s => s.stages);
-  const playActive = useRagStore(s => s.play.active);
-  const anyRunning = STAGE_IDS.some(id => stages[id].status === "running");
-  const dimmed = playActive && anyRunning;
-
-  const Row = ({ defs, label }: { defs: StageDef[]; label: string }) => (
+function Row({ defs, label, isMobile, dimmed }: {
+  defs: StageDef[]; label: string; isMobile: boolean; dimmed: boolean;
+}) {
+  return (
     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <p style={{ fontFamily: T.mono, fontSize: 12, letterSpacing: "0.18em", textTransform: "uppercase", color: T.fgMuted }}>
         {label}
@@ -162,33 +140,29 @@ export default function PipelineCanvas({ isMobile }: { isMobile: boolean }) {
         display: "flex",
         flexDirection: isMobile ? "column" : "row",
         alignItems: "stretch",
+        gap: isMobile ? 26 : 22,   // the gaps ARE the edges — EdgeLayer draws in them
       }}>
-        {defs.map((def, i) => (
-          <div key={def.id} style={{
-            display: "flex", flex: "1 1 0", minWidth: 0,
-            flexDirection: isMobile ? "column" : "row",
-            alignItems: "stretch",
-          }}>
-            <NodeCard def={def} dimmed={dimmed} />
-            {i < defs.length - 1 && (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Edge vertical={isMobile} active={edgeActive(stages, def.id, defs[i + 1].id)} />
-              </div>
-            )}
-          </div>
+        {defs.map(def => (
+          <NodeCard key={def.id} def={def} dimmed={dimmed} />
         ))}
       </div>
     </div>
   );
+}
+
+export default function PipelineCanvas({ isMobile }: { isMobile: boolean }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const stages = usePipelineView(s => s.stages);
+  const playActive = useRagStore(s => s.play.active);
+  const anyRunning = STAGE_IDS.some(id => stages[id].status === "running");
+  const dimmed = playActive && anyRunning;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-      <Row defs={INGESTION_STAGES} label="① Ingestion — document → vector index" />
-      {/* connector from index to query */}
-      <div style={{ display: "flex", justifyContent: isMobile ? "center" : "flex-start", paddingLeft: isMobile ? 0 : 44 }}>
-        <Edge vertical active={edgeActive(stages, "index", "query")} />
-      </div>
-      <Row defs={QUERY_STAGES} label="② Query — question → grounded answer" />
+    <div ref={containerRef} style={{ position: "relative", display: "flex", flexDirection: "column", gap: 30 }}>
+      {/* measured edges + packet layer sit under the cards */}
+      <EdgeLayer containerRef={containerRef} isMobile={isMobile} />
+      <Row defs={INGESTION_STAGES} label="① Ingestion — document → vector index" isMobile={isMobile} dimmed={dimmed} />
+      <Row defs={QUERY_STAGES} label="② Query — question → grounded answer" isMobile={isMobile} dimmed={dimmed} />
     </div>
   );
 }

@@ -3,11 +3,16 @@
 import {
   useRagStore, PRICING,
   type StageId, type PromptBlock, type AnswerSentence, type Candidate, type EvalScores,
+  type SentenceVerdict,
 } from "../ragStore";
 import { cleanPages, chunkPages, approxTokens, splitSentences } from "./text";
-import { scoreCandidates, pca3, projectQuery } from "./retrieval";
+import { scoreCandidates, projectQuery } from "./retrieval";
+import { pca3Async } from "./workers/workerClient";
 import { parsePdf } from "./pdf";
 import { SAMPLE_NAME, SAMPLE_PAGES } from "./sample";
+import { withRecording } from "./events";
+import { fitContext } from "./contextFit";
+import { consumeNdjson } from "./stream";
 
 /* ── plumbing ─────────────────────────────────────────────── */
 
@@ -69,6 +74,39 @@ const fmtKB = (bytes: number) => bytes > 1024 * 1024
   ? `${(bytes / 1024 / 1024).toFixed(1)} MB`
   : `${Math.max(1, Math.round(bytes / 1024))} KB`;
 
+/* ── batched embedding (M6) ───────────────────────────────── */
+
+export const EMBED_BATCH = 100;
+
+/** Embed all chunks in batches of EMBED_BATCH with live progress notes;
+    above 300 chunks the note leads with an honest cost preview. */
+async function embedAllChunks(myRun: number): Promise<{ vectors: number[][]; tokens: number }> {
+  const chunks = S().chunks;
+  if (chunks.length > 300) {
+    const estTokens = chunks.reduce((n, c) => n + c.tokens, 0);
+    S().setStage("embed", {
+      status: "running",
+      note: `${chunks.length} chunks · est. $${((estTokens * PRICING.embedInput) / 1e6).toFixed(4)}`,
+    });
+    await sleep(600);   // let the cost preview be READ before numbers stream
+  }
+  let vectors: number[][] = [];
+  let tokens = 0;
+  for (let i = 0; i < chunks.length; i += EMBED_BATCH) {
+    const batch = chunks.slice(i, i + EMBED_BATCH);
+    const res = await api<{ vectors: number[][]; tokens: number }>(
+      "embed", { texts: batch.map(c => c.text) },
+    );
+    check(myRun);
+    vectors = vectors.concat(res.vectors);
+    tokens += res.tokens;
+    if (chunks.length > EMBED_BATCH) {
+      S().setStage("embed", { status: "running", note: `${Math.min(i + EMBED_BATCH, chunks.length)}/${chunks.length} vectors…` });
+    }
+  }
+  return { vectors, tokens };
+}
+
 /* ── ingestion ────────────────────────────────────────────── */
 
 export interface IngestSource {
@@ -77,9 +115,10 @@ export interface IngestSource {
   sample?: boolean;
 }
 
-export async function runIngestion(source: IngestSource, gate?: StageGate): Promise<boolean> {
+export async function runIngestion(source: IngestSource, rawGate?: StageGate): Promise<boolean> {
   S().resetAll();                    // also bumps runId, cancelling any in-flight run
   const myRun = S().runId;
+  const gate = withRecording(rawGate, "ingestion");   // every run records events (F2)
 
   try {
     /* 1 · upload */
@@ -141,14 +180,12 @@ export async function runIngestion(source: IngestSource, gate?: StageGate): Prom
       return `≈ ${total.toLocaleString()} tokens (est.)`;
     });
 
-    /* 6 · embed */
+    /* 6 · embed — batched calls, PCA off the main thread (M6) */
     await runStage(myRun, "embed", gate, 400, async () => {
-      const chunks = S().chunks;
-      const { vectors, tokens } = await api<{ vectors: number[][]; tokens: number }>(
-        "embed", { texts: chunks.map(c => c.text) },
-      );
+      const { vectors, tokens } = await embedAllChunks(myRun);
       check(myRun);
-      const coords3 = pca3(vectors);
+      const coords3 = await pca3Async(vectors);
+      check(myRun);
       S().patch({ embeddings: vectors, coords3 });
       S().addUsage({ embedTokens: tokens, costUSD: (tokens * PRICING.embedInput) / 1e6 });
       return `${vectors.length} × ${vectors[0]?.length ?? 0} dims`;
@@ -172,12 +209,13 @@ export async function runIngestion(source: IngestSource, gate?: StageGate): Prom
 
 export const RERANK_POOL_EXTRA = 4;
 
-export async function runQuery(question: string, gate?: StageGate): Promise<boolean> {
+export async function runQuery(question: string, rawGate?: StageGate): Promise<boolean> {
   const store = S();
   if (!store.ingested || store.chunks.length === 0) return false;
   const runId = store.bumpRun();
   store.resetQuery();
   store.patch({ query: question });
+  const gate = withRecording(rawGate, "query");   // every run records events (F2)
 
   try {
     /* 8 · query embedding */
@@ -238,20 +276,11 @@ export async function runQuery(question: string, gate?: StageGate): Promise<bool
       return `${pool.length} rescored · ${moved} moved`;
     });
 
-    /* 11 · prompt */
+    /* 11 · prompt — packing via the shared fit function (vessel = prompt truth, M8) */
     await runStage(runId, "prompt", gate, 600, async () => {
       const st = S();
       const byId = new Map(st.chunks.map(c => [c.id, c]));
-      const budget = st.params.contextBudget;
-
-      const kept: number[] = [];
-      let ctxTokens = 0;
-      for (const id of st.results) {
-        const ch = byId.get(id)!;
-        if (ctxTokens + ch.tokens > budget && kept.length > 0) break;
-        kept.push(id);
-        ctxTokens += ch.tokens;
-      }
+      const { kept, ctxTokens } = fitContext(st.results, st.chunks, st.params.contextBudget);
       const context = kept.map(id => `[${id}] ${byId.get(id)!.text}`).join("\n\n");
       const questionBlock = `Question: ${question}\n\nAnswer using ONLY the context above. Cite chunk numbers like [3] after each claim.`;
 
@@ -264,18 +293,52 @@ export async function runQuery(question: string, gate?: StageGate): Promise<bool
       return `${blocks.reduce((n, b) => n + b.tokens, 0)} tokens · ${kept.length} chunks in context`;
     });
 
-    /* 12 · generate */
+    /* 12 · generate — streaming (M10): the answer builds incrementally in
+       the store; the non-stream JSON path stays as automatic fallback */
     await runStage(runId, "generate", gate, 400, async () => {
       const st = S();
       const [sys, ctx, q] = st.promptBlocks;
-      const { text, promptTokens, completionTokens } = await api<{
-        text: string; promptTokens: number; completionTokens: number;
-      }>("generate", {
+      const payload = {
         system: sys.text,
         user: `Context:\n${ctx.text}\n\n${q.text}`,
         temperature: st.params.temperature,
         maxTokens: st.params.maxTokens,
+      };
+      const res = await fetch("/api/rag/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...payload, stream: true }),
       });
+      check(runId);
+
+      let text = "", promptTokens = 0, completionTokens = 0;
+      if (res.ok && res.body && res.headers.get("content-type")?.includes("ndjson")) {
+        useRagStore.setState({ brainStats: { startedAt: performance.now(), firstTokenAt: null, lastDeltaAt: null, deltas: 0 } });
+        try {
+          const totals = await consumeNdjson(res, acc => {
+            if (S().runId !== runId) return;   // cancelled — stop touching the store
+            const bs = useRagStore.getState().brainStats;
+            if (bs) {
+              const now = performance.now();
+              useRagStore.setState({
+                brainStats: { ...bs, firstTokenAt: bs.firstTokenAt ?? now, lastDeltaAt: now, deltas: bs.deltas + 1 },
+              });
+            }
+            S().patch({ answer: acc });
+          });
+          text = totals.text;
+          promptTokens = totals.promptTokens;
+          completionTokens = totals.completionTokens;
+        } catch (e) {
+          // a partial answer from a broken stream is discarded cleanly
+          if (S().runId === runId) S().patch({ answer: null });
+          throw e;
+        }
+      } else {
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json?.error ?? `API error (${res.status})`);
+        ({ text, promptTokens, completionTokens } = json as { text: string; promptTokens: number; completionTokens: number });
+      }
       check(runId);
       if (!text.trim()) throw new Error("Model returned an empty answer.");
       S().patch({ answer: text });
@@ -301,15 +364,22 @@ export async function runQuery(question: string, gate?: StageGate): Promise<bool
       return `${cited}/${sentences.length} sentences cite sources`;
     });
 
-    /* 14 · evaluate */
+    /* 14 · evaluate — doc scores + per-sentence verdicts (M9) */
     await runStage(runId, "evaluate", gate, 400, async () => {
       const st = S();
       const ctx = st.promptBlocks[1]?.text ?? "";
-      const { scores, promptTokens, completionTokens } = await api<{
-        scores: EvalScores; promptTokens: number; completionTokens: number;
-      }>("evaluate", { question, context: ctx, answer: st.answer });
+      const { scores, sentenceVerdicts, promptTokens, completionTokens } = await api<{
+        scores: EvalScores; sentenceVerdicts: SentenceVerdict[] | null;
+        promptTokens: number; completionTokens: number;
+      }>("evaluate", {
+        question, context: ctx, answer: st.answer,
+        sentences: st.answerSentences.slice(0, 25).map(s => s.text),
+      });
       check(runId);
-      S().patch({ evalScores: scores });
+      // verdict arrays that don't align with sentences degrade to doc-level
+      const aligned = sentenceVerdicts && sentenceVerdicts.length === Math.min(st.answerSentences.length, 25)
+        ? sentenceVerdicts : null;
+      S().patch({ evalScores: scores, sentenceVerdicts: aligned });
       S().addUsage({
         promptTokens, completionTokens,
         costUSD: (promptTokens * PRICING.genInput + completionTokens * PRICING.genOutput) / 1e6,
@@ -347,17 +417,18 @@ export async function reembed(): Promise<boolean> {
   const st = S();
   if (st.chunks.length === 0) return false;
   const runId = st.bumpRun();
+  const gate = withRecording(undefined, "reembed");
   try {
-    await runStage(runId, "embed", undefined, 400, async () => {
-      const { vectors, tokens } = await api<{ vectors: number[][]; tokens: number }>(
-        "embed", { texts: S().chunks.map(c => c.text) },
-      );
+    await runStage(runId, "embed", gate, 400, async () => {
+      const { vectors, tokens } = await embedAllChunks(runId);
       check(runId);
-      S().patch({ embeddings: vectors, coords3: pca3(vectors), chunksStale: false });
+      const coords3 = await pca3Async(vectors);
+      check(runId);
+      S().patch({ embeddings: vectors, coords3, chunksStale: false });
       S().addUsage({ embedTokens: tokens, costUSD: (tokens * PRICING.embedInput) / 1e6 });
       return `${vectors.length} × ${vectors[0]?.length ?? 0} dims`;
     });
-    await runStage(runId, "index", undefined, 700, async () => {
+    await runStage(runId, "index", gate, 700, async () => {
       S().patch({ ingested: true });
       return `${S().embeddings.length} vectors indexed`;
     });

@@ -8,8 +8,17 @@ import { STAGE_BY_ID } from "./stages";
 import { pseudoTokens } from "./lib/text";
 import { renderPdfPage } from "./lib/pdf";
 import { RERANK_POOL_EXTRA } from "./lib/pipeline";
+import { stageArtifact } from "./store/artifacts";
+import { usePipelineView } from "./timeline/usePipelineView";
+import { useWindowed } from "./lib/useWindowed";
+import PromptMRI from "./prompt/PromptMRI";
+import ContextContainer from "./prompt/ContextContainer";
+import EvalRadar from "./radar/EvalRadar";
+import { ConceptBlock } from "./education/ConceptCard";
+import { STAGE_CONCEPT } from "./education/concepts";
+import { usePersona } from "./education/usePersona";
 import { T, eyebrow } from "./theme";
-import EmbeddingSpace from "./EmbeddingSpace";
+import Universe from "./universe/Universe";
 
 /* ── shared primitives ────────────────────────────────────── */
 
@@ -55,12 +64,15 @@ function Bar({ label, value, max, color, suffix }: { label: string; value: numbe
 
 function Snippet({ text, color }: { text: string; color?: string }) {
   return (
-    <div style={{
-      padding: "12px 14px", background: T.inset, borderRadius: 10,
-      border: `1px solid ${color ?? T.border}`, fontFamily: T.mono,
-      fontSize: 12.5, color: T.fgSec, lineHeight: 1.65, whiteSpace: "pre-wrap",
-      maxHeight: 170, overflowY: "auto",
-    }}>
+    <div
+      tabIndex={0}
+      style={{
+        padding: "12px 14px", background: T.inset, borderRadius: 10,
+        border: `1px solid ${color ?? T.border}`, fontFamily: T.mono,
+        fontSize: 12.5, color: T.fgSec, lineHeight: 1.65, whiteSpace: "pre-wrap",
+        maxHeight: 170, overflowY: "auto",
+      }}
+    >
       {text}
     </div>
   );
@@ -87,7 +99,7 @@ function PdfPreview({ page }: { page: number }) {
 /* ── per-stage views ──────────────────────────────────────── */
 
 function UploadView() {
-  const s = useRagStore();
+  const s = usePipelineView(v => v);
   if (!s.docName) return <Body>No document loaded yet. Upload a PDF (≤ 5 MB) or load the sample product guide.</Body>;
   return (
     <>
@@ -103,7 +115,7 @@ function UploadView() {
 }
 
 function ParseView() {
-  const pages = useRagStore(s => s.pages);
+  const pages = usePipelineView(s => s.pages);
   if (pages.length === 0) return <Body>Nothing parsed yet.</Body>;
   const max = Math.max(...pages.map(p => p.text.length));
   return (
@@ -120,9 +132,9 @@ function ParseView() {
 }
 
 function CleanView() {
-  const stats = useRagStore(s => s.cleanStats);
-  const raw = useRagStore(s => s.pages[0]?.text ?? "");
-  const cleaned = useRagStore(s => s.cleanedPages[0]?.text ?? "");
+  const stats = usePipelineView(s => s.cleanStats);
+  const raw = usePipelineView(s => s.pages[0]?.text ?? "");
+  const cleaned = usePipelineView(s => s.cleanedPages[0]?.text ?? "");
   if (!stats) return <Body>Not cleaned yet.</Body>;
   return (
     <>
@@ -139,11 +151,13 @@ function CleanView() {
 }
 
 function ChunkView() {
-  const chunks = useRagStore(s => s.chunks);
+  const chunks = usePipelineView(s => s.chunks);
   const params = useRagStore(s => s.params);
   const hoverChunk = useRagStore(s => s.hoverChunk);
   const setHoverChunk = useRagStore(s => s.setHoverChunk);
+  const openChunkProfile = useRagStore(s => s.openChunkProfile);
   const [open, setOpen] = useState<number | null>(null);
+  const win = useWindowed(chunks, 80, 340);   // stays smooth at 1,000 chunks (M6)
   if (chunks.length === 0) return <Body>No chunks yet.</Body>;
   return (
     <>
@@ -154,13 +168,18 @@ function ChunkView() {
         <KV k="chunks" v={String(chunks.length)} color={T.blue} />
       </Sec>
       <Sec title="Chunks — click to expand">
-        <div style={{ display: "flex", flexDirection: "column", gap: 7, maxHeight: 340, overflowY: "auto", paddingRight: 4 }}>
-          {chunks.map(c => {
+        <div
+          onScroll={win.onScroll}
+          tabIndex={0} aria-label="Chunk list"
+          style={{ display: "flex", flexDirection: "column", gap: 7, maxHeight: 340, overflowY: "auto", paddingRight: 4 }}
+        >
+          {win.padTop > 0 && <div style={{ height: win.padTop, flexShrink: 0 }} aria-hidden />}
+          {win.slice.map(c => {
             const expanded = open === c.id;
             const hot = hoverChunk === c.id;
             return (
               <motion.div
-                key={c.id} layout
+                key={c.id} layout={!win.windowed}
                 onClick={() => setOpen(expanded ? null : c.id)}
                 onMouseEnter={() => setHoverChunk(c.id)}
                 onMouseLeave={() => setHoverChunk(null)}
@@ -174,7 +193,7 @@ function ChunkView() {
                   <span style={{ fontFamily: T.mono, fontSize: 12, color: T.blue, fontWeight: 700 }}>#{c.id}</span>
                   <span style={{ fontFamily: T.mono, fontSize: 11.5, color: T.fgMuted }}>p.{c.page} · {c.chars} ch · {c.tokens} tok</span>
                   {c.overlapChars > 0 && (
-                    <span style={{ fontFamily: T.mono, fontSize: 10.5, color: T.amber, background: "rgba(217,119,6,0.1)", padding: "1px 7px", borderRadius: 6 }}>
+                    <span style={{ fontFamily: T.mono, fontSize: 10.5, color: "#92400E", background: "rgba(217,119,6,0.1)", padding: "1px 7px", borderRadius: 6 }}>
                       ↩ {c.overlapChars} overlap
                     </span>
                   )}
@@ -182,9 +201,22 @@ function ChunkView() {
                 <p style={{ fontFamily: T.mono, fontSize: 12, color: T.fgSec, lineHeight: 1.6, marginTop: 6 }}>
                   {expanded ? c.text : c.text.slice(0, 90) + (c.text.length > 90 ? "…" : "")}
                 </p>
+                {expanded && (
+                  <button
+                    onClick={e => { e.stopPropagation(); openChunkProfile(c.id); }}
+                    style={{
+                      marginTop: 8, padding: "5px 12px", borderRadius: 8, cursor: "pointer",
+                      background: "rgba(37,99,235,0.06)", border: "1px solid rgba(37,99,235,0.4)",
+                      fontFamily: T.mono, fontSize: 11, fontWeight: 600, color: T.blue,
+                    }}
+                  >
+                    life story →
+                  </button>
+                )}
               </motion.div>
             );
           })}
+          {win.padBottom > 0 && <div style={{ height: win.padBottom, flexShrink: 0 }} aria-hidden />}
         </div>
       </Sec>
     </>
@@ -192,7 +224,7 @@ function ChunkView() {
 }
 
 function TokenizeView() {
-  const chunks = useRagStore(s => s.chunks);
+  const chunks = usePipelineView(s => s.chunks);
   const [idx, setIdx] = useState(0);
   if (chunks.length === 0) return <Body>No chunks to tokenize yet.</Body>;
   const chunk = chunks[Math.min(idx, chunks.length - 1)];
@@ -239,12 +271,12 @@ const navBtn: React.CSSProperties = {
 };
 
 function EmbedView() {
-  const embeddings = useRagStore(s => s.embeddings);
-  const usage = useRagStore(s => s.usage);
+  const embeddings = usePipelineView(s => s.embeddings);
+  const usage = usePipelineView(s => s.usage);
   return (
     <>
-      <Sec title="Semantic space — PCA projection of real vectors">
-        <EmbeddingSpace height={260} />
+      <Sec title="Embedding universe — PCA projection of real vectors">
+        <Universe height={260} />
       </Sec>
       {embeddings.length > 0 && (
         <>
@@ -278,9 +310,10 @@ function EmbedView() {
 }
 
 function IndexView() {
-  const chunks = useRagStore(s => s.chunks);
-  const embeddings = useRagStore(s => s.embeddings);
-  const ingested = useRagStore(s => s.ingested);
+  const chunks = usePipelineView(s => s.chunks);
+  const embeddings = usePipelineView(s => s.embeddings);
+  const ingested = usePipelineView(s => s.ingested);
+  const idxWin = useWindowed(chunks, 35, 300);   // stays smooth at 1,000 rows (M6)
   if (embeddings.length === 0) return <Body>Nothing indexed yet.</Body>;
   return (
     <>
@@ -290,13 +323,14 @@ function IndexView() {
         <KV k="entries" v={String(embeddings.length)} color={ingested ? T.green : T.amber} />
       </Sec>
       <Sec title="Insertions — vector + metadata">
-        <div style={{ maxHeight: 300, overflowY: "auto" }}>
-          {chunks.map((c, i) => (
+        <div onScroll={idxWin.onScroll} style={{ maxHeight: 300, overflowY: "auto" }}>
+          {idxWin.padTop > 0 && <div style={{ height: idxWin.padTop }} aria-hidden />}
+          {idxWin.slice.map((c, i) => (
             <motion.div
               key={c.id}
               initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: Math.min(i * 0.05, 1.2) }}
+              transition={{ delay: idxWin.windowed ? 0 : Math.min(i * 0.05, 1.2) }}
               style={{
                 display: "flex", justifyContent: "space-between", gap: 8,
                 padding: "8px 10px", borderBottom: `1px solid ${T.border}`,
@@ -307,6 +341,7 @@ function IndexView() {
               <span style={{ color: T.fgMuted }}>{`{page:${c.page}, tokens:${c.tokens}, chars:${c.chars}}`}</span>
             </motion.div>
           ))}
+          {idxWin.padBottom > 0 && <div style={{ height: idxWin.padBottom }} aria-hidden />}
         </div>
       </Sec>
     </>
@@ -314,8 +349,8 @@ function IndexView() {
 }
 
 function QueryView() {
-  const query = useRagStore(s => s.query);
-  const queryVec = useRagStore(s => s.queryVec);
+  const query = usePipelineView(s => s.query);
+  const queryVec = usePipelineView(s => s.queryVec);
   if (!query) return <Body>Ask a question below the pipeline to see it embedded into the same vector space as the document.</Body>;
   return (
     <>
@@ -342,8 +377,8 @@ function QueryView() {
 }
 
 function RetrieveView() {
-  const candidates = useRagStore(s => s.candidates);
-  const results = useRagStore(s => s.results);
+  const candidates = usePipelineView(s => s.candidates);
+  const results = usePipelineView(s => s.results);
   const params = useRagStore(s => s.params);
   const setHoverChunk = useRagStore(s => s.setHoverChunk);
   if (candidates.length === 0) return <Body>Run a question to score every chunk against it.</Body>;
@@ -379,7 +414,7 @@ function RetrieveView() {
 }
 
 function RerankView() {
-  const candidates = useRagStore(s => s.candidates);
+  const candidates = usePipelineView(s => s.candidates);
   const params = useRagStore(s => s.params);
   const pool = candidates
     .filter(c => c.hybrid >= params.threshold)
@@ -421,52 +456,46 @@ function RerankView() {
 }
 
 function PromptView() {
-  const blocks = useRagStore(s => s.promptBlocks);
-  const params = useRagStore(s => s.params);
+  const blocks = usePipelineView(s => s.promptBlocks);
   if (blocks.length === 0) return <Body>The final prompt appears here once a question runs.</Body>;
-  const total = blocks.reduce((n, b) => n + b.tokens, 0);
-  const windowMax = Math.max(total + params.maxTokens, 4000);
   return (
     <>
-      <Sec title="Context window budget">
-        <div style={{ display: "flex", height: 18, borderRadius: 9, overflow: "hidden", border: `1px solid ${T.border}` }}>
-          {blocks.map(b => (
-            <motion.div
-              key={b.label}
-              initial={{ flexGrow: 0 }} animate={{ flexGrow: b.tokens }}
-              style={{ background: b.color, opacity: 0.9 }}
-              title={`${b.label}: ${b.tokens} tokens`}
-            />
-          ))}
-          <div style={{ flexGrow: params.maxTokens, background: "rgba(15,23,42,0.08)" }} title={`reserved for answer: ${params.maxTokens}`} />
-        </div>
-        <div style={{ display: "flex", gap: 14, marginTop: 9, flexWrap: "wrap" }}>
-          {blocks.map(b => (
-            <span key={b.label} style={{ fontFamily: T.mono, fontSize: 11, color: T.fgSec }}>
-              <span style={{ color: b.color }}>■</span> {b.label.toLowerCase()} {b.tokens}t
-            </span>
-          ))}
-          <span style={{ fontFamily: T.mono, fontSize: 11, color: T.fgMuted }}>■ answer budget {params.maxTokens}t</span>
-        </div>
-        <p style={{ fontFamily: T.mono, fontSize: 11, color: T.fgMuted, marginTop: 7 }}>
-          {total} prompt tokens of ~{windowMax.toLocaleString()} window
-        </p>
+      <Sec title="Prompt MRI — the assembled package, sliced open">
+        <PromptMRI />
       </Sec>
-      {blocks.map(b => (
-        <Sec key={b.label} title={`${b.label} · ${b.tokens} tokens`}>
-          <Snippet text={b.text.length > 700 ? b.text.slice(0, 700) + "…" : b.text} color={`${b.color}45`} />
-        </Sec>
-      ))}
+      <Sec title="Context container — the budget as a vessel">
+        <ContextContainer />
+      </Sec>
     </>
   );
 }
 
 function GenerateView() {
-  const answer = useRagStore(s => s.answer);
-  const stages = useRagStore(s => s.stages);
-  const usage = useRagStore(s => s.usage);
+  const answer = usePipelineView(s => s.answer);
+  const stages = usePipelineView(s => s.stages);
+  const usage = usePipelineView(s => s.usage);
+  const setBrainOpen = useRagStore(s => s.setBrainOpen);
+  const canBrain = !!answer || stages.generate.status === "running";
   return (
     <>
+      {canBrain && (
+        <Sec title="Generation theater">
+          <button
+            onClick={() => setBrainOpen(true)}
+            style={{
+              display: "flex", alignItems: "center", gap: 8, padding: "10px 16px",
+              borderRadius: 11, cursor: "pointer",
+              background: "rgba(124,58,237,0.07)", border: "1px solid rgba(124,58,237,0.5)",
+              fontFamily: T.disp, fontWeight: 700, fontSize: 13.5, color: T.violet,
+            }}
+          >
+            🧠 inside gpt&apos;s brain →
+          </button>
+          <p style={{ fontFamily: T.mono, fontSize: 10.5, color: T.fgMuted, marginTop: 7 }}>
+            educational simulation — observable stages only, clearly labelled
+          </p>
+        </Sec>
+      )}
       <Sec title="Model">
         <KV k="model" v="gpt-5-mini" />
         <KV k="grounding" v="context-only + [n] citations" />
@@ -480,8 +509,8 @@ function GenerateView() {
 }
 
 function GroundView() {
-  const sentences = useRagStore(s => s.answerSentences);
-  const chunks = useRagStore(s => s.chunks);
+  const sentences = usePipelineView(s => s.answerSentences);
+  const chunks = usePipelineView(s => s.chunks);
   const hoverChunk = useRagStore(s => s.hoverChunk);
   const setHoverChunk = useRagStore(s => s.setHoverChunk);
   if (sentences.length === 0) return <Body>Once an answer exists, every sentence is mapped back to its source chunks here.</Body>;
@@ -520,8 +549,16 @@ function GroundView() {
 }
 
 function EvaluateView() {
-  const ev = useRagStore(s => s.evalScores);
+  const ev = usePipelineView(s => s.evalScores);
+  const verdicts = usePipelineView(s => s.sentenceVerdicts);
   if (!ev) return <Body>The LLM judge scores each answer automatically after generation.</Body>;
+  const counts = verdicts
+    ? {
+        supported: verdicts.filter(v => v.support === "supported").length,
+        partial: verdicts.filter(v => v.support === "partial").length,
+        unsupported: verdicts.filter(v => v.support === "unsupported").length,
+      }
+    : null;
   const rows = [
     { k: "Faithfulness", v: ev.faithfulness, good: true },
     { k: "Answer relevance", v: ev.answerRelevance, good: true },
@@ -531,6 +568,9 @@ function EvaluateView() {
   ];
   return (
     <>
+      <Sec title="Hallucination radar">
+        <EvalRadar scores={ev} />
+      </Sec>
       <Sec title="LLM-as-judge scores (0–100)">
         {rows.map(r => {
           const ok = r.good ? r.v >= 70 : r.v <= 30;
@@ -538,6 +578,14 @@ function EvaluateView() {
           return <Bar key={r.k} label={r.k} value={r.v} max={100} color={color} suffix={String(r.v)} />;
         })}
       </Sec>
+      {counts && (
+        <Sec title="Per-sentence verdicts">
+          <KV k="supported" v={String(counts.supported)} color={T.green} />
+          <KV k="partial" v={String(counts.partial)} color={T.amber} />
+          <KV k="unsupported" v={String(counts.unsupported)} color={counts.unsupported > 0 ? T.red : T.fg} />
+          <Body>Click any sentence in the answer to walk its evidence trail.</Body>
+        </Sec>
+      )}
       <Sec title="Verdict"><Body>{ev.verdict || "—"}</Body></Sec>
     </>
   );
@@ -550,12 +598,44 @@ const VIEWS: Record<StageId, () => React.ReactElement> = {
   prompt: PromptView, generate: GenerateView, ground: GroundView, evaluate: EvaluateView,
 };
 
+/* ── raw artifact view (engineer/researcher personas) ─────── */
+
+function ArtifactJson({ id }: { id: StageId }) {
+  // subscribe to the store object (stable snapshot) and derive during render —
+  // a selector returning a fresh object every call breaks useSyncExternalStore
+  const state = usePipelineView(v => v);
+  const artifact = stageArtifact(state, id);
+  return (
+    <div>
+      <p style={{ fontFamily: T.mono, fontSize: 10.5, color: T.fgMuted, marginBottom: 8 }}>
+        live artifact — real pipeline data, truncated only where noted
+      </p>
+      <pre style={{
+        padding: "13px 15px", background: T.inset, borderRadius: 10,
+        border: `1px solid ${T.border}`, fontFamily: T.mono, fontSize: 11,
+        lineHeight: 1.6, color: T.fgSec, whiteSpace: "pre-wrap", wordBreak: "break-word",
+        maxHeight: 440, overflowY: "auto",
+      }}>
+        {JSON.stringify(artifact, null, 2)}
+      </pre>
+    </div>
+  );
+}
+
 /* ── inspector shell ──────────────────────────────────────── */
 
 export default function Inspector({ isMobile }: { isMobile: boolean }) {
   const selected = useRagStore(s => s.selected);
   const select = useRagStore(s => s.select);
-  const stage = useRagStore(s => (selected ? s.stages[selected] : null));
+  const stage = usePipelineView(s => (selected ? s.stages[selected] : null));
+  const { showRawData } = usePersona();
+  const [rawView, setRawView] = useState(false);
+  // reset the raw tab when the node changes (render-time state adjustment)
+  const [lastSelected, setLastSelected] = useState(selected);
+  if (selected !== lastSelected) {
+    setLastSelected(selected);
+    setRawView(false);
+  }
   const View = selected ? VIEWS[selected] : null;
 
   return (
@@ -605,6 +685,8 @@ export default function Inspector({ isMobile }: { isMobile: boolean }) {
             <Body>{STAGE_BY_ID[selected].explanation}</Body>
           </div>
 
+          <ConceptBlock id={STAGE_CONCEPT[selected]} />
+
           <div style={{
             display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 20,
           }}>
@@ -624,7 +706,28 @@ export default function Inspector({ isMobile }: { isMobile: boolean }) {
             </div>
           )}
 
-          {View && <View />}
+          {showRawData && (
+            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+              {([["explainer", false], ["raw json", true]] as const).map(([label, raw]) => (
+                <button
+                  key={label}
+                  onClick={() => setRawView(raw)}
+                  aria-pressed={rawView === raw}
+                  style={{
+                    padding: "7px 14px", borderRadius: 9, cursor: "pointer",
+                    background: rawView === raw ? "rgba(37,99,235,0.07)" : "transparent",
+                    border: `1px solid ${rawView === raw ? "rgba(37,99,235,0.45)" : T.border}`,
+                    fontFamily: T.mono, fontSize: 11.5, letterSpacing: "0.06em", textTransform: "uppercase",
+                    color: rawView === raw ? T.blue : T.fgSec, fontWeight: 600,
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {rawView && showRawData ? <ArtifactJson id={selected} /> : View && <View />}
         </motion.aside>
       )}
     </AnimatePresence>

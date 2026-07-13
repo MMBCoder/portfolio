@@ -1,18 +1,29 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, RotateCcw, SkipForward, SkipBack, X, Footprints } from "lucide-react";
 import { useRagStore, STAGE_IDS, type StageId } from "./ragStore";
 import { STAGE_BY_ID } from "./stages";
 import { runIngestion, runQuery, cancelRun, type StageGate } from "./lib/pipeline";
 import { SAMPLE_QUESTION } from "./lib/sample";
+import { beatIntro, beatPayoff } from "./stories/arcs";
+import { director } from "./motion/director";
+import { PERSONAS } from "./education/personas";
+import SummarySlide from "./presentation/SummarySlide";
 import { T, eyebrow } from "./theme";
 
 const S = () => useRagStore.getState();
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
-const BASE_DWELL = 4200;   // ms of narration time per stage at 1×
+/** Narration time per stage at 1×. E2E sets the fast-play flag so the
+    full 14-beat film fits in a test budget — same code path, short dwell. */
+function baseDwell(): number {
+  try {
+    if (typeof window !== "undefined" && window.localStorage.getItem("rag-viz:fast-play")) return 350;
+  } catch { /* storage unavailable */ }
+  return 4200;
+}
 
 export function usePlayController() {
   const skipRef = useRef(false);
@@ -26,7 +37,7 @@ export function usePlayController() {
       const p = S().play;
       if (!p.paused) {
         elapsed = performance.now() - start;
-        if (elapsed >= BASE_DWELL / p.speed) return;
+        if (elapsed >= baseDwell() / p.speed) return;
       }
       await sleep(120);
     }
@@ -39,17 +50,25 @@ export function usePlayController() {
     }
   }, []);
 
+  /* The gate IS the film: each stage becomes a two-phase beat.
+     intro (registry quote, persona voice) → stage runs → payoff (real
+     numbers) → dwell. The Director aims the camera; dwell is the clock
+     and GSAP follows. */
   const gate: StageGate = {
     before: async (id: StageId) => {
       if (!S().play.active) return;
       S().select(id);
+      director.spotlight(id);
+      director.flyTo(id);
+      const voice = PERSONAS[S().persona].voice;
       S().patch({
-        play: { ...S().play, step: STAGE_IDS.indexOf(id) + 1, narration: STAGE_BY_ID[id].narration },
+        play: { ...S().play, step: STAGE_IDS.indexOf(id) + 1, narration: beatIntro(id, voice) },
       });
       await waitIfPaused();
     },
-    after: async () => {
+    after: async (id: StageId) => {
       if (!S().play.active) return;
+      S().patch({ play: { ...S().play, narration: beatPayoff(id, S()) } });
       await dwell();
       if (S().play.stepMode) {
         S().patch({ play: { ...S().play, paused: true } });
@@ -67,29 +86,36 @@ export function usePlayController() {
     const question = st.query || SAMPLE_QUESTION;
 
     skipRef.current = false;
+    director.fadeChrome(true);
     st.patch({
-      play: { active: true, paused: false, step: 0, totalSteps: STAGE_IDS.length, speed: st.play.speed, stepMode: st.play.stepMode, narration: "" },
+      play: { active: true, paused: false, step: 0, totalSteps: STAGE_IDS.length, speed: st.play.speed, stepMode: st.play.stepMode, narration: "", finale: false },
     });
 
     const ok = await runIngestion(source, gate);
     if (ok && S().play.active) await runQuery(question, gate);
 
     if (S().play.active) {
-      S().patch({ play: { ...S().play, narration: "That's the complete pipeline — document to grounded, evaluated answer. Open any node to inspect its artifacts, or change a parameter and watch the system react.", step: STAGE_IDS.length } });
-      await dwell();
-      S().patch({ play: { ...S().play, active: false } });
+      // the finale: camera home, spotlight off, recap slide with real numbers
+      director.reset();
+      director.fadeChrome(false);
+      S().patch({ play: { ...S().play, finale: true, narration: "" } });
+    } else {
+      director.reset();
+      director.fadeChrome(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const stop = useCallback(() => {
     cancelRun();
-    S().patch({ play: { ...S().play, active: false, paused: false } });
+    director.reset();
+    director.fadeChrome(false);
+    S().patch({ play: { ...S().play, active: false, paused: false, finale: false } });
   }, []);
 
   const restart = useCallback(() => {
     cancelRun();
-    S().patch({ play: { ...S().play, active: false } });
+    S().patch({ play: { ...S().play, active: false, finale: false } });
     setTimeout(() => { void start(); }, 200);
   }, [start]);
 
@@ -103,7 +129,9 @@ export function usePlayController() {
     const idx = Math.max(0, S().play.step - 2);
     const id = STAGE_IDS[idx];
     S().select(id);
-    S().patch({ play: { ...S().play, narration: STAGE_BY_ID[id].narration } });
+    director.spotlight(id);
+    director.flyTo(id);
+    S().patch({ play: { ...S().play, narration: beatPayoff(id, S()) } });
   }, []);
 
   const cycleSpeed = useCallback(() => {
@@ -135,10 +163,21 @@ export default function PlayOverlay({
 }) {
   const play = useRagStore(s => s.play);
   const selected = useRagStore(s => s.selected);
+  // the presentation shell owns the film (and the Esc key) while open
+  const presenting = useRagStore(s => s.presentationOpen);
+
+  // Esc always exits cleanly
+  const { stop } = controller;
+  useEffect(() => {
+    if (!play.active || presenting) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") stop(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [play.active, presenting, stop]);
 
   return (
     <AnimatePresence>
-      {play.active && (
+      {play.active && !presenting && (
         <motion.div
           initial={{ y: 90, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -155,64 +194,71 @@ export default function PlayOverlay({
             background: "rgba(255,255,255,0.97)", border: `1px solid ${T.borderStrong}`,
             borderRadius: 18, padding: isMobile ? "16px 16px 14px" : "18px 24px 16px",
             backdropFilter: "blur(18px)", boxShadow: "0 24px 60px rgba(15,23,42,0.22)",
+            maxHeight: "72vh", overflowY: "auto",
           }}>
-            {/* progress */}
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-              <span style={{ ...eyebrow, fontSize: 11, color: T.violet, whiteSpace: "nowrap" }}>
-                play mode · {play.step}/{play.totalSteps}
-              </span>
-              <div style={{ flex: 1, height: 5, background: "rgba(15,23,42,0.08)", borderRadius: 3, overflow: "hidden" }}>
-                <motion.div
-                  animate={{ width: `${(play.step / play.totalSteps) * 100}%` }}
-                  transition={{ duration: 0.4 }}
-                  style={{ height: "100%", background: T.grad, borderRadius: 3 }}
-                />
-              </div>
-              {selected && (
-                <span style={{ fontFamily: T.mono, fontSize: 11.5, color: T.fgSec, whiteSpace: "nowrap" }}>
-                  {STAGE_BY_ID[selected].title.toLowerCase()}
-                </span>
-              )}
-            </div>
+            {play.finale ? (
+              <SummarySlide onExplore={controller.stop} onReplay={controller.restart} />
+            ) : (
+              <>
+                {/* progress */}
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+                  <span style={{ ...eyebrow, fontSize: 11, color: T.violet, whiteSpace: "nowrap" }}>
+                    play mode · {play.step}/{play.totalSteps}
+                  </span>
+                  <div style={{ flex: 1, height: 5, background: "rgba(15,23,42,0.08)", borderRadius: 3, overflow: "hidden" }}>
+                    <motion.div
+                      animate={{ width: `${(play.step / play.totalSteps) * 100}%` }}
+                      transition={{ duration: 0.4 }}
+                      style={{ height: "100%", background: T.grad, borderRadius: 3 }}
+                    />
+                  </div>
+                  {selected && (
+                    <span style={{ fontFamily: T.mono, fontSize: 11.5, color: T.fgSec, whiteSpace: "nowrap" }}>
+                      {STAGE_BY_ID[selected].title.toLowerCase()}
+                    </span>
+                  )}
+                </div>
 
-            {/* narration */}
-            <p style={{
-              fontSize: isMobile ? 13.5 : 15.5, lineHeight: 1.65, color: T.fg,
-              minHeight: isMobile ? 66 : 52, marginBottom: 14,
-            }}>
-              {play.narration || "Starting the pipeline…"}
-            </p>
+                {/* narration */}
+                <p style={{
+                  fontSize: isMobile ? 13.5 : 15.5, lineHeight: 1.65, color: T.fg,
+                  minHeight: isMobile ? 66 : 52, marginBottom: 14,
+                }}>
+                  {play.narration || "Starting the pipeline…"}
+                </p>
 
-            {/* transport */}
-            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-              <button onClick={controller.togglePause} style={{ ...btn, background: T.grad, border: "none" }} aria-label={play.paused ? "Resume" : "Pause"}>
-                {play.paused ? <Play size={15} /> : <Pause size={15} />}
-              </button>
-              <button onClick={controller.skipBack} style={btn} aria-label="Skip back"><SkipBack size={14} /></button>
-              <button onClick={controller.skipForward} style={btn} aria-label="Skip forward"><SkipForward size={14} /></button>
-              <button onClick={controller.restart} style={btn} aria-label="Restart"><RotateCcw size={14} /></button>
-              <button
-                onClick={controller.cycleSpeed}
-                style={{ ...btn, width: "auto", padding: "0 14px", fontFamily: T.mono, fontSize: 13, fontWeight: 700 }}
-                aria-label="Playback speed"
-              >
-                {play.speed}×
-              </button>
-              <button
-                onClick={controller.toggleStepMode}
-                style={{
-                  ...btn, width: "auto", padding: "0 14px", gap: 6,
-                  fontFamily: T.mono, fontSize: 12,
-                  background: play.stepMode ? "rgba(124,58,237,0.09)" : btn.background,
-                  border: play.stepMode ? "1px solid rgba(124,58,237,0.5)" : btn.border,
-                  color: play.stepMode ? T.violet : T.fgSec,
-                }}
-              >
-                <Footprints size={12} /> step
-              </button>
-              <div style={{ flex: 1 }} />
-              <button onClick={controller.stop} style={{ ...btn, color: T.fgSec }} aria-label="Exit play mode"><X size={15} /></button>
-            </div>
+                {/* transport */}
+                <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                  <button onClick={controller.togglePause} style={{ ...btn, background: T.grad, border: "none" }} aria-label={play.paused ? "Resume" : "Pause"}>
+                    {play.paused ? <Play size={15} /> : <Pause size={15} />}
+                  </button>
+                  <button onClick={controller.skipBack} style={btn} aria-label="Skip back"><SkipBack size={14} /></button>
+                  <button onClick={controller.skipForward} style={btn} aria-label="Skip forward"><SkipForward size={14} /></button>
+                  <button onClick={controller.restart} style={btn} aria-label="Restart"><RotateCcw size={14} /></button>
+                  <button
+                    onClick={controller.cycleSpeed}
+                    style={{ ...btn, width: "auto", padding: "0 14px", fontFamily: T.mono, fontSize: 13, fontWeight: 700 }}
+                    aria-label="Playback speed"
+                  >
+                    {play.speed}×
+                  </button>
+                  <button
+                    onClick={controller.toggleStepMode}
+                    style={{
+                      ...btn, width: "auto", padding: "0 14px", gap: 6,
+                      fontFamily: T.mono, fontSize: 12,
+                      background: play.stepMode ? "rgba(124,58,237,0.09)" : btn.background,
+                      border: play.stepMode ? "1px solid rgba(124,58,237,0.5)" : btn.border,
+                      color: play.stepMode ? T.violet : T.fgSec,
+                    }}
+                  >
+                    <Footprints size={12} /> step
+                  </button>
+                  <div style={{ flex: 1 }} />
+                  <button onClick={controller.stop} style={{ ...btn, color: T.fgSec }} aria-label="Exit play mode"><X size={15} /></button>
+                </div>
+              </>
+            )}
           </div>
         </motion.div>
       )}

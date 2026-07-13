@@ -2,22 +2,25 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Send } from "lucide-react";
-import { useRagStore, STAGE_IDS } from "./ragStore";
+import { Send, Fingerprint } from "lucide-react";
+import { useRagStore, STAGE_IDS, type SupportLevel } from "./ragStore";
+import { usePipelineView } from "./timeline/usePipelineView";
 import { runQuery } from "./lib/pipeline";
 import { SAMPLE_QUESTION } from "./lib/sample";
 import { T, eyebrow } from "./theme";
 
 export default function AnswerPanel({ isMobile }: { isMobile: boolean }) {
-  const ingested = useRagStore(s => s.ingested);
-  const stages = useRagStore(s => s.stages);
-  const sentences = useRagStore(s => s.answerSentences);
-  const results = useRagStore(s => s.results);
-  const chunks = useRagStore(s => s.chunks);
+  const ingested = usePipelineView(s => s.ingested);
+  const stages = usePipelineView(s => s.stages);
+  const sentences = usePipelineView(s => s.answerSentences);
+  const results = usePipelineView(s => s.results);
+  const chunks = usePipelineView(s => s.chunks);
   const hoverChunk = useRagStore(s => s.hoverChunk);
   const setHoverChunk = useRagStore(s => s.setHoverChunk);
-  const isSample = useRagStore(s => s.isSample);
+  const isSample = usePipelineView(s => s.isSample);
   const playActive = useRagStore(s => s.play.active);
+  const verdicts = usePipelineView(s => s.sentenceVerdicts);
+  const openDetective = useRagStore(s => s.openDetective);
   const [text, setText] = useState("");
 
   const busy = STAGE_IDS.some(id => stages[id].status === "running");
@@ -96,24 +99,52 @@ export default function AnswerPanel({ isMobile }: { isMobile: boolean }) {
             padding: "18px 20px", borderRadius: 14,
             background: "rgba(5,150,105,0.04)", border: "1px solid rgba(5,150,105,0.28)",
           }}>
-            <p style={{ ...eyebrow, color: T.green, marginBottom: 12 }}>grounded answer — hover to trace sources</p>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginBottom: 12, flexWrap: "wrap" }}>
+              <p style={{ ...eyebrow, color: T.green, marginBottom: 0 }}>grounded answer — hover to trace sources</p>
+              <button
+                onClick={() => openDetective(0)}
+                style={{
+                  display: "flex", alignItems: "center", gap: 6, padding: "5px 12px",
+                  borderRadius: 9, cursor: "pointer",
+                  background: "rgba(124,58,237,0.06)", border: "1px solid rgba(124,58,237,0.4)",
+                  fontFamily: T.mono, fontSize: 11, fontWeight: 600, color: T.violet,
+                }}
+              >
+                <Fingerprint size={12} /> trace this answer
+              </button>
+            </div>
             <p style={{ fontSize: 15.5, lineHeight: 1.75, color: T.fg }}>
               {sentences.map((s, i) => {
                 const linked = s.citations.length > 0;
                 const hot = linked && s.citations.includes(hoverChunk ?? -1);
+                const support = verdicts?.[i]?.support;
+                // trust tints are never color-only: color + underline STYLE + a glyph
+                const tint = supportTint(support, linked, hot);
                 return (
                   <span
                     key={i}
+                    data-support={support ?? undefined}
+                    role="button"
+                    tabIndex={0}
+                    title={supportTitle(support, s.citations)}
+                    onClick={() => openDetective(i)}
+                    onKeyDown={e => { if (e.key === "Enter") openDetective(i); }}
                     onMouseEnter={() => linked && setHoverChunk(s.citations[0])}
                     onMouseLeave={() => setHoverChunk(null)}
                     style={{
-                      cursor: linked ? "pointer" : "default",
-                      background: hot ? "rgba(5,150,105,0.13)" : "transparent",
-                      borderBottom: linked ? `1.5px dotted ${hot ? T.green : "rgba(5,150,105,0.5)"}` : "none",
+                      cursor: "pointer",
+                      background: hot ? "rgba(5,150,105,0.13)" : tint.bg,
+                      borderBottom: tint.border,
                       borderRadius: 3, transition: "background 0.15s",
                     }}
                   >
                     {s.text.replace(/\s*\[\d+\]/g, "")}{" "}
+                    {support === "unsupported" && (
+                      <sup style={{ fontFamily: T.mono, fontSize: 10.5, color: T.red, fontWeight: 700 }} aria-label="unsupported claim">⚠</sup>
+                    )}
+                    {support === "partial" && (
+                      <sup style={{ fontFamily: T.mono, fontSize: 10.5, color: T.amber, fontWeight: 700 }} aria-label="partially supported">±</sup>
+                    )}
                     {s.citations.map(c => (
                       <sup key={c} style={{ fontFamily: T.mono, fontSize: 10.5, color: T.green, fontWeight: 700 }}>[{c}]</sup>
                     ))}{" "}
@@ -121,11 +152,16 @@ export default function AnswerPanel({ isMobile }: { isMobile: boolean }) {
                 );
               })}
             </p>
+            {verdicts && (
+              <p style={{ fontFamily: T.mono, fontSize: 10.5, color: T.fgMuted, marginTop: 10 }}>
+                per-sentence verdicts by the LLM judge — click any sentence to run the evidence detective
+              </p>
+            )}
           </div>
 
           <div>
             <p style={{ ...eyebrow, marginBottom: 10 }}>sources · {sources.length} chunks</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 280, overflowY: "auto" }}>
+            <div tabIndex={0} aria-label="Source chunks" style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 280, overflowY: "auto" }}>
               {sources.map(c => {
                 const hot = hoverChunk === c!.id;
                 return (
@@ -155,4 +191,27 @@ export default function AnswerPanel({ isMobile }: { isMobile: boolean }) {
       )}
     </div>
   );
+}
+
+/* trust tints (M9): color + underline STYLE together — readable without color */
+function supportTint(support: SupportLevel | undefined, linked: boolean, hot: boolean): { bg: string; border: string } {
+  switch (support) {
+    case "supported":
+      return { bg: "transparent", border: `1.5px solid ${hot ? T.green : "rgba(5,150,105,0.55)"}` };
+    case "partial":
+      return { bg: "rgba(217,119,6,0.05)", border: "1.5px dashed rgba(217,119,6,0.65)" };
+    case "unsupported":
+      return { bg: "rgba(220,38,38,0.05)", border: "1.5px dotted rgba(220,38,38,0.7)" };
+    default:
+      return {
+        bg: "transparent",
+        border: linked ? `1.5px dotted ${hot ? T.green : "rgba(5,150,105,0.5)"}` : "none",
+      };
+  }
+}
+
+function supportTitle(support: SupportLevel | undefined, citations: number[]): string {
+  const cite = citations.length ? `cites ${citations.map(c => `[${c}]`).join(" ")}` : "no citation";
+  if (!support) return `${cite} — click to trace`;
+  return `judge: ${support} · ${cite} — click to trace`;
 }

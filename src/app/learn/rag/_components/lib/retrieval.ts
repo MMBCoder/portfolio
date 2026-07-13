@@ -1,4 +1,5 @@
 import type { Candidate, Chunk } from "../ragStore";
+import { pca3Flat, flatten, toCoords3 } from "./mathCore";
 
 /* ── vector math ──────────────────────────────────────────── */
 
@@ -74,53 +75,12 @@ export function scoreCandidates(
 
 /* ── PCA → 3D projection for the embedding space view ─────── */
 
+/** Delegates to the flat-array core (M6) — one implementation shared
+    with the analysis worker; the M0 fixtures pin the math. */
 export function pca3(vectors: number[][]): [number, number, number][] {
   const n = vectors.length;
   if (n === 0) return [];
-  const dim = vectors[0].length;
-
-  // mean-centre
-  const mean = new Array(dim).fill(0);
-  for (const v of vectors) for (let j = 0; j < dim; j++) mean[j] += v[j] / n;
-  const X = vectors.map(v => v.map((x, j) => x - mean[j]));
-
-  // top-3 principal components via power iteration + deflation
-  const comps: number[][] = [];
-  let data = X.map(r => [...r]);
-  for (let c = 0; c < 3; c++) {
-    let w = new Array(dim).fill(0).map((_, i) => Math.sin(i * (c + 1) * 12.9898) * 43758.5453 % 1);
-    for (let iter = 0; iter < 24; iter++) {
-      const next = new Array(dim).fill(0);
-      for (const row of data) {
-        let dot = 0;
-        for (let j = 0; j < dim; j++) dot += row[j] * w[j];
-        for (let j = 0; j < dim; j++) next[j] += dot * row[j];
-      }
-      const norm = Math.sqrt(next.reduce((s, x) => s + x * x, 0)) || 1;
-      w = next.map(x => x / norm);
-    }
-    comps.push(w);
-    // deflate
-    data = data.map(row => {
-      let dot = 0;
-      for (let j = 0; j < dim; j++) dot += row[j] * w[j];
-      return row.map((x, j) => x - dot * w[j]);
-    });
-  }
-
-  const proj = X.map(row => comps.map(w => {
-    let dot = 0;
-    for (let j = 0; j < dim; j++) dot += row[j] * w[j];
-    return dot;
-  }) as [number, number, number]);
-
-  // normalise into a [-1, 1] cube
-  for (let c = 0; c < 3; c++) {
-    const vals = proj.map(p => p[c]);
-    const max = Math.max(...vals.map(Math.abs), 1e-9);
-    proj.forEach(p => { p[c] = p[c] / max; });
-  }
-  return proj;
+  return toCoords3(pca3Flat(flatten(vectors), n, vectors[0].length), n);
 }
 
 /** Project a new vector into an existing PCA basis approximated by nearest chunks. */
