@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { aiProjects, achievements, personalInfo } from "@/data/portfolioData";
 import Publications from "@/components/sections/Publications";
+import AgentSpotlight from "@/components/sections/AgentSpotlight";
 import Footer from "@/components/layout/Footer";
 
 const fd = "var(--font-space-grotesk), sans-serif";
@@ -213,6 +214,9 @@ export default function PortfolioPage() {
         </div>
         <style>{`@media(max-width:860px){.pf-hero{grid-template-columns:1fr !important;}.pf-hero-left{border-right:none !important;border-bottom:1px solid #E8E8E8;}}`}</style>
       </section>
+
+      {/* ═══ AGENT SPOTLIGHT — autonomous BlueConic dev agent (blueprint) ═══ */}
+      <AgentSpotlight />
 
       {/* ═══ FLAGSHIP CASE STUDY — dark spotlight ═══ */}
       <section style={{ background: "#0A0A0A", padding: "clamp(64px,8vw,120px) clamp(20px,4vw,80px)" }}>

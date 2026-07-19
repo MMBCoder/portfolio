@@ -39,8 +39,14 @@ async function api<T>(path: string, body: unknown): Promise<T> {
     body: JSON.stringify(body),
   });
   const json = await res.json().catch(() => ({}));
+  if (res.status === 401 && json?.code === "locked") notifyLocked();
   if (!res.ok) throw new Error(json?.error ?? `API error (${res.status})`);
   return json as T;
+}
+
+/** The access gate expired or was never satisfied — ask the UI to re-prompt. */
+export function notifyLocked(): void {
+  if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("rag:locked"));
 }
 
 async function runStage(
@@ -336,6 +342,7 @@ export async function runQuery(question: string, rawGate?: StageGate): Promise<b
         }
       } else {
         const json = await res.json().catch(() => ({}));
+        if (res.status === 401 && json?.code === "locked") notifyLocked();
         if (!res.ok) throw new Error(json?.error ?? `API error (${res.status})`);
         ({ text, promptTokens, completionTokens } = json as { text: string; promptTokens: number; completionTokens: number });
       }

@@ -55,11 +55,11 @@ export const STAGES: StageDef[] = [
   },
   {
     id: "embed", title: "Embeddings", group: "ingestion", icon: "Network",
-    blurb: "1536-dim vectors",
-    explanation: "Each chunk is sent to OpenAI text-embedding-3-small and comes back as a 1536-dimensional vector. Chunks that mean similar things land near each other in this space — that geometry is what makes semantic search possible. The 3D view is a PCA projection of the real vectors.",
+    blurb: "768-dim vectors",
+    explanation: "Each chunk is sent to Google gemini-embedding-001 and comes back as a 768-dimensional vector. Chunks that mean similar things land near each other in this space — that geometry is what makes semantic search possible. The 3D view is a PCA projection of the real vectors.",
     inputDesc: "Chunk texts (batched API call).",
-    outputDesc: "One 1536-dimensional vector per chunk.",
-    narration: "Each chunk is converted into a 1536-dimensional vector by the embedding model. Meaning becomes geometry: chunks about fees cluster together, chunks about lounge access cluster somewhere else. The 3D view is a projection of the real vectors — drag it.",
+    outputDesc: "One 768-dimensional vector per chunk.",
+    narration: "Each chunk is converted into a 768-dimensional vector by the embedding model. Meaning becomes geometry: chunks about fees cluster together, chunks about lounge access cluster somewhere else. The 3D view is a projection of the real vectors — drag it.",
   },
   {
     id: "index", title: "Vector Index", group: "ingestion", icon: "Database",
@@ -72,7 +72,7 @@ export const STAGES: StageDef[] = [
   {
     id: "query", title: "User Query", group: "query", icon: "MessageCircleQuestion",
     blurb: "question → vector",
-    explanation: "The user's question is embedded with the same model as the chunks — that's what makes them comparable. The query becomes a point in the same 1536-dimensional space, and retrieval is simply 'what's nearby?'.",
+    explanation: "The user's question is embedded with the same model as the chunks — that's what makes them comparable. The query becomes a point in the same 768-dimensional space, and retrieval is simply 'what's nearby?'.",
     inputDesc: "The user's natural-language question.",
     outputDesc: "A query vector in the same space as the chunk vectors.",
     narration: "A question arrives. It's embedded with the same model as the document, so it lands as a point in the same semantic space. Answering the question is now a geometry problem: what's near this point?",

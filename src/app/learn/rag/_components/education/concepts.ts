@@ -187,7 +187,7 @@ export const CONCEPTS: Record<ConceptId, Concept> = {
   "embeddings": {
     id: "embeddings",
     term: "Embeddings",
-    technical: "Dense vector representations (here: text-embedding-3-small, 1,536 dimensions) where semantic similarity of texts corresponds to proximity of their vectors.",
+    technical: "Dense vector representations (here: gemini-embedding-001, 768 dimensions) where semantic similarity of texts corresponds to proximity of their vectors.",
     plain: "Each chunk is converted into a long list of numbers that captures its meaning. Similar meanings become nearby points — so 'find similar text' becomes 'find nearby points'.",
     analogy: "A map of ideas: every passage gets GPS coordinates, and passages about the same thing become neighbours — 'refund policy' and 'money-back guarantee' end up on the same street.",
     why: "Keyword search can't tell that 'annual fee' answers 'how much does it cost per year'. Embeddings match by meaning, not spelling.",
@@ -384,7 +384,7 @@ export const CONCEPTS: Record<ConceptId, Concept> = {
   "generation": {
     id: "generation",
     term: "Generation",
-    technical: "Autoregressive token-by-token production of the answer by the LLM (here: gpt-5-mini), conditioned solely on the assembled prompt.",
+    technical: "Autoregressive token-by-token production of the answer by the LLM (here: gemini flash), conditioned solely on the assembled prompt.",
     plain: "The model writes the answer one token at a time, each choice based on the instructions, the evidence, and everything it has written so far.",
     analogy: "An expert answering from the briefing pack you handed over — articulate and fast, but able to speak only to what's in the pack (if the rules are good).",
     why: "This is the step users actually came for; everything before it exists to make this step ACCOUNTABLE instead of improvised.",
@@ -547,11 +547,11 @@ export const CONCEPTS: Record<ConceptId, Concept> = {
   "embedding-projection": {
     id: "embedding-projection",
     term: "3D projection (PCA)",
-    technical: "Principal Component Analysis compressing 1,536-dimensional embeddings to their 3 highest-variance axes for visualisation. Distances are approximate; neighbourhoods are real.",
-    plain: "Real embeddings live in 1,536 dimensions — undrawable. We keep the 3 directions along which chunks differ most, so you can SEE the clusters that search operates on.",
+    technical: "Principal Component Analysis compressing 768-dimensional embeddings to their 3 highest-variance axes for visualisation. Distances are approximate; neighbourhoods are real.",
+    plain: "Real embeddings live in 768 dimensions — undrawable. We keep the 3 directions along which chunks differ most, so you can SEE the clusters that search operates on.",
     analogy: "A world map: the globe flattened loses some distances, but which cities are neighbours survives — and that's what you navigate by.",
     why: "Semantic space is the least intuitive idea in RAG; seeing your own document form clusters makes 'similarity = distance' click like nothing else.",
-    misconfigured: "Reading the projection as exact is the error: two points touching in 3D can be moderately apart in 1,536-D. Trust the similarity scores; use the picture for intuition.",
+    misconfigured: "Reading the projection as exact is the error: two points touching in 3D can be moderately apart in 768-D. Trust the similarity scores; use the picture for intuition.",
     retrievalImpact: "None — retrieval runs on the full vectors. The projection is honest visualisation, not the search mechanism.",
     hallucinationImpact: "None directly — but seeing a query land far from every cluster explains WHY retrieval came back empty.",
     params: [],

@@ -81,7 +81,7 @@ const expertiseCards = [
 const quickFacts = [
   "Three-time Synchrony CEO Award winner (2021, 2023, 2025)",
   "LEAP leadership programme — high-potential leader designation",
-  "First-author published in Springer (2016 & 2021)",
+  "First-author published in Springer (2016)",
   "IIT Delhi M.Tech · LJMU MS in AI & ML",
   "12+ years in financial services AI",
   "Led 20+ engineers, scientists & analysts",

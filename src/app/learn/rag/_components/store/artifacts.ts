@@ -46,7 +46,7 @@ export function stageArtifact(s: RagStore, id: StageId): Record<string, unknown>
       return {
         vectors: s.embeddings.length,
         dims: s.embeddings[0]?.length ?? 0,
-        model: "text-embedding-3-small",
+        model: "gemini-embedding-001",
         sampleVector: (s.embeddings[0] ?? []).slice(0, 8).map(round5),
         ...(s.embeddings[0] ? { note: `sample shows first 8 of ${s.embeddings[0].length} dims of chunk 1` } : {}),
       };
@@ -83,13 +83,13 @@ export function stageArtifact(s: RagStore, id: StageId): Record<string, unknown>
         blocks: s.promptBlocks.map(b => ({ label: b.label, tokens: b.tokens, text: trim(b.text, 220) })),
       };
     case "generate":
-      return { model: "gpt-5-mini", answer: s.answer, usage: s.usage };
+      return { model: "gemini-flash-latest", answer: s.answer, usage: s.usage };
     case "ground":
       return {
         sentences: s.answerSentences.map(a => ({ text: trim(a.text, 90), citations: a.citations })),
         citedSentences: s.answerSentences.filter(a => a.citations.length > 0).length,
       };
     case "evaluate":
-      return { judge: "gpt-5-mini (LLM-as-judge — a judgment, not ground truth)", scores: s.evalScores };
+      return { judge: "gemini-flash-latest (LLM-as-judge — a judgment, not ground truth)", scores: s.evalScores };
   }
 }

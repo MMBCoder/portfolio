@@ -1,8 +1,11 @@
-import { chat, chatStreamResponse, errorResponse } from "../_lib/openai";
+import { chat, chatStreamResponse, errorResponse } from "../_lib/gemini";
+import { guard } from "../_lib/gate";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
+  const denied = guard(req);
+  if (denied) return denied;
   try {
     const body = await req.json();
     const system = String(body?.system ?? "").slice(0, 8000);

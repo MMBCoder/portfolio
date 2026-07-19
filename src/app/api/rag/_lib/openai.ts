@@ -1,44 +1,14 @@
-/* Server-only OpenAI helper shared by the RAG API routes.
-   The key lives in .env.local / Vercel env vars and never reaches the client. */
+/* OpenAI gpt-5-mini — the cross-provider CHAT fallback used when every
+   Gemini model is unavailable (503/429/timeout). Reads OPENAI_API_KEY
+   from the environment (.env.local locally; add it to the host env for
+   the fallback to work in production). No key set → fallback is simply
+   skipped, and the original Gemini error surfaces. */
 
 const BASE = "https://api.openai.com/v1";
+const MODEL = "gpt-5-mini";
 
-export class OpenAIError extends Error {
-  status: number;
-  constructor(status: number, message: string) {
-    super(message);
-    this.status = status;
-  }
-}
-
-export function requireKey(): string {
-  const key = process.env.OPENAI_API_KEY;
-  if (!key) throw new OpenAIError(503, "OPENAI_API_KEY is not configured on the server.");
-  return key;
-}
-
-export async function openaiJson<T>(path: string, body: unknown): Promise<T> {
-  const key = requireKey();
-  const res = await fetch(`${BASE}${path}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    let detail = res.statusText;
-    try {
-      const j = await res.json();
-      detail = j?.error?.message ?? detail;
-    } catch { /* keep statusText */ }
-    throw new OpenAIError(res.status, detail);
-  }
-  return res.json() as Promise<T>;
-}
-
-interface ChatUsage { prompt_tokens: number; completion_tokens: number; }
-interface ChatResponse {
-  choices: { message: { content: string | null } }[];
-  usage?: ChatUsage;
+export function openaiAvailable(): boolean {
+  return !!process.env.OPENAI_API_KEY;
 }
 
 export interface GenerateResult {
@@ -47,14 +17,20 @@ export interface GenerateResult {
   completionTokens: number;
 }
 
-/** Chat call to gpt-5-mini with graceful fallback for unsupported params. */
-export async function chat(
-  system: string,
-  user: string,
-  opts: { temperature?: number; maxTokens?: number; jsonMode?: boolean } = {},
-): Promise<GenerateResult> {
-  const base: Record<string, unknown> = {
-    model: "gpt-5-mini",
+interface ChatOpts { temperature?: number; maxTokens?: number; jsonMode?: boolean }
+
+interface ChatResponse {
+  choices: { message: { content: string | null } }[];
+  usage?: { prompt_tokens: number; completion_tokens: number };
+}
+
+function authHeaders() {
+  return { "Content-Type": "application/json", Authorization: `Bearer ${process.env.OPENAI_API_KEY}` };
+}
+
+function baseBody(system: string, user: string, opts: ChatOpts): Record<string, unknown> {
+  const body: Record<string, unknown> = {
+    model: MODEL,
     messages: [
       { role: "system", content: system },
       { role: "user", content: user },
@@ -62,35 +38,36 @@ export async function chat(
     max_completion_tokens: Math.min(Math.max(opts.maxTokens ?? 600, 64), 4000),
     reasoning_effort: "minimal",
   };
-  if (opts.jsonMode) base.response_format = { type: "json_object" };
-  if (opts.temperature !== undefined && opts.temperature !== 1) base.temperature = opts.temperature;
-
-  let data: ChatResponse;
-  try {
-    data = await openaiJson<ChatResponse>("/chat/completions", base);
-  } catch (e) {
-    if (!(e instanceof OpenAIError) || e.status !== 400) throw e;
-    // gpt-5 reasoning models reject temperature ≠ 1. Drop ONLY temperature
-    // first — keeping reasoning_effort: "minimal" is what avoids a slow
-    // default-effort "thinking" phase. Drop reasoning_effort only if a
-    // second 400 proves the model won't accept it at all.
-    if ("temperature" in base) {
-      delete base.temperature;
-      try {
-        data = await openaiJson<ChatResponse>("/chat/completions", base);
-        return unpack(data);
-      } catch (e2) {
-        if (!(e2 instanceof OpenAIError) || e2.status !== 400) throw e2;
-      }
-    }
-    delete base.reasoning_effort;
-    data = await openaiJson<ChatResponse>("/chat/completions", base);
-  }
-  return unpack(data);
+  if (opts.jsonMode) body.response_format = { type: "json_object" };
+  if (opts.temperature !== undefined && opts.temperature !== 1) body.temperature = opts.temperature;
+  return body;
 }
 
-function unpack(data: ChatResponse): GenerateResult {
+/** Two-stage param fallback: drop temperature before reasoning_effort so
+    "minimal" reasoning (the fast path) survives a temperature rejection. */
+async function post(body: Record<string, unknown>): Promise<ChatResponse> {
+  const call = () =>
+    fetch(`${BASE}/chat/completions`, { method: "POST", headers: authHeaders(), body: JSON.stringify(body) });
 
+  let res = await call();
+  if (res.status === 400 && "temperature" in body) {
+    delete body.temperature;
+    res = await call();
+  }
+  if (res.status === 400) {
+    delete body.reasoning_effort;
+    res = await call();
+  }
+  if (!res.ok) {
+    let detail = res.statusText;
+    try { detail = (await res.json())?.error?.message ?? detail; } catch { /* keep */ }
+    throw new Error(`OpenAI fallback failed: ${detail}`);
+  }
+  return res.json() as Promise<ChatResponse>;
+}
+
+export async function openaiChat(system: string, user: string, opts: ChatOpts = {}): Promise<GenerateResult> {
+  const data = await post(baseBody(system, user, opts));
   return {
     text: data.choices?.[0]?.message?.content ?? "",
     promptTokens: data.usage?.prompt_tokens ?? 0,
@@ -98,54 +75,23 @@ function unpack(data: ChatResponse): GenerateResult {
   };
 }
 
-/* ── streaming (M10) ─────────────────────────────────────────────────
-   Token deltas re-framed as NDJSON over a ReadableStream (Vercel node
-   runtime friendly). Frames:
-     {"delta":"…"}                        — a token chunk, in model order
-     {"done":true,"promptTokens":n,"completionTokens":n}
-     {"error":"…"}                        — terminal failure mid-stream */
-
-export async function chatStreamResponse(
-  system: string,
-  user: string,
-  opts: { temperature?: number; maxTokens?: number } = {},
-): Promise<Response> {
-  const key = requireKey();
-  const base: Record<string, unknown> = {
-    model: "gpt-5-mini",
-    messages: [
-      { role: "system", content: system },
-      { role: "user", content: user },
-    ],
-    max_completion_tokens: Math.min(Math.max(opts.maxTokens ?? 600, 64), 4000),
-    reasoning_effort: "minimal",
-    stream: true,
-    stream_options: { include_usage: true },
+/** Streaming fallback → the same NDJSON frames the client expects:
+    {"delta":"…"} … {"done":true,"promptTokens","completionTokens"}. */
+export async function openaiChatStream(system: string, user: string, opts: ChatOpts = {}): Promise<Response> {
+  const body: Record<string, unknown> = {
+    ...baseBody(system, user, opts), stream: true, stream_options: { include_usage: true },
   };
-  if (opts.temperature !== undefined && opts.temperature !== 1) base.temperature = opts.temperature;
 
-  const call = (body: Record<string, unknown>) =>
-    fetch(`${BASE}/chat/completions`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-      body: JSON.stringify(body),
-    });
+  const call = (b: Record<string, unknown>) =>
+    fetch(`${BASE}/chat/completions`, { method: "POST", headers: authHeaders(), body: JSON.stringify(b) });
 
-  let upstream = await call(base);
-  // Two-stage fallback (same rationale as chat()): drop temperature first so
-  // reasoning_effort: "minimal" survives — it's what keeps generation fast.
-  if (upstream.status === 400 && "temperature" in base) {
-    delete base.temperature;
-    upstream = await call(base);
-  }
-  if (upstream.status === 400) {
-    delete base.reasoning_effort;
-    upstream = await call(base);
-  }
+  let upstream = await call(body);
+  if (upstream.status === 400 && "temperature" in body) { delete body.temperature; upstream = await call(body); }
+  if (upstream.status === 400) { delete body.reasoning_effort; upstream = await call(body); }
   if (!upstream.ok || !upstream.body) {
     let detail = upstream.statusText;
     try { detail = (await upstream.json())?.error?.message ?? detail; } catch { /* keep */ }
-    throw new OpenAIError(upstream.status, detail);
+    throw new Error(`OpenAI fallback failed: ${detail}`);
   }
 
   const reader = upstream.body.getReader();
@@ -153,7 +99,7 @@ export async function chatStreamResponse(
   const encoder = new TextEncoder();
   let promptTokens = 0;
   let completionTokens = 0;
-  let sseBuffer = "";
+  let sse = "";
 
   const stream = new ReadableStream<Uint8Array>({
     async pull(controller) {
@@ -164,9 +110,9 @@ export async function chatStreamResponse(
           controller.close();
           return;
         }
-        sseBuffer += decoder.decode(value, { stream: true });
-        const lines = sseBuffer.split("\n");
-        sseBuffer = lines.pop() ?? "";
+        sse += decoder.decode(value, { stream: true });
+        const lines = sse.split("\n");
+        sse = lines.pop() ?? "";
         for (const line of lines) {
           const data = line.replace(/^data:\s*/, "").trim();
           if (!data || data === "[DONE]") continue;
@@ -175,32 +121,20 @@ export async function chatStreamResponse(
             const delta: string | undefined = j?.choices?.[0]?.delta?.content;
             if (delta) controller.enqueue(encoder.encode(JSON.stringify({ delta }) + "\n"));
             if (j?.usage) {
-              promptTokens = j.usage.prompt_tokens ?? 0;
-              completionTokens = j.usage.completion_tokens ?? 0;
+              promptTokens = j.usage.prompt_tokens ?? promptTokens;
+              completionTokens = j.usage.completion_tokens ?? completionTokens;
             }
-          } catch { /* partial upstream frame — ignored, buffered lines are complete */ }
+          } catch { /* partial frame — ignore */ }
         }
       } catch (e) {
         controller.enqueue(encoder.encode(JSON.stringify({ error: e instanceof Error ? e.message : "stream failed" }) + "\n"));
         controller.close();
       }
     },
-    cancel() {
-      void reader.cancel();
-    },
+    cancel() { void reader.cancel(); },
   });
 
   return new Response(stream, {
-    headers: {
-      "Content-Type": "application/x-ndjson; charset=utf-8",
-      "Cache-Control": "no-cache, no-transform",
-    },
+    headers: { "Content-Type": "application/x-ndjson; charset=utf-8", "Cache-Control": "no-cache, no-transform" },
   });
-}
-
-export function errorResponse(e: unknown): Response {
-  const status = e instanceof OpenAIError ? e.status : 500;
-  const message = e instanceof Error ? e.message : "Unknown server error";
-  console.error("[rag-api]", status, message);
-  return Response.json({ error: message }, { status: status >= 400 && status < 600 ? status : 500 });
 }

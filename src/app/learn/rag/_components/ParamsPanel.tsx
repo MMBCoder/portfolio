@@ -150,7 +150,7 @@ export default function ParamsPanel() {
           format={v => v.toFixed(2)} onChange={v => setRetrievalParam("threshold", v)}
           hint="chunks scoring below are discarded"
         />
-        <Toggle label="LLM re-ranking (gpt-5-mini)" paramKey="useRerank" value={params.useRerank} onChange={v => setParam("useRerank", v)} />
+        <Toggle label="LLM re-ranking (gemini flash)" paramKey="useRerank" value={params.useRerank} onChange={v => setParam("useRerank", v)} />
       </div>
 
       <div>
@@ -167,7 +167,7 @@ export default function ParamsPanel() {
         <Slider
           label="temperature" paramKey="temperature" value={params.temperature} min={0} max={1.4} step={0.1}
           format={v => v.toFixed(1)} onChange={v => setParam("temperature", v)}
-          hint="gpt-5-mini may ignore non-default values"
+          hint="higher = more varied wording; lower = more deterministic"
         />
       </div>
 

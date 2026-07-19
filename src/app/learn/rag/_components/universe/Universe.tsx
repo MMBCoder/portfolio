@@ -99,7 +99,7 @@ export default function Universe({ height = 260 }: { height?: number }) {
         {persona.voice === "analogy"
           ? "every chunk has coordinates on a map of meaning — passages about the same thing are neighbours, and your question lands among its answers"
           : persona.voice === "statistical"
-            ? `${data.chunks.length} points · PCA of 1536-D → 3-D (neighbourhoods preserved, distances approximate) · ${data.clusters.length} k-means clusters, TF-labelled`
+            ? `${data.chunks.length} points · PCA of 768-D → 3-D (neighbourhoods preserved, distances approximate) · ${data.clusters.length} k-means clusters, TF-labelled`
             : "PCA projection of the real embedding vectors — clusters are k-means over the projected space, labelled by their most characteristic terms"}
       </p>
 

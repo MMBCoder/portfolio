@@ -122,9 +122,11 @@ export const STAGE_IDS: StageId[] = [
   "query", "retrieve", "rerank", "prompt", "generate", "ground", "evaluate",
 ];
 
-/* pricing estimates (USD per 1M tokens) — displayed as estimates in the UI */
+/* pricing estimates (USD per 1M tokens) — displayed as estimates in the UI.
+   Google Gemini flash-lite list prices; the deployed key runs the free
+   tier ($0 in practice), so these are "at paid scale" estimates. */
 export const PRICING = {
-  embedInput: 0.02,          // text-embedding-3-small
-  genInput: 0.25,            // gpt-5-mini input
-  genOutput: 2.0,            // gpt-5-mini output
+  embedInput: 0.15,          // gemini-embedding-001
+  genInput: 0.10,            // gemini flash-lite input
+  genOutput: 0.40,           // gemini flash-lite output
 };

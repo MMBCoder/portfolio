@@ -1,5 +1,6 @@
-import { chat, errorResponse } from "../_lib/openai";
+import { chat, errorResponse } from "../_lib/gemini";
 import { parseSentenceVerdicts, MAX_VERDICT_SENTENCES } from "../_lib/verdicts";
+import { guard } from "../_lib/gate";
 
 export const runtime = "nodejs";
 
@@ -21,6 +22,8 @@ Per-sentence rubric ("sentences" — one entry per numbered sentence, same order
 Judge each sentence against the CONTEXT ONLY — not against your own knowledge.`;
 
 export async function POST(req: Request) {
+  const denied = guard(req);
+  if (denied) return denied;
   try {
     const body = await req.json();
     const question = String(body?.question ?? "").slice(0, 2000);

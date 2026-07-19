@@ -1,4 +1,5 @@
-import { chat, errorResponse } from "../_lib/openai";
+import { chat, errorResponse } from "../_lib/gemini";
+import { guard } from "../_lib/gate";
 
 export const runtime = "nodejs";
 
@@ -6,6 +7,8 @@ const SYSTEM = `You are a retrieval re-ranker. Score each candidate passage for 
 Return STRICT JSON: {"scores":[{"id":<candidate id>,"score":<0-100 integer>}]} with one entry per candidate. No other text.`;
 
 export async function POST(req: Request) {
+  const denied = guard(req);
+  if (denied) return denied;
   try {
     const body = await req.json();
     const query = String(body?.query ?? "").slice(0, 2000);

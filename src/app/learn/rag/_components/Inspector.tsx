@@ -280,7 +280,7 @@ function EmbedView() {
       </Sec>
       {embeddings.length > 0 && (
         <>
-          <Sec title="Vector sample — chunk 1, first 14 of 1536 dims">
+          <Sec title="Vector sample — chunk 1, first 14 of 768 dims">
             <div style={{ display: "flex", gap: 4, alignItems: "flex-end", height: 56 }}>
               {embeddings[0].slice(0, 14).map((v, i) => (
                 <motion.div
@@ -298,8 +298,8 @@ function EmbedView() {
             </div>
           </Sec>
           <Sec title="Call stats">
-            <KV k="model" v="text-embedding-3-small" />
-            <KV k="dimensions" v="1536" />
+            <KV k="model" v="gemini-embedding-001" />
+            <KV k="dimensions" v="768" />
             <KV k="embed tokens (session)" v={usage.embedTokens.toLocaleString()} />
             <KV k="est. embed cost" v={`$${((usage.embedTokens * PRICING.embedInput) / 1e6).toFixed(6)}`} color={T.green} />
           </Sec>
@@ -356,7 +356,7 @@ function QueryView() {
     <>
       <Sec title="Question"><Snippet text={query} color="rgba(37,99,235,0.35)" /></Sec>
       {queryVec && (
-        <Sec title="Query vector — first 14 of 1536 dims">
+        <Sec title="Query vector — first 14 of 768 dims">
           <div style={{ display: "flex", gap: 4, alignItems: "flex-end", height: 56 }}>
             {queryVec.slice(0, 14).map((v, i) => (
               <motion.div
@@ -497,7 +497,7 @@ function GenerateView() {
         </Sec>
       )}
       <Sec title="Model">
-        <KV k="model" v="gpt-5-mini" />
+        <KV k="model" v="gemini flash" />
         <KV k="grounding" v="context-only + [n] citations" />
         <KV k="latency" v={stages.generate.ms ? `${(stages.generate.ms / 1000).toFixed(2)}s` : "—"} />
         <KV k="session tokens in/out" v={`${usage.promptTokens.toLocaleString()} / ${usage.completionTokens.toLocaleString()}`} />

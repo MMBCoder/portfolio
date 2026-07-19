@@ -31,6 +31,7 @@ import Playground from "./playground/Playground";
 import LabPanel from "./lab/LabPanel";
 import CoachPanel from "./coach/CoachPanel";
 import PresentationShell from "./presentation/PresentationShell";
+import AccessGate from "./AccessGate";
 import { initSoundCues } from "./audio/sound";
 import { T, eyebrow } from "./theme";
 
@@ -313,6 +314,7 @@ export default function RagShell() {
       <BrainOverlay />
       <ChunkProfile />
       <PresentationShell />
+      <AccessGate />
       <PersonaWelcome />
     </div>
   );

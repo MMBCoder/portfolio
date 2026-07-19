@@ -52,10 +52,10 @@ export default function ResumePage() {
         }}
       >
         {/* Accent bar */}
-        <div style={{ height: "5px", background: "#111111", marginBottom: "28px" }} />
+        <div style={{ height: "5px", background: "linear-gradient(90deg,#111 0%,#2563EB 55%,#0D9488 100%)", ...printExact }} />
 
         {/* Inner content with side padding */}
-        <div style={{ padding: "0 40px" }}>
+        <div style={{ padding: "26px 40px 0" }}>
 
           {/* ── Header ── */}
           <h1 style={{
@@ -90,8 +90,16 @@ export default function ResumePage() {
             ))}
           </div>
 
+          {/* ── Stat band ── */}
+          <div style={{ display: "flex", gap: "8px", margin: "14px 0 4px" }}>
+            <Stat value="12+" label="Yrs Enterprise AI" color="#2563EB" />
+            <Stat value="70M+" label="Customers Unified" color="#0D9488" />
+            <Stat value="3×" label="CEO Awards" color="#D97706" />
+            <Stat value="30 min" label="Dev Cycle (was 2 days)" color="#4F46E5" />
+          </div>
+
           {/* ── Summary ── */}
-          <Label>Professional Summary</Label>
+          <Label color="#111">Professional Summary</Label>
           <p style={body}>
             Data Scientist and Data Engineer with 12+ years of enterprise experience in financial services.
             Specialist in Customer Data Platforms (BlueConic), data integration architecture, customer identity
@@ -99,29 +107,33 @@ export default function ResumePage() {
             profiles and personalised engagement at scale across 70M+ customers. Three-time Synchrony CEO Award winner.
           </p>
 
+          {/* ── Flagship AI project ── */}
+          <Label color="#2563EB">Flagship AI Build</Label>
+          <FlagshipProject />
+
           {/* ── Skills ── */}
-          <Label>Core Skills &amp; Technologies</Label>
-          <table style={{ borderCollapse: "collapse", width: "100%", marginBottom: "2px" }}>
-            <tbody>
-              {[
-                ["CDP & Data Eng.", "BlueConic CDP · Python · PySpark · SQL · SFTP Pipelines · Data Integration · Customer Identity Resolution"],
-                ["Marketing Tech.", "Real-Time Segmentation · Audience Building · Trigger Campaigns · Marketing Automation · Personalisation · A/B Testing"],
-                ["Cloud & Analytics", "AWS · Databricks · Snowflake · BigQuery · Power BI · Tableau · LangChain · LangGraph · Agentic AI · RAG · GenAI"],
-              ].map(([label, skills]) => (
-                <tr key={label}>
-                  <td style={{ fontSize: "9px", fontWeight: 700, color: "#555", textTransform: "uppercase", letterSpacing: "0.04em", paddingRight: "10px", whiteSpace: "nowrap", verticalAlign: "top", paddingBottom: "4px" }}>
-                    {label}
-                  </td>
-                  <td style={{ fontSize: "10px", color: "#333", lineHeight: 1.55, paddingBottom: "4px" }}>
-                    {skills}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Label color="#0D9488">Core Skills &amp; Technologies</Label>
+          <div style={{ marginBottom: "2px" }}>
+            <SkillGroup
+              color="#0D9488" label="CDP & Data Eng."
+              skills={["BlueConic CDP", "Python", "PySpark", "SQL", "SFTP Pipelines", "Data Integration", "Customer Identity Resolution"]}
+            />
+            <SkillGroup
+              color="#2563EB" label="AI & Agents"
+              skills={["GitHub Copilot Custom Agents", "Agentic AI", "RAG", "GenAI / LLMs", "Prompt Engineering", "Automated QA"]}
+            />
+            <SkillGroup
+              color="#D97706" label="Marketing Tech."
+              skills={["Real-Time Segmentation", "Audience Building", "Trigger Campaigns", "Marketing Automation", "Personalisation", "A/B Testing"]}
+            />
+            <SkillGroup
+              color="#4F46E5" label="Cloud & Analytics"
+              skills={["AWS", "Databricks", "Snowflake", "BigQuery", "Power BI", "Tableau"]}
+            />
+          </div>
 
           {/* ── Experience ── */}
-          <Label>Experience</Label>
+          <Label color="#4F46E5">Experience</Label>
 
           <Job
             role="AVP – Data Scientist & Data Engineer, Customer Data Platform"
@@ -161,7 +173,7 @@ export default function ResumePage() {
           />
 
           {/* ── Education ── */}
-          <Label>Education</Label>
+          <Label color="#7C3AED">Education</Label>
           <EduRow
             degree="M.S. Machine Learning & Artificial Intelligence"
             school="Liverpool John Moores University"
@@ -179,15 +191,11 @@ export default function ResumePage() {
           />
 
           {/* ── Awards & Publication ── */}
-          <Label>Awards &amp; Publication</Label>
+          <Label color="#D97706">Awards &amp; Publication</Label>
           <p style={{ ...body, marginBottom: "4px" }}>
             <strong>Three-Time CEO Award</strong> (2021, 2023, 2025) &nbsp;·&nbsp;
             <strong>LEAP High-Potential Leadership Program</strong> (2026) &nbsp;·&nbsp;
             <strong>Certificate of Excellence</strong> — Genpact (2019)
-          </p>
-          <p style={{ ...body, marginBottom: "4px" }}>
-            <em>&ldquo;AI-Driven Data Analytics for Enterprise Systems&rdquo;</em>
-            &nbsp;— First Author · Springer · Peer-Reviewed · 2021
           </p>
           <p style={body}>
             <em>&ldquo;Engineering droplet navigation through tertiary-junction microchannels&rdquo;</em>
@@ -205,16 +213,109 @@ export default function ResumePage() {
 
 /* ─── Sub-components ─── */
 
-function Label({ children }: { children: React.ReactNode }) {
+// force background colours to render in the printed / saved PDF
+const printExact: React.CSSProperties = {
+  WebkitPrintColorAdjust: "exact",
+  printColorAdjust: "exact",
+};
+
+function Stat({ value, label, color }: { value: string; label: string; color: string }) {
+  return (
+    <div style={{
+      flex: 1, textAlign: "center", padding: "8px 4px", borderRadius: "6px",
+      background: hexToTint(color), border: `1px solid ${hexToTint(color, 0.35)}`, ...printExact,
+    }}>
+      <div style={{ fontSize: "17px", fontWeight: 800, color, lineHeight: 1 }}>{value}</div>
+      <div style={{ fontSize: "7.5px", fontWeight: 700, color: "#555", textTransform: "uppercase", letterSpacing: "0.05em", marginTop: "3px" }}>
+        {label}
+      </div>
+    </div>
+  );
+}
+
+function FlagshipProject() {
+  const steps = [
+    "Pull Jira story",
+    "Build Python + JS",
+    "QA + perf review",
+    "Push to Bitbucket",
+    "Comment & tag QA",
+    "Move to Code Review",
+  ];
+  return (
+    <div style={{
+      border: "1px solid #DBE5FA", borderLeft: "4px solid #2563EB", borderRadius: "6px",
+      background: "#F6F9FF", padding: "13px 15px", marginBottom: "6px", ...printExact,
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "4px 8px", marginBottom: "5px" }}>
+        <strong style={{ fontSize: "12px", color: "#111", fontWeight: 800 }}>
+          Autonomous BlueConic Development Agent
+        </strong>
+        <span style={{
+          fontSize: "8px", fontWeight: 800, color: "#fff", background: "#2563EB",
+          padding: "2px 7px", borderRadius: "10px", letterSpacing: "0.04em", textTransform: "uppercase", ...printExact,
+        }}>
+          2 days → 30 min
+        </span>
+      </div>
+      <p style={{ fontSize: "10px", color: "#333", lineHeight: 1.55, margin: "0 0 9px" }}>
+        Built a <strong>custom GitHub Copilot agent</strong> that autonomously delivers BlueConic AI Workbench
+        development end-to-end. Grounded it on a self-authored <strong>Markdown knowledge base</strong> — modular
+        skill definition files plus BlueConic Python API references — so the agent generates production Python for
+        AIWB and the JavaScript powering BlueConic import/export connections, runs its own QA review and performance
+        testing, and keeps a human-in-the-loop review gate.
+      </p>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "5px 3px" }}>
+        {steps.map((s, i) => (
+          <span key={s} style={{ display: "inline-flex", alignItems: "center", gap: "3px" }}>
+            <span style={{
+              fontSize: "8.5px", fontWeight: 600, color: "#1E40AF", background: "#E7EFFE",
+              border: "1px solid #C7D9F8", padding: "2px 7px", borderRadius: "3px", ...printExact,
+            }}>
+              {s}
+            </span>
+            {i < steps.length - 1 && <span style={{ fontSize: "9px", color: "#93B4F0", fontWeight: 700 }}>→</span>}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SkillGroup({ color, label, skills }: { color: string; label: string; skills: string[] }) {
+  return (
+    <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "6px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "5px", width: "112px", flexShrink: 0, paddingTop: "2px" }}>
+        <span style={{ width: "7px", height: "7px", borderRadius: "2px", background: color, flexShrink: 0, ...printExact }} />
+        <span style={{ fontSize: "8.5px", fontWeight: 700, color: "#555", textTransform: "uppercase", letterSpacing: "0.03em", lineHeight: 1.2 }}>
+          {label}
+        </span>
+      </div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+        {skills.map((s) => (
+          <span key={s} style={{
+            fontSize: "9px", color: "#333", background: "#F3F4F6", border: "1px solid #E5E7EB",
+            padding: "2px 7px", borderRadius: "3px", lineHeight: 1.4, ...printExact,
+          }}>
+            {s}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Label({ children, color = "#222" }: { children: React.ReactNode; color?: string }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "16px 0 8px" }}>
+      <span style={{ width: "10px", height: "10px", borderRadius: "2px", background: color, flexShrink: 0, ...printExact }} />
       <span style={{
-        fontSize: "7.5px", fontWeight: 700, letterSpacing: "0.22em",
+        fontSize: "8px", fontWeight: 700, letterSpacing: "0.22em",
         textTransform: "uppercase", color: "#888", whiteSpace: "nowrap",
       }}>
         {children}
       </span>
-      <div style={{ flex: 1, height: "1.5px", background: "#222" }} />
+      <div style={{ flex: 1, height: "1.5px", background: "#eee" }} />
     </div>
   );
 }
@@ -259,6 +360,13 @@ function EduRow({
       <span style={{ fontSize: "9.5px", color: "#888", flexShrink: 0 }}>{year}</span>
     </div>
   );
+}
+
+/* light tinted background from an accent hex (for stat chips) */
+function hexToTint(hex: string, alpha = 0.10): string {
+  const n = parseInt(hex.slice(1), 16);
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  return `rgba(${r},${g},${b},${alpha})`;
 }
 
 const body: React.CSSProperties = {

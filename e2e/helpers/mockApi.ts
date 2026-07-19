@@ -24,8 +24,14 @@ export const MOCK_ANSWER =
 const json = (route: Route, body: unknown) =>
   route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(body) });
 
-/** Intercept all four /api/rag routes with deterministic fixtures. */
+/** Intercept all /api/rag routes with deterministic fixtures. */
 export async function mockRagApi(page: Page): Promise<void> {
+  // access gate: open by default so existing specs never see the overlay
+  await page.route("**/api/rag/gate", async route => {
+    if (route.request().method() === "GET") return json(route, { required: false, unlocked: true });
+    return json(route, { unlocked: true });
+  });
+
   await page.route("**/api/rag/embed", async route => {
     const { texts } = route.request().postDataJSON() as { texts: string[] };
     await json(route, { vectors: texts.map(fakeVec), tokens: texts.length * 12 });
