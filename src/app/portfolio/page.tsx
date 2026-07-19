@@ -162,6 +162,16 @@ function Counter({ value, suffix, prefix }: { value: number; suffix?: string; pr
   return <span ref={ref}>{prefix}{n}{suffix}</span>;
 }
 
+/* ── award line icon (no emoji) ─────────────────────────────────────────── */
+function AwardIcon({ size = 22, color = "currentColor" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="9" r="5" />
+      <path d="M9 13.5 7.5 21l4.5-2.7L16.5 21 15 13.5" />
+    </svg>
+  );
+}
+
 export default function PortfolioPage() {
   return (
     <>
@@ -336,7 +346,9 @@ export default function PortfolioPage() {
               background: "#0A0A0A", border: "1px solid rgba(255,255,255,0.08)",
             }}
           >
-            <div style={{ fontSize: "clamp(36px,4vw,52px)", lineHeight: 1 }}>🏆</div>
+            <div style={{ width: 60, height: 60, borderRadius: 14, background: "rgba(96,165,250,0.12)", color: "#60A5FA", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <AwardIcon size={30} />
+            </div>
             <div>
               <h3 style={{ fontFamily: fd, fontWeight: 700, fontSize: "clamp(19px,2.2vw,26px)", letterSpacing: "-0.03em", color: "#FFFFFF", textTransform: "lowercase", marginBottom: 8 }}>
                 {achievements[0].title.toLowerCase()}
@@ -356,7 +368,9 @@ export default function PortfolioPage() {
                 initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.1 }} viewport={{ once: true }}
                 style={{ border: "1px solid #E5E5E5", borderRadius: 16, padding: "clamp(24px,2.6vw,32px)", display: "flex", flexDirection: "column", background: "#FFFFFF" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
-                  <span style={{ fontSize: 26 }}>{a.icon}</span>
+                  <span style={{ width: 38, height: 38, borderRadius: 10, background: "#EEF3FF", color: "#2563EB", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                    <AwardIcon size={20} />
+                  </span>
                   <span style={{ fontFamily: fm, fontSize: 11, color: "#999999" }}>{a.year}</span>
                 </div>
                 <h3 style={{ fontFamily: fd, fontWeight: 700, fontSize: "clamp(15px,1.6vw,18px)", letterSpacing: "-0.02em", color: "#111111", textTransform: "lowercase", marginBottom: 10, lineHeight: 1.25 }}>
@@ -384,7 +398,7 @@ export default function PortfolioPage() {
               }}
               className="pf-quote"
             >
-              <span aria-hidden style={{ fontFamily: fd, fontSize: 44, color: "#2563EB", lineHeight: 0.6, marginBottom: 22 }}>&ldquo;</span>
+              <span aria-hidden style={{ display: "block", width: 32, height: 3, background: "#2563EB", borderRadius: 3, marginBottom: 24 }} />
               <blockquote style={{ fontSize: 14.5, color: "#444444", lineHeight: 1.75, flex: 1, margin: 0, marginBottom: 24 }}>
                 {q.quote}
               </blockquote>

@@ -96,9 +96,9 @@ function IdentityCard() {
 
         {/* Floating depth chips (translateZ layers) */}
         {[
-          { text: "🏆 3× CEO Award", top: "8%", left: "-9%", z: 70, dur: 5.4 },
-          { text: "🎓 IIT Delhi", top: "34%", right: "-11%", z: 55, dur: 6.2 },
-          { text: "🤖 Agentic AI", bottom: "26%", left: "-13%", z: 62, dur: 5.8 },
+          { text: "3× CEO Award", top: "8%", left: "-9%", z: 70, dur: 5.4 },
+          { text: "IIT Delhi", top: "34%", right: "-11%", z: 55, dur: 6.2 },
+          { text: "Agentic AI", bottom: "26%", left: "-13%", z: 62, dur: 5.8 },
         ].map(chip => (
           <motion.div
             key={chip.text}
@@ -238,6 +238,16 @@ const SKILL_COLORS: Record<string, string> = {
   "AI Platforms": "#60A5FA", "Generative AI": "#A78BFA", "Engineering": "#34D399",
   "Data Science": "#F472B6", "Cloud": "#FBBF24", "Analytics": "#FB923C", "Leadership": "#818CF8",
 };
+
+/* credential line icon (replaces the per-cert emoji) */
+function CertIcon({ size = 22, color = "currentColor" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="9" r="5.5" />
+      <path d="M8.5 13 7 21l5-2.8L17 21l-1.5-8" />
+    </svg>
+  );
+}
 
 export default function AboutPage() {
   const skillCats = Array.from(new Set(skills.map(s => s.category)));
@@ -409,7 +419,9 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: (i % 2) * 0.08 }} viewport={{ once: true }}
                 style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, padding: "18px 24px", border: "1px solid #E5E5E5", borderRadius: 14, background: "#FFFFFF" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                  <span style={{ fontSize: 22 }}>{c.icon}</span>
+                  <span style={{ width: 38, height: 38, borderRadius: 10, background: "#EEF3FF", color: "#2563EB", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <CertIcon size={20} />
+                  </span>
                   <div>
                     <div style={{ fontFamily: fd, fontWeight: 700, fontSize: 15, letterSpacing: "-0.015em", color: "#111111" }}>{c.title}</div>
                     <div style={{ fontFamily: fm, fontSize: 11, color: "#999999", marginTop: 3 }}>{c.issuer}</div>

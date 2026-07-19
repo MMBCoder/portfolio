@@ -550,7 +550,12 @@ export default function ExperiencePage() {
                 />
               ))}
               <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20, position: "relative", zIndex: 1 }}>
-                <div style={{ width: 48, height: 48, borderRadius: 10, background: "#FFFFFF", border: "1px solid #E5E5E5", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 22 }}>📖</div>
+                <div style={{ width: 48, height: 48, borderRadius: 10, background: "#EEF3FF", border: "1px solid #DCE6FB", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#2563EB" }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 5.5A1.5 1.5 0 0 1 4.5 4H10a2 2 0 0 1 2 2 2 2 0 0 1 2-2h5.5A1.5 1.5 0 0 1 21 5.5v12a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 0 0-2 2 2 2 0 0 0-2-2H4.5A1.5 1.5 0 0 1 3 17.5Z" />
+                    <path d="M12 6v14" />
+                  </svg>
+                </div>
                 <div>
                   <p style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 13, color: "#555555", fontWeight: 700, marginBottom: 3 }}>Springer Publication</p>
                   <p style={{ fontSize: 13, color: "#888888", fontFamily: "var(--font-jetbrains-mono),monospace" }}>First Author · 2016</p>
