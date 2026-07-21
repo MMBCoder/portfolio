@@ -17,6 +17,9 @@ export interface StageState {
 
 export interface PageText { page: number; text: string; }
 
+/** Which kind of source document was ingested — drives parsing and preview. */
+export type DocKind = "pdf" | "word" | "excel" | "markdown" | "text" | "image" | "sample" | null;
+
 export interface Chunk {
   id: number;
   text: string;

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Upload, FlaskConical, Play, Download, SlidersHorizontal, BarChart3, ChevronDown, GitCompareArrows, MonitorPlay } from "lucide-react";
 import { useRagStore, STAGE_IDS } from "./ragStore";
 import { runIngestion } from "./lib/pipeline";
+import { ACCEPT_ATTR } from "./lib/parse";
 import { useIsMobile } from "../../_components/shared/useIsMobile";
 import PipelineCanvas from "./PipelineCanvas";
 import Inspector from "./Inspector";
@@ -144,7 +145,7 @@ export default function RagShell() {
             </h1>
             <p style={{ fontSize: 15, color: T.fgSec, marginTop: 10, maxWidth: 680, lineHeight: 1.65 }}>
               Watch a document become a grounded answer — every stage of a production Retrieval-Augmented
-              Generation pipeline, live, inspectable, and tunable. {docName ? "" : "Load the sample guide or your own PDF (≤ 5 MB) to begin."}
+              Generation pipeline, live, inspectable, and tunable. {docName ? "" : "Load the sample guide or your own file — PDF, Word, Excel, Markdown, or image (≤ 10 MB) — to begin."}
             </p>
           </div>
 
@@ -152,11 +153,11 @@ export default function RagShell() {
             <JourneyChip />
             <PersonaSwitch />
             <input
-              ref={fileRef} type="file" accept="application/pdf" hidden
+              ref={fileRef} type="file" accept={ACCEPT_ATTR} hidden
               onChange={e => { onFile(e.target.files?.[0]); e.target.value = ""; }}
             />
             <button style={hBtn} disabled={busy || playActive} onClick={() => fileRef.current?.click()}>
-              <Upload size={15} /> upload pdf
+              <Upload size={15} /> upload file
             </button>
             {/* chapter 1's gentle spotlight: a breathing ring, never a blocker */}
             <motion.button

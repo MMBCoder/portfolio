@@ -142,6 +142,49 @@ export async function chat(system: string, user: string, opts: ChatOpts = {}): P
   throw lastErr ?? new LlmError(503, "All Gemini models unavailable.");
 }
 
+/* ── vision: transcribe/describe an image (Gemini is multimodal) ──
+   Used by the ingestion pipeline so images become searchable text. */
+export async function extractImageText(mimeType: string, dataBase64: string): Promise<string> {
+  const prompt =
+    "Transcribe ALL readable text in this image verbatim, preserving reading order. " +
+    "If it is a chart, table, diagram, receipt, or a photo with little text, also give a " +
+    "concise, factual description of what it shows and any figures or labels present. " +
+    "Return plain text only — no preamble.";
+  const body = {
+    contents: [{
+      role: "user",
+      parts: [
+        { text: prompt },
+        { inline_data: { mime_type: mimeType, data: dataBase64 } },
+      ],
+    }],
+    generationConfig: { maxOutputTokens: 1200, temperature: 0 },
+  };
+
+  let lastErr: LlmError | null = null;
+  for (const model of CHAT_MODELS) {
+    let res: Response;
+    try {
+      res = await fetchTimeout(`${BASE}/models/${model}:generateContent`, {
+        method: "POST", headers: headers(), body: JSON.stringify(body),
+      }, 30_000);
+    } catch {
+      lastErr = new LlmError(504, `${model} timed out`);
+      continue;
+    }
+    if (res.ok) {
+      const data = (await res.json()) as GeminiResponse;
+      if (!extractText(data) && data.promptFeedback?.blockReason) {
+        throw new LlmError(422, `Blocked by safety filter (${data.promptFeedback.blockReason}).`);
+      }
+      return extractText(data);
+    }
+    lastErr = new LlmError(res.status, await errorDetail(res));
+    if (!RETRYABLE.has(res.status) && res.status !== 404) throw lastErr;
+  }
+  throw lastErr ?? new LlmError(503, "Image model unavailable.");
+}
+
 /* ── streaming (M10): Gemini SSE → the NDJSON frames the client expects ──
    Client contract (unchanged): {"delta":"…"} per chunk, then
    {"done":true,"promptTokens","completionTokens"}, or {"error":"…"}. */

@@ -8,7 +8,7 @@ import {
 import { cleanPages, chunkPages, approxTokens, splitSentences } from "./text";
 import { scoreCandidates, projectQuery } from "./retrieval";
 import { pca3Async } from "./workers/workerClient";
-import { parsePdf } from "./pdf";
+import { parseByKind, kindFromName, unitLabel } from "./parse";
 import { SAMPLE_NAME, SAMPLE_PAGES } from "./sample";
 import { withRecording } from "./events";
 import { fitContext } from "./contextFit";
@@ -131,21 +131,22 @@ export async function runIngestion(source: IngestSource, rawGate?: StageGate): P
     await runStage(myRun, "upload", gate, 500, async () => {
       if (source.file) {
         const f = source.file;
-        if (f.size > 5 * 1024 * 1024) throw new Error("PDF is larger than 5 MB.");
-        if (!/\.pdf$/i.test(f.name)) throw new Error("Only PDF files are supported.");
+        const kind = kindFromName(f.name);
+        if (!kind) throw new Error("Unsupported file type. Use PDF, Word, Excel, Markdown, text, or an image.");
+        if (f.size > 10 * 1024 * 1024) throw new Error("File is larger than 10 MB.");
         const bytes = await f.arrayBuffer();
-        S().patch({ docName: f.name, docBytes: f.size, isSample: false, pdfData: bytes });
+        S().patch({ docName: f.name, docBytes: f.size, isSample: false, docKind: kind, pdfData: bytes });
         return `${f.name} · ${fmtKB(f.size)}`;
       }
       if (source.bytes) {
         S().patch({
           docName: source.bytes.name, docBytes: source.bytes.data.byteLength,
-          isSample: false, pdfData: source.bytes.data,
+          isSample: false, docKind: kindFromName(source.bytes.name), pdfData: source.bytes.data,
         });
         return `${source.bytes.name} · ${fmtKB(source.bytes.data.byteLength)}`;
       }
       const bytes = SAMPLE_PAGES.reduce((n, p) => n + p.text.length, 0);
-      S().patch({ docName: SAMPLE_NAME, docBytes: bytes, isSample: true, pdfData: null });
+      S().patch({ docName: SAMPLE_NAME, docBytes: bytes, isSample: true, docKind: "sample", pdfData: null });
       return `sample guide · ${fmtKB(bytes)}`;
     });
 
@@ -156,11 +157,15 @@ export async function runIngestion(source: IngestSource, rawGate?: StageGate): P
         S().patch({ pages: SAMPLE_PAGES });
         return `${SAMPLE_PAGES.length} pages`;
       }
-      const { pages } = await parsePdf(st.pdfData!);
+      const pages = await parseByKind(st.docKind, st.pdfData!, st.docName ?? "");
       const chars = pages.reduce((n, p) => n + p.text.length, 0);
-      if (chars < 50) throw new Error("No selectable text found — this PDF looks like a scan.");
+      if (chars < 20) {
+        throw new Error(st.docKind === "pdf"
+          ? "No selectable text found — this PDF looks like a scan."
+          : "No usable text could be extracted from this file.");
+      }
       S().patch({ pages });
-      return `${pages.length} pages · ${chars.toLocaleString()} chars`;
+      return `${pages.length} ${unitLabel(st.docKind, pages.length)} · ${chars.toLocaleString()} chars`;
     });
 
     /* 3 · clean */

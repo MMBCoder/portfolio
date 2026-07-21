@@ -82,13 +82,14 @@ function Snippet({ text, color }: { text: string; color?: string }) {
 
 function PdfPreview({ page }: { page: number }) {
   const pdfData = useRagStore(s => s.pdfData);
+  const isPdf = useRagStore(s => s.docKind === "pdf");
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
-    if (pdfData && ref.current) {
+    if (pdfData && isPdf && ref.current) {
       renderPdfPage(pdfData, page, ref.current, 350).catch(() => {});
     }
-  }, [pdfData, page]);
-  if (!pdfData) return null;
+  }, [pdfData, isPdf, page]);
+  if (!pdfData || !isPdf) return null;
   return (
     <canvas ref={ref} style={{
       width: "100%", borderRadius: 10, border: `1px solid ${T.border}`, background: "#fff",
@@ -100,7 +101,7 @@ function PdfPreview({ page }: { page: number }) {
 
 function UploadView() {
   const s = usePipelineView(v => v);
-  if (!s.docName) return <Body>No document loaded yet. Upload a PDF (≤ 5 MB) or load the sample product guide.</Body>;
+  if (!s.docName) return <Body>No document loaded yet. Upload a file — PDF, Word, Excel, Markdown, or image (≤ 10 MB) — or load the sample product guide.</Body>;
   return (
     <>
       <Sec title="Document">
@@ -109,7 +110,7 @@ function UploadView() {
         <KV k="source" v={s.isSample ? "built-in sample" : "user upload"} />
         {s.pages.length > 0 && <KV k="pages" v={String(s.pages.length)} />}
       </Sec>
-      {s.pdfData && <Sec title="Preview — page 1"><PdfPreview page={1} /></Sec>}
+      {s.pdfData && s.docKind === "pdf" && <Sec title="Preview — page 1"><PdfPreview page={1} /></Sec>}
     </>
   );
 }

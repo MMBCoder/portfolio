@@ -3,7 +3,7 @@ import {
   STAGE_IDS, DEFAULT_PARAMS,
   type StageId, type StageState, type StageStatus, type PageText, type Chunk,
   type Candidate, type PromptBlock, type AnswerSentence, type EvalScores,
-  type SentenceVerdict, type RagParams, type Usage, type PlayState,
+  type SentenceVerdict, type RagParams, type Usage, type PlayState, type DocKind,
 } from "./types";
 
 /* The V1 pipeline slice — state shape and actions moved verbatim from
@@ -15,7 +15,8 @@ export interface PipelineSlice {
   docName: string | null;
   docBytes: number;
   isSample: boolean;
-  pdfData: ArrayBuffer | null;     // for preview rendering
+  docKind: DocKind;                // pdf | word | excel | markdown | text | image | sample
+  pdfData: ArrayBuffer | null;     // raw bytes of the upload (preview + re-parse on replay)
   pages: PageText[];
   cleanStats: { before: number; after: number; joinedLines: number; fixedHyphens: number } | null;
   cleanedPages: PageText[];
@@ -66,7 +67,7 @@ const idleStages = (): Record<StageId, StageState> =>
   Object.fromEntries(STAGE_IDS.map(id => [id, { status: "idle" as StageStatus }])) as Record<StageId, StageState>;
 
 const initialData = {
-  docName: null, docBytes: 0, isSample: false, pdfData: null,
+  docName: null, docBytes: 0, isSample: false, docKind: null as DocKind, pdfData: null,
   pages: [], cleanStats: null, cleanedPages: [], chunks: [],
   embeddings: [], coords3: [],
   query: "", queryVec: null, candidates: [], results: [],
