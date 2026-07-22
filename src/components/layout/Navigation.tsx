@@ -106,15 +106,6 @@ export default function Navigation() {
             }}>
               Mirza Minhaz Baig
             </div>
-            <div style={{
-              fontFamily: "var(--font-jetbrains-mono), monospace",
-              fontSize: "9px",
-              color: "rgba(255,255,255,0.5)",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-            }}>
-              AI Transformation Leader
-            </div>
           </div>
         </Link>
 
