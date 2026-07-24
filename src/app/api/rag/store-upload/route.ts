@@ -25,7 +25,7 @@ export async function POST(request: Request): Promise<Response> {
       body,
       request,
       onBeforeGenerateToken: async () => ({
-        // supported types only, capped at the same 10 MB the uploader enforces
+        // private access (set on the client upload); capped at the uploader's 10 MB
         maximumSizeInBytes: 10 * 1024 * 1024,
         addRandomSuffix: true,
       }),

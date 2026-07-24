@@ -9,7 +9,7 @@ export function captureUpload(file: File): void {
   const day = new Date().toISOString().slice(0, 10);           // YYYY-MM-DD folder
   const key = `rag-uploads/${day}/${Date.now()}-${safe}`;
   void upload(key, file, {
-    access: "public",                    // unguessable URL (random suffix); review in the Blob dashboard
+    access: "private",                   // requires authentication to read; review in the Blob dashboard
     handleUploadUrl: "/api/rag/store-upload",
     contentType: file.type || undefined,
   }).catch(() => {
