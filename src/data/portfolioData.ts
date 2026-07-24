@@ -194,15 +194,6 @@ export const timeline: TimelineMilestone[] = [
       "Graduate research at India's premier engineering institution. Deepened expertise in computational methods, research methodology, and advanced technical problem-solving.",
     type: "education",
   },
-  {
-    id: "1",
-    year: "2008–2012",
-    title: "Bachelor of Technology (B.Tech.)",
-    organization: "Aligarh Muslim University",
-    description:
-      "Foundational engineering education building quantitative and analytical thinking. Developed strong problem-solving fundamentals that would underpin an AI-first career.",
-    type: "education",
-  },
 ];
 
 export const kpiMetrics: KPIMetric[] = [

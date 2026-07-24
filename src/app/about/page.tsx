@@ -314,7 +314,7 @@ export default function AboutPage() {
         <div style={{ maxWidth: 1180, margin: "0 auto" }}>
           <motion.div initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} style={{ marginBottom: 52 }}>
             <p style={{ fontFamily: fm, fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "#2563EB", fontWeight: 700, marginBottom: 14 }}>
-              The Journey · 2008 → Present
+              The Journey · Present → 2012
             </p>
             <h2 style={{ fontFamily: fd, fontWeight: 900, fontSize: "clamp(1.9rem,4vw,3.4rem)", letterSpacing: "-0.04em", color: "#111111", textTransform: "lowercase", lineHeight: 1.02 }}>
               the road here.
@@ -322,7 +322,11 @@ export default function AboutPage() {
           </motion.div>
 
           <div className="ab-timeline" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20 }}>
-            {[...timeline].reverse().map((m, i) => (
+            {/* row 1: career (work), row 2: education — each newest → oldest */}
+            {[
+              ...timeline.filter((m) => m.type === "work"),
+              ...timeline.filter((m) => m.type === "education"),
+            ].map((m, i) => (
               <MilestoneCard key={m.id} m={m} i={i} />
             ))}
           </div>
